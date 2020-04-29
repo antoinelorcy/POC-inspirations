@@ -3,6 +3,7 @@
     <div class="inspirations">
       <div class="i__left">
         <Filters v-model="goals" title="Objectifs" />
+        <Filters v-model="groupSizes" title="Groupes" />
         <Filters v-model="lengths" title="Durée" />
       </div>
     <div class="i__right">
@@ -38,6 +39,9 @@ query {
         length {
           id
         }
+        groupSize {
+          id
+        }
       }
     }
   }
@@ -63,6 +67,15 @@ query {
       }
     }
   }
+
+  groupSizes: allContentfulGroupSize {
+    edges {
+      node {
+        id
+        title
+      }
+    }
+  }
 }
 </static-query>
 
@@ -72,7 +85,8 @@ import Filters from '~/components/Filters';
 
 export default {
   metaInfo: {
-    title: 'Inspirations'
+    title: 'Inspirations',
+    name: 'inspirations'
   },
 
   components: {
@@ -83,6 +97,7 @@ export default {
   data () {
     return {
       goals: [],
+      groupSizes: [],
       lengths: [],
       search: ''
     }
@@ -93,7 +108,15 @@ export default {
       return {
         id: g.node.id,
         title: g.node.title,
-        checked: true
+        checked: this.$route.query.goal && this.$route.query.goal === g.node.id
+      }
+    })
+
+    this.groupSizes = this.$static.groupSizes.edges.map((g) => {
+      return {
+        id: g.node.id,
+        title: g.node.title,
+        checked: this.$route.query.groupSize && this.$route.query.groupSize === g.node.id
       }
     })
 
@@ -101,9 +124,11 @@ export default {
       return {
         id: g.node.id,
         title: g.node.title,
-        checked: true
+        checked: false
       }
     })
+
+    // this.$router.replace({ query: {}});
   },
 
   computed: {
@@ -113,17 +138,35 @@ export default {
   
     filteredPages () {
       return this.pages.filter((p) => {
+        console.log(p);
         if (this.search !== '') {
           return p.keywords.join().toLowerCase().indexOf(this.search) > -1
         }
 
-        return this.checkedGoals.includes(p.goal.id) &&
-          this.checkedLengths.includes(p.length.id)
+        let r = true;
+
+        if (this.checkedGoals.length) {
+          r = this.checkedGoals.includes(p.goal.id)
+        }
+        
+        if (this.checkedGroupSizes.length && r) {
+          r = this.checkedGroupSizes.includes(p.groupSize.id)
+        }
+
+        if (this.checkedLengths.length && r) {
+          r = this.checkedLengths.includes(p.length.id)
+        }
+      
+        return r
       })
     },
 
     checkedGoals () {
       return this.goals.filter((g) => g.checked).map((g) => g.id);
+    },
+    
+    checkedGroupSizes () {
+      return this.groupSizes.filter((g) => g.checked).map((g) => g.id);
     },
 
     checkedLengths () {

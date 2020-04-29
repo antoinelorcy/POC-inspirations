@@ -2,7 +2,7 @@
   <Layout>
     <div>
       <h2>Simple form filter</h2>
-      TODO
+      <HomeFilters />
     </div>
     <div>
       <h2>About</h2>
@@ -41,6 +41,7 @@ query {
 
 <script>
 import Card from '~/components/Card';
+import HomeFilters from '~/components/HomeFilters';
 
 export default {
   metaInfo: {
@@ -48,7 +49,8 @@ export default {
   },
 
   components: {
-    Card
+    Card,
+    HomeFilters
   },
 
   computed: {
