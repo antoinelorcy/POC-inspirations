@@ -29,11 +29,12 @@ query {
     }
   }
 
-  groupSizes: allContentfulGroupSize {
+  groupSizes: allContentfulGroupSize (sortBy: "order", order: ASC ) {
     edges {
       node {
         id
         title
+        order
       }
     }
   }
@@ -63,7 +64,8 @@ export default {
       return this.$static.groupSizes.edges.map((g) => {
         return {
           id: g.node.id,
-          title: g.node.title
+          title: g.node.title,
+          order: g.node.order
         }
       })
     }

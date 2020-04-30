@@ -3,14 +3,34 @@
     <div class="inspirations">
       <div class="i__left">
         <Filters v-model="goals" title="Objectifs" />
-        <Filters v-model="groupSizes" title="Groupes" />
+        <!-- <Filters v-model="groupSizes" title="Groupes" /> -->
+
+        <h3>Groupes</h3>
+        <div>
+          <input type="radio" name="group" id="group0" value="" v-model="checkedGroupSizes" />
+          <label for="group0">Tous</label>
+        </div>
+        <div v-for="g in groupSizes" :key="g.id">
+          <input type="radio" name="group" :id="g.id" :value="g.id" v-model="checkedGroupSizes" />
+          <label :for="g.id">{{ g.title }}</label>
+        </div>
+
         <Filters v-model="lengths" title="Durée" />
+        
+        <div>
+          <h3>Ordre de tri :</h3>
+          <select v-model="order">
+            <option v-for="option in orders" :key="option.key" :value="option.key">
+              {{ option.label }}
+            </option>
+          </select>
+        </div>
       </div>
     <div class="i__right">
         <input placeholder="Rechercher par mots-clés" v-model="search" />
-        <div v-if="!filteredPages.length">:(</div>
+        <div v-if="!orderedPages.length">:(</div>
         <transition-group v-else name="flip-list" tag="ul">
-          <li v-for="page in filteredPages" :key="page.id" class="i__card-wrapper">
+          <li v-for="page in orderedPages" :key="page.id" class="i__card-wrapper">
             <Card :thumbnail="page.thumbnail.file.url" :title="page.title" :path="page.path" />
           </li>
         </transition-group>
@@ -25,6 +45,7 @@ query {
     edges {
       node {
         id
+        updatedAt
         path
         title
         keywords
@@ -59,7 +80,7 @@ query {
     }
   }
 
-  lengths: allContentfulLength (sortBy: "id") {
+  lengths: allContentfulLength (sortBy: "order", order: ASC ) {
     edges {
       node {
         id
@@ -68,7 +89,7 @@ query {
     }
   }
 
-  groupSizes: allContentfulGroupSize {
+  groupSizes: allContentfulGroupSize (sortBy: "order", order: ASC ) {
     edges {
       node {
         id
@@ -98,12 +119,20 @@ export default {
     return {
       goals: [],
       groupSizes: [],
+      checkedGroupSizes: '',
       lengths: [],
-      search: ''
+      search: '',
+      order: null,
+      orders: [
+        { key: 'date', label: 'Par date' },
+        { key: 'name', label: 'Par nom' }
+      ]
     }
   },
 
   mounted () {
+    this.order = this.orders[0].key;
+
     this.goals = this.$static.goals.edges.map((g) => {
       return {
         id: g.node.id,
@@ -135,39 +164,52 @@ export default {
     pages () {
       return this.$page.pages.edges.map((e) => e.node);
     },
-  
-    filteredPages () {
-      return this.pages.filter((p) => {
-        console.log(p);
-        if (this.search !== '') {
-          return p.keywords.join().toLowerCase().indexOf(this.search) > -1
-        }
 
+    orderedPages () {
+      let filteredPages = this.pages.filter((p) => {
         let r = true;
-
-        if (this.checkedGoals.length) {
+        if (this.checkedGoals.length && p.goal && r) {
+          if (!p.groupSize.length) return;
           r = this.checkedGoals.includes(p.goal.id)
         }
         
         if (this.checkedGroupSizes.length && r) {
-          r = this.checkedGroupSizes.includes(p.groupSize.id)
+          if (!p.groupSize.length) return;
+          // r = (p.groupSize.map((g) => g.id).filter(groupId => this.checkedGroupSizes.includes(groupId))).length;
+          r = p.groupSize.map((g) => g.id).includes(this.checkedGroupSizes);
         }
 
         if (this.checkedLengths.length && r) {
-          r = this.checkedLengths.includes(p.length.id)
+          if (!p.length.length) return;
+          r = (p.length.map((g) => g.id).filter(lengthId => this.checkedLengths.includes(lengthId))).length;
+        }
+
+        if (this.search !== '' && r) {
+          r = p.keywords.join().toLowerCase().indexOf(this.search) > -1
         }
       
         return r
-      })
+      });
+  
+      switch (this.order) {
+        case 'date':
+          return filteredPages.sort((a, b) => b.updatedAt - a.updatedAt);
+          break;
+        case 'name':
+          return filteredPages.sort((a, b) => a.title.localeCompare(b.title));
+          break;
+        default:
+          return filteredPages;
+      }
     },
 
     checkedGoals () {
       return this.goals.filter((g) => g.checked).map((g) => g.id);
     },
     
-    checkedGroupSizes () {
-      return this.groupSizes.filter((g) => g.checked).map((g) => g.id);
-    },
+    // checkedGroupSizes () {
+    //   return this.groupSizes.filter((g) => g.checked).map((g) => g.id);
+    // },
 
     checkedLengths () {
       return this.lengths.filter((g) => g.checked).map((g) => g.id);
