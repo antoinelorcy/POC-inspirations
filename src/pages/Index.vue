@@ -1,20 +1,12 @@
 <template>
   <Layout>
     <div>
-      <h2>Simple form filter</h2>
+      <h1>Des inspirations pour toutes vos réunions</h1>
+      <p>Essayez nos modèles prêts à l’emploi pour démarrez rapidement ou renouveller vos activités de réunion dans Beekast. Suivez le guide et animez des réunions collaboratives et efficaces.</p>
       <HomeFilters />
     </div>
     <div>
-      <h2>About</h2>
-      Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ipsum iste ullam autem quasi. Numquam exercitationem iure illo deleniti ea reiciendis fuga beatae explicabo tempore laborum modi excepturi quas, nemo suscipit.
-    </div>
-    <div>
-      <h2>Last {{ lastPages.length }} inspiration</h2>
-      <!-- <g-link v-for="page in lastPages" :key="page.id" :to="page.path">
-        <g-image :src="page.thumbnail.file.url" width="250" />
-        <h3>{{ page.title }}</h3>
-      </g-link> -->
-
+      <h2>Nos inspirations du moment</h2>
       <Card v-for="page in lastPages" :key="page.id" :thumbnail="page.thumbnail.file.url" :title="page.title" :path="page.path" />
     </div>
   </Layout>

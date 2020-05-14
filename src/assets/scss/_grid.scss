@@ -1,0 +1,28 @@
+$grid-columns: 12;
+$grid-margin: 0.5rem;
+$grid-bp: (
+	sm: 0,
+	md: map-get($breakpoints, small) + 1,
+	lg: map-get($breakpoints, medium) + 1
+);
+
+.grid {
+	display: flex;
+	flex-wrap: wrap;
+
+	> [class*="col"] {
+		flex: 0 0 100%;
+	}
+
+	@each $bp, $size in $grid-bp {
+		@for $i from 1 through $grid-columns {
+			$percent: $i / $grid-columns * 100%;
+
+			@media screen and (min-width: $size) {
+				> .col-#{$bp}-#{$i} {
+					flex: 0 0 $percent;
+				}
+			}
+		}
+	}
+}

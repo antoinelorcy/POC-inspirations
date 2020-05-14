@@ -1,0 +1,61 @@
+@each $key, $value in $spaces {
+	.p--#{$key} {
+		padding: $value !important;
+	}
+
+	.p--t-#{$key} {
+		padding-top: $value !important;
+	}
+
+	.p--r-#{$key} {
+		padding-right: $value !important;
+	}
+
+	.p--b-#{$key} {
+		padding-bottom: $value !important;
+	}
+
+	.p--l-#{$key} {
+		padding-left: $value !important;
+	}
+	
+
+	.m--#{$key} {
+		margin: $value !important;
+	}
+
+	.m--t-#{$key} {
+		margin-top: $value !important;
+	}
+
+	.m--r-#{$key} {
+		margin-right: $value !important;
+	}
+
+	.m--b-#{$key} {
+		margin-bottom: $value !important;
+	}
+
+	.m--l-#{$key} {
+		margin-left: $value !important;
+	}
+}
+
+@each $key, $value in $colors {
+	.color--#{$key} {
+		color: $value !important;
+	}
+
+	.bg-color--#{$key} {
+		background-color: $value !important;
+	}
+}
+
+
+$aligns: left, center, right;
+
+@each $align in $aligns {
+	.text-align--#{$align} {
+		text-align: $align;
+	}
+}

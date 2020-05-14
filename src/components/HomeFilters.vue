@@ -1,26 +1,26 @@
 <template>
 	<div class="home-filter">
     Je souhaite
-    <select v-model="goal">
-      <option disabled value="">Selectionner un objectif</option>
-      <option v-for="option in goals" :key="option.id" :value="option.id">
-        {{ option.title }}
-      </option>
-    </select>
+    <Select
+      v-model="goal"
+      value-key="label"
+      :options="goals"
+      placeholder="Selectionner un objectif"
+    />
     avec
-    <select v-model="groupSize">
-      <option disabled value="">Nombre de participants</option>
-      <option v-for="option in groupSizes" :key="option.id" :value="option.id">
-        {{ option.title }}
-      </option>
-    </select>
-    <button @click="search" :disabled="!goal || !groupSize">Rechercher</button>
+    <Select
+      v-model="groupSize"
+      value-key="label"
+      :options="groupSizes"
+      placeholder="Nombre de participants"
+    />
+    <Button @click="search" :disabled="!goal.value || !groupSize.value" label="Rechercher" />
 	</div>
 </template>
 
 <static-query>
 query {
-  goals: allContentfulGoal {
+  goals: allContentfulGoal (sortBy: "order", order: ASC ) {
     edges {
       node {
         id
@@ -45,8 +45,8 @@ query {
 export default {
   data () {
     return {
-      goal: undefined,
-      groupSize: undefined
+      goal: {},
+      groupSize: {}
     }
   },
 
@@ -55,7 +55,8 @@ export default {
       return this.$static.goals.edges.map((g) => {
         return {
           id: g.node.id,
-          title: g.node.title
+          label: g.node.title,
+          value: g.node.id
         }
       })
     },
@@ -64,8 +65,8 @@ export default {
       return this.$static.groupSizes.edges.map((g) => {
         return {
           id: g.node.id,
-          title: g.node.title,
-          order: g.node.order
+          label: g.node.title,
+          value: g.node.id
         }
       })
     }
@@ -73,7 +74,7 @@ export default {
 
   methods: {
     search () {
-      this.$router.push({path: '/inspirations', query: {goal: this.goal, groupSize: this.groupSize}});
+      this.$router.push({path: '/inspirations', query: {goal: this.goal.value, groupSize: this.groupSize.value}});
     }
   }
 }

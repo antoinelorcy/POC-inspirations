@@ -3,6 +3,7 @@
 
 // Changes here require a server restart.
 // To restart press CTRL + C in terminal and run `gridsome develop`
+const path = require("path");
 
 module.exports = {
   siteName: 'Inspirations',
@@ -27,6 +28,22 @@ module.exports = {
         component: './src/templates/Inspiration.vue'
       }
     ]
+  },
+  chainWebpack (config) {
+    // Load variables for all vue-files
+    const types = ['vue-modules', 'vue', 'normal-modules', 'normal']
+
+    // or if you use scss
+    types.forEach(type => {
+      addStyleResource(config.module.rule('scss').oneOf(type))
+    })
+  },
+  css: {
+    loaderOptions: {
+      sass: {
+        includePaths: ["node_modules"]
+      }
+    }
   }
 }
 
@@ -39,4 +56,15 @@ function slugify(text) {
     .replace(/\s+/g, '-')           // Replace spaces with -
     .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
     .replace(/\-\-+/g, '-');        // Replace multiple - with single -
+}
+
+function addStyleResource (rule) {
+  rule.use('style-resource')
+    .loader('style-resources-loader')
+    .options({
+      patterns: [
+        path.resolve(__dirname, './src/assets/scss/_variables.scss'),
+        path.resolve(__dirname, './src/assets/scss/_breakpoints.scss')
+      ],
+    })
 }

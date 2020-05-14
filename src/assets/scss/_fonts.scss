@@ -1,0 +1,44 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,600;1,400;1,600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Over+the+Rainbow&display=swap');
+
+$ff1: 'Open Sans', sans-serif;
+$ff2: 'Over the Rainbow', cursive;
+
+body {
+	font-family: $ff1;
+	font-size: 1.4rem;
+	color: $body-font-color;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+.btn,
+.link,
+input,
+select,
+textarea {
+	font-family: $ff1;
+}
+
+h1,
+h2,
+h3,
+h4 {
+	font-family: $ff1;
+	font-weight: $font-weight-semi-bold;
+	color: color(black-light);
+	margin: 0 0 space(3);
+}
+
+p {
+	margin: 0 0 space(3);
+}
+
+a {
+	color: color(primary);
+	text-decoration: none;
+
+	&:hover {
+		text-decoration: underline;
+	}
+}

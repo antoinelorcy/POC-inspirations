@@ -1,0 +1,59 @@
+// Breakpoints
+$breakpoints: (
+	tiny: 480px,
+	small: 769px,
+	medium: 1024px,
+	large: 1200px,
+	extra-large: 1440px
+) !default;
+
+// Breakpoint
+$bp-aliases: (
+	'tiny': (
+		max-width: #{map-get($breakpoints, tiny) - 1}
+	),
+	'small': (
+		max-width: #{map-get($breakpoints, small) - 1}
+	),
+	'medium': (
+		max-width: #{map-get($breakpoints, medium) - 1}
+	),
+	'large': (
+		max-width: #{map-get($breakpoints, large) - 1}
+	),
+	'extra-large': (
+		max-width: #{map-get($breakpoints, extra-large) - 1}
+	),
+	'tiny-up': (
+		min-width: #{map-get($breakpoints, tiny)}
+	),
+	'small-up': (
+		min-width: #{map-get($breakpoints, small)}
+	),
+	'medium-up': (
+		min-width: #{map-get($breakpoints, medium)}
+	),
+	'large-up': (
+		min-width: #{map-get($breakpoints, large)}
+	),
+	'extra-large-up': (
+		min-width: #{map-get($breakpoints, extra-large)}
+	)
+);
+
+// Source : https://www.sitepoint.com/managing-responsive-breakpoints-sass/
+@mixin breakpoint($name) {
+	// If the key exists in the map
+	@if map-has-key($bp-aliases, $name) {
+		// Prints a media query based on the value
+		@media #{inspect(map-get($bp-aliases, $name))} {
+			@content;
+		}
+	}
+
+	// If the key doesn't exist in the map
+	@else {
+		@warn "Unfortunately, no value could be retrieved from `#{$breakpoints}`. "
+			+ "Please make sure it is defined in `$breakpoints` map.";
+	}
+}

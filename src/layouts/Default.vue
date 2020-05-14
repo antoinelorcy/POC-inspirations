@@ -1,15 +1,10 @@
 <template>
   <div class="layout">
-    <header class="header">
-      <strong>
-        <g-link to="/">{{ $static.metadata.siteName }}</g-link>
-      </strong>
-      <nav class="nav">
-        <g-link class="nav__link" to="/">Accueil</g-link>
-        <g-link class="nav__link" to="/inspirations/">Toutes les inspirations</g-link>
-      </nav>
-    </header>
-    <slot />
+    <Header class="inner-width" />
+    <section class="content inner-width">
+      <slot />
+    </section>
+    <Footer />
   </div>
 </template>
 
@@ -21,28 +16,53 @@ query {
 }
 </static-query>
 
-<style>
-body {
-  font-family: -apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
-  margin:0;
-  padding:0;
-  line-height: 1.5;
-}
+<script>
+import { debounce } from 'lodash-es';
+import Header from '~/components/Header';
+import Footer from '~/components/Footer';
 
+export default {
+  components: {
+    Header,
+    Footer
+  },
+
+  mounted () {
+    this.detectSmallWindow();
+    window.addEventListener('resize', this.debounceResize);
+  },
+
+  methods: {
+    debounceResize: debounce(function () {
+			this.detectSmallWindow();
+    }, 50),
+  
+    detectSmallWindow () {
+      this.$store.commit('detectSmallWindow', window.innerWidth < 1024);
+    }
+  }
+}
+</script>
+
+<style lang="scss" scoped>
 .layout {
-  max-width: 1000px;
-  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 .header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-  height: 80px;
+  margin-bottom: 30px;
+  width: 100%;
 }
 
-.nav__link {
-  margin-left: 20px;
+.content {
+  width: 100%;
+  margin-bottom: 50px;
+}
+
+.footer {
+  margin-top: auto;
+  width: 100%;
 }
 </style>

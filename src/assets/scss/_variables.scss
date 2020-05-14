@@ -1,0 +1,76 @@
+// Colors
+$colors: (
+	primary: #6462EA,
+	primary-dark: #1F006E,
+	grey: #7E7F90,
+	grey-light: #D8D9DF,
+	grey-lighter: #F7F7F8,
+	white: #fff,
+	black: #000,
+	black-light: #333333,
+	danger: #F94F5E
+);
+
+@function color ($key) {
+	@return map-get($colors, $key);
+}
+
+$body-font-color: color(grey);
+$font-weight-semi-bold: 600;
+
+$spaces: (
+	0: 0,
+	1: 4px,
+	2: 8px,
+	3: 12px,
+	4: 16px,
+	5: 20px,
+	6: 24px
+);
+
+$radius: (
+    0: 0,
+    1: 4px,
+    2: 8px,
+    3: 16px,
+    circle: 50%
+);
+
+$zindex: (
+  popper: 100,
+  modal: 200
+);
+
+// Dropdown
+$dropdown-min-width: 170px;
+$dropdown-max-height: 200px;
+$dropdown-background-color: color(white);
+$dropdown-box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.05);
+$dropdown-border: 1px solid color-theme(light);
+$dropdown-border-radius: map-get($radius, 1);
+$dropdown-zindex: map-get($zindex, popper);
+
+@function space ($key) {
+	@return map-get($spaces, $key);
+}
+
+@function radius ($key) {
+	@return map-get($radius, $key);
+}
+
+@mixin overflow($direction: null) {
+	@if $direction != null {
+		overflow: hidden;
+
+		@if $direction == horizontal {
+			overflow-x: auto;
+		} @else if $direction == vertical {
+			overflow-y: auto;
+		}
+	} @else {
+		overflow: auto;
+	}
+
+	-webkit-overflow-scrolling: touch;
+	-ms-overflow-stype: -ms-autohiding-scrollbar;
+}

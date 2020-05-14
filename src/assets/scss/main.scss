@@ -1,0 +1,65 @@
+@import './variables';
+@import './classes';
+@import './normalize';
+@import './fonts';
+@import './breakpoints';
+@import './grid';
+@import './flex';
+
+*,
+*::after,
+*::before {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    font-size: 62.5%;
+}
+
+html, 
+body {
+    min-height: 100vh;
+}
+
+body {
+    &.body--is-scroll-locked {
+        overflow: hidden;
+    }
+}
+
+.inner-width {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 0 20px;
+
+    @include breakpoint('medium') {
+        max-width: 100%;
+        overflow: hidden;
+        padding: 0 space(3);
+    }
+}
+
+.fluid-width {
+    width: 100%;
+}
+
+input,
+textarea,
+select {
+	color: color(black-light);
+
+	&::placeholder {
+		color: color(grey-light);
+	}
+
+	// Edge
+	&::-ms-input-placeholder {
+		color: color(grey-light);
+	}
+
+	// IE 11
+	&:-ms-input-placeholder {
+		color: color(grey-light);
+	}
+}
