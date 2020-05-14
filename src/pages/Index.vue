@@ -7,14 +7,28 @@
     </div>
     <div>
       <h2>Nos inspirations du moment</h2>
-      <Card v-for="page in lastPages" :key="page.id" :thumbnail="page.thumbnail.file.url" :title="page.title" :path="page.path" />
+      <ul>
+        <li
+          v-for="page in lastPages"
+          :key="page.id"
+        >
+        <Card
+          :thumbnail="page.thumbnail.file.url"
+          :title="page.title" :path="page.path"
+          :goal="page.goal"
+          :level="page.level"
+          :group-size="page.groupSize"
+          :length="page.length"
+        />
+        </li>
+      </ul>
     </div>
   </Layout>
 </template>
 
 <page-query>
 query {
-  lastPages: allContentfulPage(limit: 1, sortBy: "date") {
+  lastPages: allContentfulPage(limit: 3, sortBy: "date") {
     edges {
       node {
         id
@@ -24,6 +38,18 @@ query {
           file {
             url
           }
+        }
+        goal {
+          id
+        }
+        length {
+          id
+        }
+        groupSize {
+          id
+        }
+        level {
+          id
         }
       }
     }

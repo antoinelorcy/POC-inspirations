@@ -39,15 +39,17 @@
         <div class="m--b-5">
           <h3>Durée de l'activité <small>(en minutes)</small></h3>
           <div class="length-slider-wrapper">
-            <vue-slider
-              class="length-slider"
-              v-model="length"
-              :enable-cross="false"
-              :min="minLength"
-              :max="maxLength"
-              :data="labelLengths"
-              :marks="true"
-            ></vue-slider>
+            <ClientOnly>
+              <vue-slider
+                class="length-slider"
+                v-model="length"
+                :enable-cross="false"
+                :min="minLength"
+                :max="maxLength"
+                :data="labelLengths"
+                :marks="true"
+              ></vue-slider>
+            </ClientOnly>
             </div>
         </div>
 
@@ -188,7 +190,6 @@ query {
 <script>
 import Card from '~/components/Card';
 import Filters from '~/components/Filters';
-import VueSlider from 'vue-slider-component';
 
 export default {
   metaInfo: {
@@ -199,7 +200,7 @@ export default {
   components: {
     Card,
     Filters,
-    VueSlider
+    VueSlider: () => import('vue-slider-component')
   },
 
   data () {
