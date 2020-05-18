@@ -168,10 +168,19 @@ $trigger-height: 40px;
   }
 }
 
-.select__trigger-value,
 .select__trigger-actions {
   display: flex;
   align-items: center;
+}
+
+.select__trigger-value {
+  flex: 1;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  word-wrap: break-word;
+  display: inline-block;
+  text-align: left;
 }
 
 .select__trigger-actions {

@@ -15,6 +15,8 @@ $colors: (
 	@return map-get($colors, $key);
 }
 
+$ff1: 'Open Sans', sans-serif;
+$ff2: 'Over the Rainbow', cursive;
 $body-font-color: color(grey);
 $font-weight-semi-bold: 600;
 

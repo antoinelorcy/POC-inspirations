@@ -1,16 +1,17 @@
 <template>
   <Layout>
-    <div>
+    <div class="hero">
       <h1>Des inspirations pour toutes vos réunions</h1>
       <p>Essayez nos modèles prêts à l’emploi pour démarrez rapidement ou renouveller vos activités de réunion dans Beekast. Suivez le guide et animez des réunions collaboratives et efficaces.</p>
       <HomeFilters />
     </div>
-    <div>
+    <div class="last">
       <h2>Nos inspirations du moment</h2>
-      <ul>
-        <li
+      <div class="grid">
+        <div
           v-for="page in lastPages"
           :key="page.id"
+          class="col-lg-3 p--4"
         >
         <Card
           :thumbnail="page.thumbnail.file.url"
@@ -20,15 +21,15 @@
           :group-size="page.groupSize"
           :length="page.length"
         />
-        </li>
-      </ul>
+        </div>
+      </div>
     </div>
   </Layout>
 </template>
 
 <page-query>
 query {
-  lastPages: allContentfulPage(limit: 3, sortBy: "date") {
+  lastPages: allContentfulPage(limit: 4, sortBy: "date") {
     edges {
       node {
         id
@@ -76,33 +77,22 @@ export default {
       return this.$page.lastPages.edges.map((edge) => edge.node);
     }
   }
-
-  // data () {
-  //   return {
-  //     goals: [],
-  //     checkedGoals: []
-  //   }
-  // },
-
-  // mounted () {
-  //   this.goals = this.$static.goals.edges.map((g) => {
-  //     return {
-  //       id: g.node.id,
-  //       title: g.node.title,
-  //       checked: true
-  //     }
-  //   })
-
-  //   this.checkedGoals = this.goals.map((g) => g.id);
-  // },
-
-  // computed: {
-  //   inpirationPages () {
-  //     return this.$page.pages.filter((p) => {
-  //       console.log(p);
-  //       return p.context.goal && this.checkedGoals.includes(p.context.goal)
-  //     })
-  //   }
-  // }
 }
 </script>
+
+
+<style lang="scss" scoped>
+.hero  {
+  text-align: center;
+  padding: 0 50px;
+  margin-bottom: 80px;
+
+  > h1 {
+    margin-bottom: space(5);
+  }
+
+  > .home-filters {
+    margin-top: space(5);
+  }
+}
+</style>
