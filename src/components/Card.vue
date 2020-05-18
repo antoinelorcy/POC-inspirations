@@ -24,10 +24,10 @@ query {
     edges {
       node {
         id
-        title
-        sliderLabel
-        sliderValue
+		title
 		order
+		minValue
+		maxValue
       }
     }
   }
@@ -38,6 +38,8 @@ query {
         id
         title
 		order
+		minValue
+		maxValue
       }
     }
   }
@@ -90,7 +92,7 @@ export default {
 				const rangeGroupOrder = this.findMinMaxGroupSize(q);
 				const minGroup = q.find((g) => g.order === rangeGroupOrder[0]);
 				const maxGroup = q.find((g) => g.order === rangeGroupOrder[1]);
-				return 'Entre ' + minGroup.title + ' et ' + maxGroup.title;
+				return 'De ' + minGroup.minValue + ' et ' + maxGroup.maxValue;
 			}
 
 			const q = this.$static.groupSizes.edges.find((g) => g.node.id === this.groupSize[0].id);
@@ -103,7 +105,7 @@ export default {
 				const rangeGroupOrder = this.findMinMaxGroupSize(q);
 				const minGroup = q.find((g) => g.order === rangeGroupOrder[0]);
 				const maxGroup = q.find((g) => g.order === rangeGroupOrder[1]);
-				return 'Entre ' + minGroup.sliderLabel + ' et ' + maxGroup.sliderLabel;
+				return 'De ' + minGroup.minValue + ' à ' + (maxGroup.maxValue > 60 ? '60 min et plus' : maxGroup.maxValue + 'min');
 			}
 
 			const q = this.$static.lengths.edges.find((g) => g.node.id === this.length[0].id);

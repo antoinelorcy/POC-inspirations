@@ -44,10 +44,13 @@
                 class="length-slider"
                 v-model="length"
                 :enable-cross="false"
-                :min="minLength"
-                :max="maxLength"
-                :data="labelLengths"
-                :marks="true"
+                :min="5"
+                :max="100"
+                :min-range="1"
+                :data="[5, 10, 20, 30, 40, 50, 60, 100]"
+                :tooltip="'always'"
+                :tooltip-placement="'top'"
+                :tooltip-formatter="sliderTooltipFormatter"
               ></vue-slider>
             </ClientOnly>
             </div>
@@ -62,17 +65,6 @@
             v-model="timing.checked"
           />
         </div>
-
-
-        <!-- <h3>Groupes</h3>
-        <div>
-          <input type="radio" name="group" id="group0" value="" v-model="checkedGroupSizes" />
-          <label for="group0">Tous</label>
-        </div>
-        <div v-for="g in groupSizes" :key="g.id">
-          <input type="radio" name="group" :id="g.id" :value="g.id" v-model="checkedGroupSizes" />
-          <label :for="g.id">{{ g.title }}</label>
-        </div> -->
       </div>
     <div class="i__right">
         <div class="list__search-and-ordering">
@@ -118,8 +110,8 @@ query {
         }
         length {
           id
-          sliderValue
-          sliderLabel
+          minValue
+          maxValue
         }
         groupSize {
           id
@@ -152,8 +144,8 @@ query {
       node {
         id
         title
-        sliderLabel
-        sliderValue
+        minValue
+        maxValue
       }
     }
   }
@@ -207,17 +199,19 @@ export default {
     return {
       goals: [],
       groupSizes: [],
-      valueLengths: [],
-      labelLengths: [],
       levels: [],
       timings: [],
-      length: ['5\'', '60\''],
+      length: [5, 100],
       search: '',
       order: {},
       orders: [
         { id: 'date', value: 'date', label: 'Par date' },
         { id: 'name', value: 'name', label: 'Par nom' }
-      ]
+      ],
+      sliderTooltipFormatter: (v) => {
+        if (v > 60) return '60+';
+        else return v + '\'';
+      }
     }
   },
 
@@ -256,24 +250,7 @@ export default {
       }
     })
 
-    this.labelLengths = this.$static.lengths.edges.map((l) => l.node.sliderLabel);
-    this.valueLengths = this.$static.lengths.edges.map((l) => l.node.sliderValue);
-
     // this.$router.replace({ query: {}});
-  },
-
-  methods: {
-    findMinMaxLength(arr) {
-      let min = parseInt(arr[0].sliderValue), max = parseInt(arr[0].sliderValue);
-
-      for (let i = 1, len=arr.length; i < len; i++) {
-        let v = parseInt(arr[i].sliderValue);
-        min = (v < min) ? v : min;
-        max = (v > max) ? v : max;
-      }
-
-      return [min, max];
-    }
   },
 
   computed: {
@@ -303,12 +280,13 @@ export default {
           r = this.checkedTimings.includes(p.timing.id);
         }
 
-        // console.log(this.sliderValue);
-
-        if (this.sliderValue.length && r) {
+        if (this.length.length && r) {
           if (!p.length) return;
-          let rangeLength = this.findMinMaxLength(p.length);
-          r = rangeLength[0] >= this.sliderValue[0] && rangeLength[1] <= this.sliderValue[1];
+          const min = Math.min(...p.length.map((v) => v.minValue));
+          const max = Math.max(...p.length.map((v) => v.maxValue));
+          const minSelected = this.length[0];
+          const maxSelected = this.length[1];
+          r = (minSelected <= min && maxSelected >= max) || (minSelected >= min && minSelected <= max) || (maxSelected <= max && maxSelected >= min);
         }
 
         if (this.search !== '' && r) {
@@ -348,18 +326,6 @@ export default {
 
     filtersCount () {
       return this.checkedGoals.length + this.checkedGroupSizes.length + this.checkedLevels.length + this.checkedTimings.length;
-    },
-
-    minLength () {
-      return parseInt(this.valueLengths[0]);
-    },
-
-    maxLength () {
-      return parseInt(this.valueLengths[this.valueLengths.length - 1]);
-    },
-
-    sliderValue () {
-      return [parseInt(this.valueLengths[this.labelLengths.indexOf(this.length[0])]), parseInt(this.valueLengths[this.labelLengths.indexOf(this.length[1])])];
     }
   }
 }
@@ -412,11 +378,25 @@ $themeColor: color(primary);
 }
 
 .length-slider {
-  max-width: 200px;
+  max-width: 250px;
 }
 
 .length-slider-wrapper {
-  height: 40px;
-  padding: 0 space(2);
+  height: 50px;
+  padding: 30px 8px 0;
+}
+
+.vue-slider-dot-tooltip-inner {
+  background-color: transparent;
+  color: color(grey);
+
+  &::after {
+    display: none;
+  }
+}
+
+.vue-slider-dot-handle {
+  border: 3px solid color(primary);
+  box-shadow: none;
 }
 </style>
