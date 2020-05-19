@@ -89,6 +89,7 @@ export default {
     display: inline-flex;
     align-items: center;
     justify-content: flex-start;
+    background-color: color(white);
     border-bottom: 1px solid color(grey-lighter);
     color: color(grey);
     cursor: pointer;

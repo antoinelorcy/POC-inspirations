@@ -157,4 +157,10 @@ export default {
 	font-size: 12px;
 	margin-bottom: space(2);
 }
+
+@include breakpoint(medium) {
+	.card > img {
+		width: 100%;
+	}
+}
 </style>

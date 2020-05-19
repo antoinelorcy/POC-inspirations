@@ -1,79 +1,32 @@
 <template>
 	<Layout>
-    <div class="inspirations">
-      <div class="i__left">
-        <div class="m--b-5">
-          <h2>Filtres <small v-if="filtersCount">({{ filtersCount }})</small></h2>
-        </div>
-
-        <div class="m--b-5">
-          <h3>Objectifs</h3>
-          <Checkbox
-            v-for="goal in goals"
-            :key="goal.id"
-            :label="goal.label"
-            v-model="goal.checked"
-          />
-        </div>
-
-        <div class="m--b-5">
-          <h3>Taille du groupe</h3>
-          <Checkbox
-            v-for="group in groupSizes"
-            :key="group.id"
-            :label="group.label"
-            v-model="group.checked"
-          />
-        </div>
-
-        <div class="m--b-5">
-          <h3>Niveau d'animation</h3>
-          <Checkbox
-            v-for="level in levels"
-            :key="level.id"
-            :label="level.label"
-            v-model="level.checked"
-          />
-        </div>
-
-        <div class="m--b-5">
-          <h3>Durée de l'activité <small>(en minutes)</small></h3>
-          <div class="length-slider-wrapper">
-            <ClientOnly>
-              <vue-slider
-                class="length-slider"
-                v-model="length"
-                :enable-cross="false"
-                :min="5"
-                :max="100"
-                :min-range="1"
-                :data="[5, 10, 20, 30, 40, 50, 60, 100]"
-                :tooltip="'always'"
-                :tooltip-placement="'top'"
-                :tooltip-formatter="sliderTooltipFormatter"
-              ></vue-slider>
-            </ClientOnly>
-            </div>
-        </div>
-
-        <div class="m--b-5">
-          <h3>Phase du déroulé</h3>
-          <Checkbox
-            v-for="timing in timings"
-            :key="timing.id"
-            :label="timing.label"
-            v-model="timing.checked"
-          />
-        </div>
+    <div class="inspirations inspi">
+      <div v-if="!$store.state.isSmallWindow || filtersVisible" class="inspi__filters">
+        <Filters
+          v-on-clickaway="hideFilters"
+          :goals="goals"
+          :group-sizes="groupSizes"
+          :levels="levels"
+          :length="length"
+          :timings="timings"
+          :filters-count="filtersCount"
+          :results-count="resultsCount"
+          @change-length="onLengthChange"
+          @close="filtersVisible = false"
+          @reset="resetFilters"
+        />
       </div>
-    <div class="i__right">
+    <div class="inspi__list">
         <div class="list__search-and-ordering">
           <Input placeholder="Rechercher par mots-clés" icon="search" v-model="search" />
-          <Select :value="order" @input="order = $event" :options="orders" value-key="label" />
+          <div>
+            <Button v-if="$store.state.isSmallWindow" :label="`Filtres (${filtersCount})`" @click="filtersVisible = true" />
+            <Select :value="order" @input="order = $event" :options="orders" value-key="label" />
+          </div>
         </div>
         <div v-if="!orderedPages.length">:(</div>
         <transition-group v-else name="flip-list" tag="ul">
-          <li v-for="page in orderedPages" :key="page.id" class="i__card-wrapper">
+          <li v-for="page in orderedPages" :key="page.id" class="inspi__card-wrapper">
             <Card
               :thumbnail="page.thumbnail.file.url"
               :title="page.title"
@@ -180,6 +133,7 @@ query {
 </static-query>
 
 <script>
+import { mixin as clickaway } from "vue-clickaway";
 import Card from '~/components/Card';
 import Filters from '~/components/Filters';
 
@@ -189,10 +143,11 @@ export default {
     name: 'inspirations'
   },
 
+  mixins: [clickaway],
+
   components: {
     Card,
-    Filters,
-    VueSlider: () => import('vue-slider-component')
+    Filters
   },
 
   data () {
@@ -208,10 +163,7 @@ export default {
         { id: 'date', value: 'date', label: 'Par date' },
         { id: 'name', value: 'name', label: 'Par nom' }
       ],
-      sliderTooltipFormatter: (v) => {
-        if (v > 60) return '60+';
-        else return v + '\'';
-      }
+      filtersVisible: false
     }
   },
 
@@ -326,39 +278,81 @@ export default {
 
     filtersCount () {
       return this.checkedGoals.length + this.checkedGroupSizes.length + this.checkedLevels.length + this.checkedTimings.length;
+    },
+
+    resultsCount () {
+      return this.orderedPages.length;
+    }
+  },
+
+  methods: {
+    onLengthChange (payload) {
+      this.length = payload;
+    },
+
+    hideFilters () {
+      if (this.$store.state.isSmallWindow) {
+        this.filtersVisible = false;
+      }
+    },
+
+    resetFilters () {
+      this.goals = this.goals.map((g) => {
+        return {
+          ...g,
+          checked: false
+        }
+      })
+
+      this.groupSizes = this.groupSizes.map((g) => {
+        return {
+          ...g,
+          checked: false
+        }
+      })
+
+      this.levels = this.levels.map((l) => {
+        return {
+          ...l,
+          checked: false
+        }
+      })
+
+      this.timings = this.timings.map((t) => {
+        return {
+          ...t,
+          checked: false
+        }
+      })
+
+      this.length = [5, 100]
     }
   }
 }
 </script>
 
 <style lang="scss">
-/* Set the theme color of the component */
-$themeColor: color(primary);
-
-/* import theme style */
-@import 'vue-slider-component/lib/theme/default.scss';
-
 .inspirations {
   display: flex;
 }
 
-.i__left {
+.inspi__filters {
   flex: 0 0 340px;
 }
 
-.i__right {
+.inspi__list {
   flex: 1;
+
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 -#{space(3)};
+    list-style: none;
+    padding: 0;
+  }
 }
 
-.i__right ul {
-  display: flex;
-  flex-wrap: wrap;
-  margin: 0 -#{space(3)};
-  list-style: none;
-  padding: 0;
-}
-
-.i__card-wrapper {
+.inspi__card-wrapper {
   padding: space(3);
   width: 25%;
 }
@@ -377,26 +371,56 @@ $themeColor: color(primary);
   }
 }
 
-.length-slider {
-  max-width: 250px;
-}
+@include breakpoint(medium) {
+  .inspi__filters {
+    position: fixed;
+    z-index: 100;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(color(black-light), 0.6);
 
-.length-slider-wrapper {
-  height: 50px;
-  padding: 30px 8px 0;
-}
+    .filters {
+      width: 90%;
+      background: color(white);
+      animation: from-left 0.3s ease;
+    }
+  }
 
-.vue-slider-dot-tooltip-inner {
-  background-color: transparent;
-  color: color(grey);
+  .inspi__card-wrapper {
+    width: 100%;
+  }
 
-  &::after {
-    display: none;
+  .list__search-and-ordering {
+    flex-direction: column;
+
+    > .input {
+      margin-bottom: space(2);
+      margin-right: 0;
+    }
+
+    > div {
+      display: flex;
+      justify-content: space-between;
+
+      > .btn {
+        flex: 1;
+        margin-right: space(2);
+      }
+    }
   }
 }
 
-.vue-slider-dot-handle {
-  border: 3px solid color(primary);
-  box-shadow: none;
+@keyframes from-left {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
 }
 </style>

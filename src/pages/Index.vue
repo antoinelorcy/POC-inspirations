@@ -94,5 +94,10 @@ export default {
   > .home-filters {
     margin-top: space(5);
   }
+
+  @include breakpoint(medium) {
+    padding: 0;
+    margin-bottom: 50px;
+  }
 }
 </style>

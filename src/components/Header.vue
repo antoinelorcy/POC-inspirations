@@ -1,9 +1,12 @@
 <template>
 	<header class="header">
+		<div v-if="$store.state.isSmallWindow">
+			Lang
+		</div>
 		<g-link to="/">
 			<Logo />
 		</g-link>
-		<nav class="h__nav">
+		<nav v-if="!$store.state.isSmallWindow" class="h__nav">
 			<g-link class="h__nav__link" to="/">Accueil</g-link>
 			<g-link class="h__nav__link" to="/inspirations/">Tous les templates</g-link>
 			<g-link class="h__nav__link" to="https://www.beekast.com">Découvrir Beekast</g-link>

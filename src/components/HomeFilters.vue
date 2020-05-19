@@ -101,5 +101,28 @@ export default {
   .select {
     width: 230px;
   }
+
+  @include breakpoint(medium) {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+
+    > div {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      margin-bottom: 15px;
+
+      > span {
+        flex: 0 1 30%;
+      }
+
+      > .select {
+        flex: 0 1 60%;
+      }
+    }
+  }
 }
 </style>

@@ -5,6 +5,7 @@
       <slot />
     </section>
     <Footer />
+    <MobileNavigation v-if="$store.state.isSmallWindow" />
   </div>
 </template>
 
@@ -20,11 +21,13 @@ query {
 import { debounce } from 'lodash-es';
 import Header from '~/components/Header';
 import Footer from '~/components/Footer';
+import MobileNavigation from '~/components/MobileNavigation';
 
 export default {
   components: {
     Header,
-    Footer
+    Footer,
+    MobileNavigation
   },
 
   mounted () {
@@ -64,5 +67,18 @@ export default {
 .footer {
   margin-top: auto;
   width: 100%;
+}
+
+.mobile-navigation {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+@include breakpoint(medium) {
+  .header {
+    margin-bottom: 10px;
+  }
 }
 </style>

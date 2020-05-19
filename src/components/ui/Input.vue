@@ -135,10 +135,10 @@ $input-length-width: 52px;
   line-height: $input-height;
   outline: none;
   padding: 0 space(2);
-  border: 1px solid transparent;
+  border: 1px solid #eee;
   border-radius: 5px;
   color: color(black-light);
-  background-color: color(grey-lighter);
+  background-color: color(white);
   transition: all 0.3s ease;
 
   &[disabled] {
@@ -148,8 +148,7 @@ $input-length-width: 52px;
   }
 
   .input--is-focus & {
-    border-color: color(grey-light);
-    box-shadow: 2px 2px 0 #D8D9DF;
+    border-color: color(primary);
     background-color: color(white);
   }
 
