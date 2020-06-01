@@ -1,11 +1,11 @@
 <template>
-  <div class="layout">
+  <div class="layout" :class="{'layout--with-mobile-nav': hasMobileNavigation }">
     <Header class="inner-width" />
     <section class="content inner-width">
       <slot />
     </section>
     <Footer />
-    <MobileNavigation v-if="$store.state.isSmallWindow" />
+    <MobileNavigation v-if="hasMobileNavigation" />
   </div>
 </template>
 
@@ -35,6 +35,12 @@ export default {
     window.addEventListener('resize', this.debounceResize);
   },
 
+  computed: {
+    hasMobileNavigation () {
+      return this.$store.state.isSmallWindow;
+    }
+  },
+
   methods: {
     debounceResize: debounce(function () {
 			this.detectSmallWindow();
@@ -52,6 +58,10 @@ export default {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+
+  &--with-mobile-nav {
+    padding-bottom: $mobile-nav-height;
+  }
 }
 
 .header {

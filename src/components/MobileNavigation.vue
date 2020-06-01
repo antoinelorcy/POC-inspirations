@@ -8,7 +8,7 @@
 
 <style lang="scss" scoped>
 .mobile-navigation {
-	height: 50px;
+	height: $mobile-nav-height;
 	background-color: color(white);
 	box-shadow: 0 0 10px rgba(color(black-light), 0.3);
 	display: flex;

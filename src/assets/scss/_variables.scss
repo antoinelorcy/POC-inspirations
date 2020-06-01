@@ -52,6 +52,10 @@ $dropdown-border: 1px solid color-theme(light);
 $dropdown-border-radius: map-get($radius, 1);
 $dropdown-zindex: map-get($zindex, popper);
 
+// Mobile nav
+$mobile-nav-height: 50px;
+
+
 @function space ($key) {
 	@return map-get($spaces, $key);
 }

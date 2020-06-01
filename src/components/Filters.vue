@@ -14,37 +14,49 @@
 		</div>
 
 		<div class="f__content">
-			<div class="m--b-5">
-				<h3>Objectifs</h3>
-				<Checkbox
-					v-for="goal in goals"
-					:key="goal.id"
-					:label="goal.label"
-					v-model="goal.checked"
-				/>
-			</div>
+			<Collapse v-model="goalsExpanded" :is-enable="$store.state.isSmallWindow">
+				<template #header>
+					<h3>Objectifs <Notification v-if="$store.state.isSmallWindow && goalsChecked.length" :count="goalsChecked.length" /></h3>
+				</template>
+				<template #content>
+					<Checkbox
+						v-for="goal in goals"
+						:key="goal.id"
+						:label="goal.label"
+						v-model="goal.checked"
+					/>
+				</template>
+			</Collapse>
 
-			<div class="m--b-5">
-				<h3>Taille du groupe</h3>
-				<Checkbox
+			<Collapse v-model="groupSizesExpanded" :is-enable="$store.state.isSmallWindow">
+				<template #header>
+					<h3>Taille du groupe <Notification v-if="$store.state.isSmallWindow && groupSizesChecked.length" :count="groupSizesChecked.length" /></h3>
+				</template>
+				<template #content>
+					<Checkbox
 					v-for="group in groupSizes"
 					:key="group.id"
 					:label="group.label"
 					v-model="group.checked"
 				/>
-			</div>
+				</template>
+			</Collapse>
 
-			<div class="m--b-5">
-				<h3>Niveau d'animation</h3>
-				<Checkbox
-					v-for="level in levels"
-					:key="level.id"
-					:label="level.label"
-					v-model="level.checked"
-				/>
-			</div>
+			<Collapse v-model="levelsExpanded" :is-enable="$store.state.isSmallWindow">
+				<template #header>
+					<h3>Niveau d'animation <Notification v-if="$store.state.isSmallWindow && levelsChecked.length" :count="levelsChecked.length" /></h3>
+				</template>
+				<template #content>
+					<Checkbox
+						v-for="level in levels"
+						:key="level.id"
+						:label="level.label"
+						v-model="level.checked"
+					/>
+				</template>
+			</Collapse>
 
-			<div class="m--b-5">
+			<div class="m--b-6">
 				<h3>Durée de l'activité <small>(en minutes)</small></h3>
 				<div class="length-slider-wrapper">
 					<ClientOnly>
@@ -65,15 +77,19 @@
 				</div>
 			</div>
 
-			<div class="m--b-5">
-				<h3>Phase du déroulé</h3>
-				<Checkbox
-					v-for="timing in timings"
-					:key="timing.id"
-					:label="timing.label"
-					v-model="timing.checked"
-				/>
-			</div>
+			<Collapse v-model="timingsExpanded" :is-enable="$store.state.isSmallWindow">
+				<template #header>
+					<h3>Phase du déroulé <Notification v-if="$store.state.isSmallWindow && timingsChecked.length" :count="timingsChecked.length" /></h3>
+				</template>
+				<template #content>
+					<Checkbox
+						v-for="timing in timings"
+						:key="timing.id"
+						:label="timing.label"
+						v-model="timing.checked"
+					/>
+				</template>
+			</Collapse>
 		</div>
 
 		<div v-if="$store.state.isSmallWindow" class="f__footer">
@@ -106,10 +122,32 @@ export default {
 
 	data () {
 		return {
+			goalsExpanded: false,
+			groupSizesExpanded: false,
+			levelsExpanded: false,
+			timingsExpanded: false,
 			sliderTooltipFormatter: (v) => {
 				if (v > 60) return '60+';
 				else return v + '\'';
 			}
+		}
+	},
+
+	computed: {
+		goalsChecked () {
+			return this.goals.filter((g) => g.checked);
+		},
+
+		groupSizesChecked () {
+			return this.groupSizes.filter((g) => g.checked);
+		},
+
+		levelsChecked () {
+			return this.levels.filter((g) => g.checked);
+		},
+
+		timingsChecked () {
+			return this.timings.filter((g) => g.checked);
 		}
 	}
 }
@@ -150,6 +188,26 @@ $themeColor: color(primary);
 .vue-slider-dot-handle {
   border: 3px solid color(primary);
   box-shadow: none;
+}
+
+.collapse {
+	margin-bottom: space(3);
+	padding-bottom: space(3);
+	border-bottom: 1px solid color(grey-lighter);
+}
+
+.collapse__header {
+	padding: 1rem 0 !important;
+
+	> h3 {
+		margin: 0;
+		display: flex;
+    	align-items: center;
+	}
+
+	.notification {
+		margin-left: space(1);
+	}
 }
 
 @include breakpoint(medium) {

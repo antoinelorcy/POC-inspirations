@@ -203,6 +203,15 @@ export default {
     })
 
     // this.$router.replace({ query: {}});
+
+    this.$watch('filtersVisible', (bool) => {
+      const bodySrollLockedClassname = 'body--is-scroll-locked';
+		  if( bool) {
+			  document.body.classList.add(bodySrollLockedClassname);
+		  } else {
+        document.body.classList.remove(bodySrollLockedClassname);
+      }
+	  }, { immediate: true })
   },
 
   computed: {
