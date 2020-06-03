@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "serve": "yarn build:icons && yarn develop",
-    "build": "gridsome build",
+    "build": "yarn build:icons && gridsome build",
     "build:icons": "node build/icons.js",
     "develop": "gridsome develop",
     "explore": "gridsome explore"
