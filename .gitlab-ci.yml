@@ -1,0 +1,11 @@
+image: node:12.16.1
+
+stages:
+  - build
+
+Build:
+  stage: build
+  before_script: 
+    - yarn install --production=true
+  script:
+    - yarn build
