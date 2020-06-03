@@ -1,11 +1,13 @@
 <template>
 	<g-link class="card" :to="path">
-		<g-image :src="thumbnail" width="250" />
 		<h4 class="card__title">{{ title }}</h4>
 		<div class="card__goal">{{ goalName }}</div>
-		<Tag icon="education" :label="levelName" />
-		<Tag icon="people" :label="groupName" />
-		<Tag icon="stopwatch" :label="lengthName" />
+		<g-image :src="thumbnail" width="250" />
+		<div class="tags">
+			<Tag icon="education" :label="levelName" />
+			<Tag icon="people" :label="groupName" />
+			<Tag icon="stopwatch" :label="lengthName" />
+		</div>
 	</g-link>
 </template>
 
@@ -133,10 +135,14 @@ export default {
 .card {
 	text-decoration: none;
 	color: #343434;
+	box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05);
+	display: flex;
+	flex-direction: column;
+	padding: space(2);
 
 	> img {
-		width: 200px;
-		height: 130px;
+		width: 100%;
+		height: 200px;
 		overflow: hidden;
 		object-fit: cover;
 		border-radius: 5px;

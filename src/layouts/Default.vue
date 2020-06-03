@@ -4,6 +4,10 @@
     <section class="content inner-width">
       <slot />
     </section>
+    <SubFooter v-if="$slots['sub-footer-left'] || $slots['sub-footer-right']">
+      <slot name="sub-footer-left" slot="left" />
+      <slot name="sub-footer-right" slot="right" />
+    </SubFooter>
     <Footer />
     <MobileNavigation v-if="hasMobileNavigation" />
   </div>
@@ -20,12 +24,14 @@ query {
 <script>
 import { debounce } from 'lodash-es';
 import Header from '~/components/Header';
+import SubFooter from '~/components/SubFooter';
 import Footer from '~/components/Footer';
 import MobileNavigation from '~/components/MobileNavigation';
 
 export default {
   components: {
     Header,
+    SubFooter,
     Footer,
     MobileNavigation
   },

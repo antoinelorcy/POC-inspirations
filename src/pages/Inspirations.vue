@@ -363,7 +363,7 @@ export default {
 
 .inspi__card-wrapper {
   padding: space(3);
-  width: 25%;
+  width: 50%;
 }
 
 .flip-list-move {
@@ -372,7 +372,7 @@ export default {
 
 .list__search-and-ordering {
   display: flex;
-  margin-bottom: space(4);
+  margin-bottom: space(6);
 
   > .input {
       flex: 1;

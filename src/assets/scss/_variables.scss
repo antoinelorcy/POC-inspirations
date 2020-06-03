@@ -8,6 +8,7 @@ $colors: (
 	white: #fff,
 	black: #000,
 	black-light: #333333,
+	orange: #F39324,
 	danger: #F94F5E
 );
 
@@ -19,6 +20,13 @@ $ff1: 'Open Sans', sans-serif;
 $ff2: 'Over the Rainbow', cursive;
 $body-font-color: color(grey);
 $font-weight-semi-bold: 600;
+
+$font-sizes: (
+	'small': 12px,
+	'medium': 14px,
+	'large': 16px,
+	'xlarge': 44px
+);
 
 $spaces: (
 	0: 0,
@@ -62,6 +70,16 @@ $mobile-nav-height: 50px;
 
 @function radius ($key) {
 	@return map-get($radius, $key);
+}
+
+@function fs ($key) {
+	@if map-has-key($font-sizes, $key) {
+		@return map-get($font-sizes, $key);
+	}
+
+	@else {
+		@warn "No font size for `#{$key}` key. ";
+	}
 }
 
 @mixin overflow($direction: null) {

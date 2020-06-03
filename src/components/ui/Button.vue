@@ -107,11 +107,21 @@ export default {
 		&.btn--color-#{$key} {
 			background-color: $value;
 			border-color: $value;
-
+			
 			&:hover,
 			&:focus {
 				background-color: scale-color($value, $lightness: -40%);
 			}
+
+			@if ($key == 'grey-light') {
+				color: color(grey);
+
+				&:hover,
+				&:focus {
+					background-color: scale-color($value, $lightness: -10%);
+				}
+			}
+
 
 			&.btn--fill-raw {
 				background-color: transparent;

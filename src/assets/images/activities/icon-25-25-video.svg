@@ -1,0 +1,5 @@
+<svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect class="error-strokable" x="4.75" y="8.75" width="12.8102" height="8.6608" rx="2.25" stroke="#7E7F90" stroke-width="1.5"/>
+<path class="error-strokable" d="M17.9358 11.599C17.9358 11.1778 18.1997 10.8018 18.5959 10.6586L20.6601 9.91244C21.3119 9.67681 22 10.1597 22 10.8529V15.052C22 15.7235 21.3514 16.2041 20.709 16.0087L18.6448 15.3808C18.2236 15.2527 17.9358 14.8642 17.9358 14.424V11.599Z" stroke="#7E7F90" stroke-width="1.5"/>
+<circle class="fillable" cx="7.09646" cy="11.1121" r="0.827665" fill="#FF831B"/>
+</svg>

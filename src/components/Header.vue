@@ -13,7 +13,7 @@
 		</nav>
 		<div class="h__account">
 			<div v-if="isSignedUp">
-				Account here
+				<p>{{ $t('hello', {name: 'Michel'}) }}</p>
 			</div>
 			<Button label="Se connecter" />
 		</div>
@@ -42,6 +42,11 @@ export default {
   justify-content: space-between;
   align-items: center;
   height: 100px;
+}
+
+.h__nav {
+	margin-right: auto;
+	margin-left: 3rem;
 }
 
 .h__nav__link {

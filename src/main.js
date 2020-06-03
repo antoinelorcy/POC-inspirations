@@ -2,6 +2,10 @@
 // The Client API can be used here. Learn more: gridsome.org/docs/client-api
 
 import Vuex from 'vuex'
+import vuexI18n from 'vuex-i18n';
+import localeFR from '~/locales/fr';
+import localeEN from '~/locales/en';
+
 import '~/assets/scss/main.scss'
 
 import DefaultLayout from '~/layouts/Default.vue'
@@ -45,4 +49,12 @@ export default function (Vue, { router, head, isClient, appOptions }) {
       }
     }
   });
+
+  // Localization
+  Vue.use(vuexI18n.plugin, appOptions.store);
+  Vue.i18n.add('en', localeEN);
+  Vue.i18n.add('fr', localeFR);
+  Vue.i18n.set('fr');
 }
+
+

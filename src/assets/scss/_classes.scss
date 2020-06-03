@@ -59,3 +59,9 @@ $aligns: left, center, right;
 		text-align: $align;
 	}
 }
+
+.hide-sm {
+	@include breakpoint (medium) {
+		display: none !important;
+	}
+}
