@@ -35,6 +35,10 @@
               :level="page.level"
               :group-size="page.groupSize"
               :length="page.length"
+              :goal-label="page.goalLabel"
+              :added-value="page.addedValue"
+              :activity-icon="(page.activity && page.activity.key) || ''"
+              :activity-type="(page.activity && page.activity.activityType && page.activity.activityType.key) || ''"
             />
           </li>
         </transition-group>
@@ -53,6 +57,8 @@ query {
         path
         title
         keywords
+        goalLabel
+        addedValue
         thumbnail {
           file {
             url
@@ -74,6 +80,12 @@ query {
         }
         timing {
           id
+        }
+        activity {
+          key
+          activityType {
+            key
+          }
         }
       }
     }

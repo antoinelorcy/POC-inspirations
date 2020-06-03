@@ -12,6 +12,16 @@ $colors: (
 	danger: #F94F5E
 );
 
+$colors-activity-types: (
+	generation: #1cb582,
+	board: #f94f5e,
+	opinion: #4ca8ec,
+	evaluation: #f1c40f,
+	external: #ff831b,
+	instruction: #8e44ad,
+	freeSlide: #8e44ad
+);
+
 @function color ($key) {
 	@return map-get($colors, $key);
 }

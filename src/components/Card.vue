@@ -2,7 +2,12 @@
 	<g-link class="card" :to="path">
 		<h4 class="card__title">{{ title }}</h4>
 		<div class="card__goal">{{ goalName }}</div>
-		<g-image :src="thumbnail" width="250" />
+		<div class="card__cover">
+			<g-image :src="thumbnail" width="250" />
+			<ActivityIcon :name="activityIcon" :type="activityType" />
+		</div>
+		<div class="card__goal-label">{{ goalLabel }}</div>
+		<div class="card__added-value">{{ addedValue }}</div>
 		<div class="tags">
 			<Tag icon="education" :label="levelName" />
 			<Tag icon="people" :label="groupName" />
@@ -59,10 +64,12 @@ query {
 
 <script>
 import Tag from './Tag';
+import ActivityIcon from './ActivityIcon';
 
 export default {
 	components: {
-		Tag
+		Tag,
+		ActivityIcon
 	},
 
 	props: {
@@ -72,7 +79,11 @@ export default {
 		goal: Object,
 		level: Object,
 		groupSize: Array,
-		length: Array
+		length: Array,
+		goalLabel: String,
+		addedValue: String,
+		activityIcon: String,
+		activityType: String
 	},
 
 	computed: {
@@ -138,7 +149,26 @@ export default {
 	box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05);
 	display: flex;
 	flex-direction: column;
-	padding: space(2);
+	padding: space(4);
+
+	.tag {
+		margin: space(1);
+	}
+}
+
+.card__title {
+	margin: 0;
+	color: color(grey);
+}
+
+.card__goal {
+	color: color(primary);
+	font-size: 12px;
+	margin-bottom: space(2);
+}
+
+.card__cover {
+	position: relative;
 
 	> img {
 		width: 100%;
@@ -149,19 +179,13 @@ export default {
 		margin-bottom: space(2);
 	}
 
-	.tag {
-		margin: space(1);
+	> .activity-icon {
+		position: absolute;
+		bottom: -5px;
+		right: 20px;
+		background: white;
+		box-shadow: 0 0 0 5px white;
 	}
-}
-
-.card__title {
-	margin: 0;
-}
-
-.card__goal {
-	color: color(primary);
-	font-size: 12px;
-	margin-bottom: space(2);
 }
 
 @include breakpoint(medium) {
