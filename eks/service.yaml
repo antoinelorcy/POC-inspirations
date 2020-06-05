@@ -1,0 +1,18 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: inspirations
+  namespace: inspirations
+  labels:
+    app.kubernetes.io/name: beekast
+    beekast.com/service: inspirations
+spec:
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 80
+  selector:
+    app: nginx
+
+
