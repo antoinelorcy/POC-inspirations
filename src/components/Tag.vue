@@ -19,7 +19,7 @@ export default {
 	font-size: 12px;
 	align-items: center;
 	vertical-align: middle;
-	background: color(grey-lighter);
+	background: color(white);
 	color: color(grey);
 	padding: 5px 6px;
 	border-radius: 3px;

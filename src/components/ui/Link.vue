@@ -54,6 +54,10 @@ export default {
 		color: color(danger);
 	}
 
+	&--color-black {
+		color: color(black-light);
+	}
+
 	&:hover {
 		background: color(grey-lighter);
 	}

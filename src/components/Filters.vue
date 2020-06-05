@@ -1,13 +1,18 @@
 <template>
 	<div class="filters">
 		<div class="f__header m--b-5">
-			<div class="display-flex align-center">
+			<div class="display-flex align-center justify-between fluid-width p--r-2">
 				<h2 class="m--b-0 m--r-2">
 					Filtres 
+					<b v-if="filtersCount">({{ filtersCount }})</b>
 				</h2>
 				<template v-if="filtersCount">
-					<b v-if="filtersCount">({{ filtersCount }})</b>
-					<Link v-if="!$store.state.isSmallWindow" label="Réinitialiser les filtres" color="danger" @click="$emit('reset')" />
+					<Link
+						v-if="!$store.state.isSmallWindow"
+						icon="reset"
+						label="Réinitialiser les filtres"
+						color="black"
+						@click="$emit('reset')" />
 				</template>
 			</div>
 			<Button v-if="$store.state.isSmallWindow" fill="raw" icon="close" @click="$emit('close')" />
@@ -97,7 +102,13 @@
 				<b>{{ resultsCount }}</b> modèles - <b>{{ filtersCount }}</b> filtres activés
 			</div>
 			<div class="f__footer-btns">
-				<Link v-if="filtersCount" label="Réinitialiser" color="danger" @click="$emit('reset')" />
+				<Link
+					v-if="filtersCount"
+					icon="reset"
+					label="Réinitialiser"
+					color="black"
+					@click="$emit('reset')"
+				/>
 				<Button label="Appliquer les filtres" @click="$emit('close')" />
 			</div>
 		</div>
@@ -154,13 +165,6 @@ export default {
 </script>
 
 <style lang="scss">
-.f__header {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	min-height: 40px;
-}
-
 /* Set the theme color of the component */
 $themeColor: color(primary);
 
@@ -168,32 +172,74 @@ $themeColor: color(primary);
 @import 'vue-slider-component/lib/theme/default.scss';
 
 .length-slider {
-  max-width: 250px;
+	max-width: 250px;
 }
 
 .length-slider-wrapper {
-  height: 50px;
+	height: 50px;
   padding: 30px 8px 0;
 }
 
 .vue-slider-dot-tooltip-inner {
-  background-color: transparent;
+	background-color: transparent;
   color: color(grey);
 
   &::after {
-    display: none;
+	  display: none;
   }
 }
 
 .vue-slider-dot-handle {
-  border: 3px solid color(primary);
+	border: 3px solid color(primary);
   box-shadow: none;
+}
+
+.f__header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	min-height: 40px;
+
+	h2 {
+		display: flex;
+		align-items: center;
+
+		&:before {
+			content: '';
+			background: url('../assets/images/shape-orange.svg') center center no-repeat;
+			background-size: contain;
+			width: 13px;
+			height: 13px;
+			display: inline-block;
+			margin-right: 1rem;
+		}
+
+		> b {
+			color: color(primary);
+			font-size: fs(large);
+			margin-left: 0.5rem;
+		}
+	}
+
+}
+
+.f__content {
+	h3 {
+		&:after {
+			content: '';
+			display: block;
+			background: #D0CAE1;
+			border-radius: 5px;
+			width: 30px;
+			height: 3px;
+			margin-top: 10px;
+		}
+	}
 }
 
 .collapse {
 	margin-bottom: space(3);
 	padding-bottom: space(3);
-	border-bottom: 1px solid color(grey-lighter);
 }
 
 .collapse__header {
@@ -201,8 +247,6 @@ $themeColor: color(primary);
 
 	> h3 {
 		margin: 0;
-		display: flex;
-    	align-items: center;
 	}
 
 	.notification {
@@ -228,6 +272,14 @@ $themeColor: color(primary);
 		}
 	}
 
+	.f__content {
+		h3 {
+			&:after {
+				display: none;
+			}
+		}
+	}
+
 	.f__footer {
 		background-color: color(grey-lighter);
 		padding: space(2);
@@ -249,6 +301,12 @@ $themeColor: color(primary);
 		flex: 1;
 		overflow: auto;
 		padding: space(3);
+	}
+
+	.collapse {
+		&:not(:last-child) {
+			border-bottom: 1px solid color(grey-lighter);
+		}
 	}
 }
 </style>

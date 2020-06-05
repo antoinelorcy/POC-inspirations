@@ -16,34 +16,42 @@
           @reset="resetFilters"
         />
       </div>
-    <div class="inspi__list">
-        <div class="list__search-and-ordering">
-          <Input placeholder="Rechercher par mots-clés" icon="search" v-model="search" />
-          <div>
-            <Button v-if="$store.state.isSmallWindow" :label="`Filtres (${filtersCount})`" @click="filtersVisible = true" />
-            <Select :value="order" @input="order = $event" :options="orders" value-key="label" />
+      <div class="inspi__list">
+          <div class="list__search-and-ordering">
+            <Input placeholder="Rechercher par mots-clés" icon="search" v-model="search" />
+            <div>
+              <Button v-if="$store.state.isSmallWindow" :label="`Filtres (${filtersCount})`" @click="filtersVisible = true" />
+            </div>
           </div>
-        </div>
-        <div v-if="!orderedPages.length">:(</div>
-        <transition-group v-else name="flip-list" tag="ul">
-          <li v-for="page in orderedPages" :key="page.id" class="inspi__card-wrapper">
-            <Card
-              :thumbnail="page.thumbnail.file.url"
-              :title="page.title"
-              :path="page.path"
-              :goal="page.goal"
-              :level="page.level"
-              :group-size="page.groupSize"
-              :length="page.length"
-              :goal-label="page.goalLabel"
-              :added-value="page.addedValue"
-              :activity-icon="(page.activity && page.activity.key) || ''"
-              :activity-type="(page.activity && page.activity.activityType && page.activity.activityType.key) || ''"
-            />
-          </li>
-        </transition-group>
+          <div class="list__count-and-ordering">
+            <div class="list__count">{{ orderedPages.length }} activités</div>
+            <div class="list__order">
+              Trier par <Select :value="order" @input="order = $event" :options="orders" value-key="label" />
+            </div>
+          </div>
+          <div v-if="!orderedPages.length">:(</div>
+          <transition-group v-else name="flip-list" tag="ul">
+            <li v-for="page in orderedPages" :key="page.id" class="inspi__card-wrapper">
+              <Card
+                :thumbnail="page.thumbnail.file.url"
+                :title="page.title"
+                :path="page.path"
+                :goal="page.goal"
+                :level="page.level"
+                :group-size="page.groupSize"
+                :length="page.length"
+                :goal-label="page.goalLabel"
+                :added-value="page.addedValue"
+                :activity-icon="(page.activity && page.activity.key) || ''"
+                :activity-type="(page.activity && page.activity.activityType && page.activity.activityType.key) || ''"
+              />
+            </li>
+          </transition-group>
+      </div>
     </div>
-    </div>
+
+    <SubFooterVideo slot="sub-footer-left" />
+    <SubFooterSignup slot="sub-footer-right" />
   </Layout>
 </template>
 
@@ -148,6 +156,8 @@ query {
 import { mixin as clickaway } from "vue-clickaway";
 import Card from '~/components/Card';
 import Filters from '~/components/Filters';
+import SubFooterVideo from '~/components/SubFooterVideo';
+import SubFooterSignup from '~/components/SubFooterSignup';
 
 export default {
   metaInfo: {
@@ -159,7 +169,9 @@ export default {
 
   components: {
     Card,
-    Filters
+    Filters,
+    SubFooterVideo,
+    SubFooterSignup
   },
 
   data () {
@@ -355,6 +367,7 @@ export default {
 <style lang="scss">
 .inspirations {
   display: flex;
+  background: url('../assets/images/list-bg.svg') top center no-repeat;
 }
 
 .inspi__filters {
@@ -392,6 +405,25 @@ export default {
   }
 }
 
+.list__count-and-ordering {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: space(6);
+}
+
+.list__count {
+  font-weight: $font-weight-semi-bold;
+  font-size: fs(large);
+  color: color(black-light);
+}
+
+.list__order {
+  .select {
+    margin-left: 1rem;
+  }
+}
+
 @include breakpoint(medium) {
   .inspi__filters {
     position: fixed;
@@ -404,6 +436,7 @@ export default {
 
     .filters {
       width: 90%;
+      height: 100%;
       background: color(white);
       animation: from-left 0.3s ease;
     }

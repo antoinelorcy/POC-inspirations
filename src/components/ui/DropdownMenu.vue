@@ -26,5 +26,6 @@ export default {
   border: $dropdown-border;
   border-radius: $dropdown-border-radius;
   z-index: $dropdown-zindex;
+  width: 100%;
 }
 </style>

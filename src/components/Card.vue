@@ -4,14 +4,14 @@
 		<div class="card__goal">{{ goalName }}</div>
 		<div class="card__cover">
 			<g-image :src="thumbnail" width="250" />
-			<ActivityIcon :name="activityIcon" :type="activityType" />
+			<ActivityIcon v-if="activityIcon" :name="activityIcon" :type="activityType" />
 		</div>
-		<div class="card__goal-label">{{ goalLabel }}</div>
-		<div class="card__added-value">{{ addedValue }}</div>
+		<div v-if="goalLabel" class="card__goal-label">{{ goalLabel }}</div>
+		<div v-if="addedValue" class="card__added-value">{{ addedValue }}</div>
 		<div class="tags">
-			<Tag icon="education" :label="levelName" />
-			<Tag icon="people" :label="groupName" />
 			<Tag icon="stopwatch" :label="lengthName" />
+			<Tag icon="people" :label="groupName" />
+			<Tag icon="education" :label="levelName" />
 		</div>
 	</g-link>
 </template>
@@ -144,6 +144,7 @@ export default {
 
 <style lang="scss" scoped>
 .card {
+	background: color(white);
 	text-decoration: none;
 	color: #343434;
 	box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05);
@@ -158,7 +159,9 @@ export default {
 
 .card__title {
 	margin: 0;
+	margin-bottom: space(1);
 	color: color(grey);
+	font-size: fs(large);
 }
 
 .card__goal {
@@ -169,6 +172,7 @@ export default {
 
 .card__cover {
 	position: relative;
+	margin-bottom: space(4);
 
 	> img {
 		width: 100%;
@@ -176,15 +180,42 @@ export default {
 		overflow: hidden;
 		object-fit: cover;
 		border-radius: 5px;
-		margin-bottom: space(2);
 	}
 
 	> .activity-icon {
 		position: absolute;
-		bottom: -5px;
-		right: 20px;
+		bottom: -10px;
+		right: 4px;
 		background: white;
 		box-shadow: 0 0 0 5px white;
+	}
+}
+
+.card__goal-label {
+	display: block;
+	padding: 10px;
+	font-weight: $font-weight-semi-bold;
+	color: $body-font-color;
+}
+
+.card__added-value {
+	position: relative;
+	margin: 10px 0;
+	background-color: color(grey-lighter);
+	padding: 20px;
+	border-radius: 10px;
+	color: $body-font-color;
+	font-style: italic;
+
+	&:before {
+		content: '';
+		background: url('../assets/images/tick.svg') top left no-repeat;
+		background-size: contain;
+		width: 30px;
+		height: 30px;
+		position: absolute;
+		top: -10px;
+		left: -10px;
 	}
 }
 
