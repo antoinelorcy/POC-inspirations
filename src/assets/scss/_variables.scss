@@ -38,6 +38,13 @@ $font-sizes: (
 	'xlarge': 44px
 );
 
+$font-weigths: (
+	'light': 300,
+	'regular': 400,
+	'medium': 600,
+	'bold': 800
+);
+
 $spaces: (
 	0: 0,
 	1: 4px,
@@ -89,6 +96,16 @@ $mobile-nav-height: 50px;
 
 	@else {
 		@warn "No font size for `#{$key}` key. ";
+	}
+}
+
+@function fw ($key) {
+	@if map-has-key($font-weigths, $key) {
+		@return map-get($font-weigths, $key);
+	}
+
+	@else {
+		@warn "No font weight for `#{$key}` key. ";
 	}
 }
 

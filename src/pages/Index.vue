@@ -1,16 +1,15 @@
 <template>
   <Layout>
-    <section class="home__section hero">
+    <section class="home__section hero inner-width">
       <h1>Des inspirations pour toutes vos réunions</h1>
       <p class="text-align--left">Essayez nos modèles prêts à l’emploi pour démarrez rapidement ou renouveller vos activités de réunion dans Beekast. Suivez le guide et animez des réunions collaboratives et efficaces.</p>
       <HomeFilters />
       <p>Ou <Link label="Voir toutes les inspirations" to="/inspirations" /></p>
     </section>
 
-    <section class="home__section last">
+    <section class="home__section last inner-width">
       <div class="section_title">
         <h2>Nos inspirations du moment</h2>
-        <Link label="Voir toutes les inspirations" to="/inspirations" />
       </div>
       <div class="grid">
         <div
@@ -27,11 +26,15 @@
           :length="page.length"
         />
         </div>
+
+        <div class="p--3 fluid-width text-align--center">
+         <Link label="Voir toutes les inspirations" to="/inspirations" />
+        </div>
       </div>
     </section>
 
      
-     <section class="home__section about">
+     <section class="home__section about inner-width">
         <div class="section_title">
             <h2>Beekast, qu’est-ce que c’est ?</h2>
         </div>

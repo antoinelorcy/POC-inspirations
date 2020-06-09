@@ -71,7 +71,7 @@ export default {
 	border: 2px solid color(primary);
 	border-radius: 5px;
 	padding: space(2) space(3);
-	font-weight: $font-weight-semi-bold;
+	font-weight: fw(medium);
 
 	&:hover {
 		box-shadow: 2px 2px 0 color(grey-light);

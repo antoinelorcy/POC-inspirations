@@ -1,6 +1,6 @@
 <template>
 	<Layout>
-    <div class="inspirations inspi">
+    <div class="inspirations inspi inner-width">
       <div v-if="!$store.state.isSmallWindow || filtersVisible" class="inspi__filters">
         <Filters
           v-on-clickaway="hideFilters"
@@ -26,7 +26,7 @@
           <div class="list__count-and-ordering">
             <div class="list__count">{{ orderedPages.length }} activités</div>
             <div class="list__order">
-              Trier par <Select :value="order" @input="order = $event" :options="orders" value-key="label" />
+              Trier par <Select :value="order" @input="order = $event" :options="orders" value-key="label" close-on-select />
             </div>
           </div>
           <div v-if="!orderedPages.length">:(</div>
@@ -271,7 +271,7 @@ export default {
           const max = Math.max(...p.length.map((v) => v.maxValue));
           const minSelected = this.length[0];
           const maxSelected = this.length[1];
-          r = (minSelected <= min && maxSelected >= max) || (minSelected >= min && minSelected <= max) || (maxSelected <= max && maxSelected >= min);
+          r = (minSelected <= min && maxSelected >= max) || (minSelected > min && minSelected < max) || (maxSelected < max && maxSelected > min);
         }
 
         if (this.search !== '' && r) {
@@ -413,7 +413,7 @@ export default {
 }
 
 .list__count {
-  font-weight: $font-weight-semi-bold;
+  font-weight: fw(medium);
   font-size: fs(large);
   color: color(black-light);
 }

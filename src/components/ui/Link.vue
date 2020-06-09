@@ -9,7 +9,8 @@ export default {
 			default: 'primary'
 		},
 		isBold: Boolean,
-		isIconPrefix: Boolean
+		isIconPrefix: Boolean,
+		isUnderline: Boolean
 	}
 }
 </script>
@@ -18,7 +19,7 @@ export default {
 	<g-link
 		:to="to"
 		class="link"
-		:class="['link--color-' + color, {'link--bold': isBold}]"
+		:class="['link--color-' + color, {'link--bold': isBold, 'link--underline': isUnderline}]"
 		@click.native="$emit('click')"
 	>
 		<Icon v-if="icon && isIconPrefix" :name="icon" />
@@ -41,6 +42,7 @@ export default {
 	position: relative;
 	min-width: 8rem;
 	text-decoration: none;
+	background-color: color(white);
 	color: color(primary);
 	padding: space(2);
 	border-radius: 5px;
@@ -48,6 +50,10 @@ export default {
 
 	&--bold {
 		font-weight: bold;
+	}
+
+	&--underline {
+		text-decoration: underline;
 	}
 
 	&--color-danger {

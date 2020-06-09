@@ -1,19 +1,28 @@
 <template>
-	<g-link class="card" :to="path">
-		<h4 class="card__title">{{ title }}</h4>
-		<div class="card__goal">{{ goalName }}</div>
-		<div class="card__cover">
-			<g-image :src="thumbnail" width="250" />
-			<ActivityIcon v-if="activityIcon" :name="activityIcon" :type="activityType" />
+	<div class="page-card">
+		<div v-if="activity" class="pc__activity m--b-2">
+			<ActivityIcon :name="activity.key" :type="activity.activityType.key" />
+			Activité {{ activity.title }}
 		</div>
-		<div v-if="goalLabel" class="card__goal-label">{{ goalLabel }}</div>
-		<div v-if="addedValue" class="card__added-value">{{ addedValue }}</div>
-		<div class="tags">
+
+		<div class="pc__info m--b-2">
 			<Tag icon="stopwatch" :label="lengthName" />
 			<Tag icon="people" :label="groupName" />
 			<Tag icon="education" :label="levelName" />
 		</div>
-	</g-link>
+
+		<div class="pc__goal-label m--b-2">
+			{{ goalLabel }}
+		</div>
+
+		<div class="pc__added-value m--b-2">
+			{{ addedValue }}
+		</div>
+
+		<div class="pc__button text-align--center m--t-5">
+			<Button label="Utiliser ce modèle" color="primary" />
+		</div>
+	</div>
 </template>
 
 <static-query>
@@ -63,35 +72,26 @@ query {
 </static-query>
 
 <script>
-import Tag from './Tag';
 import ActivityIcon from './ActivityIcon';
+import Tag from './Tag';
 
 export default {
-	components: {
-		Tag,
-		ActivityIcon
-	},
-
 	props: {
-		title: String,
-		thumbnail: String,
-		path: String,
+		activity: Object,
 		goal: Object,
 		level: Object,
 		groupSize: Array,
 		length: Array,
 		goalLabel: String,
-		addedValue: String,
-		activityIcon: String,
-		activityType: String
+		addedValue: String
+	},
+
+	components: {
+		ActivityIcon,
+		Tag
 	},
 
 	computed: {
-		goalName () {
-			const q = this.$static.goals.edges.find((g) => g.node.id === this.goal.id);
-			return q.node.title;
-		},
-
 		levelName () {
 			const q = this.$static.levels.edges.find((g) => g.node.id === this.level.id);
 			return q.node.title;
@@ -143,90 +143,25 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.card {
+.page-card {
 	background: color(white);
-	text-decoration: none;
-	color: #343434;
-	box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05);
+	box-shadow: 10px 10px 24px rgba(126, 127, 144, 0.2);
+	padding: 2rem;
+}
+
+.pc__activity {
 	display: flex;
-	flex-direction: column;
-	padding: space(4);
-	transition: box-shadow 0.3s ease;
-
-	&:hover {
-		box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
-	}
-
-	.tag {
-		margin: space(1);
-	}
-}
-
-.card__title {
-	margin: 0;
-	margin-bottom: space(1);
-	color: color(grey);
-	font-size: fs(large);
-}
-
-.card__goal {
-	color: color(primary);
-	font-size: 12px;
-	margin-bottom: space(2);
-}
-
-.card__cover {
-	position: relative;
-	margin-bottom: space(4);
-
-	> img {
-		width: 100%;
-		height: 200px;
-		overflow: hidden;
-		object-fit: cover;
-		border-radius: 5px;
-	}
+	align-items: center;
+	font-weight: fw(medium);
 
 	> .activity-icon {
-		position: absolute;
-		bottom: -10px;
-		right: 4px;
-		background: white;
-		box-shadow: 0 0 0 5px white;
+		margin-right: 1rem;
 	}
 }
 
-.card__goal-label {
-	display: block;
-	padding: 10px;
-	font-weight: fw(medium);
-	color: $body-font-color;
-}
-
-.card__added-value {
-	position: relative;
-	margin: 10px 0;
-	background-color: color(grey-lighter);
-	padding: 20px;
-	border-radius: 10px;
-	color: $body-font-color;
-	font-style: italic;
-
-	&:before {
-		content: '';
-		background: url('../assets/images/tick.svg') top left no-repeat;
-		background-size: contain;
-		width: 30px;
-		height: 30px;
-		position: absolute;
-		top: -10px;
-		left: -10px;
-	}
-}
-
-@include breakpoint(medium) {
-	.card > img {
-		width: 100%;
+.pc__info {
+	> .tag {
+		display: flex;
 	}
 }
 </style>

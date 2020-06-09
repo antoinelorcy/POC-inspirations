@@ -67,7 +67,7 @@ export default {
   }
 
   &--is-active > button {
-    font-weight: $font-weight-semi-bold !important;
+    font-weight: fw(medium) !important;
     color: color(primary) !important;
   }
 

@@ -9,9 +9,10 @@
 	position: relative;
 	text-align: center;
 	padding: 6rem;
+	height: 100%;
 
 	> p {
-		font-weight: $font-weight-semi-bold;
+		font-weight: fw(medium);
 		font-size: fs(large);
 		margin-bottom: 35px;
 	}

@@ -20,7 +20,8 @@ export default {
       type: Array,
       required: true
     },
-    placeholder: String
+    placeholder: String,
+    closeOnSelect: Boolean
   },
 
   data() {
@@ -55,6 +56,10 @@ export default {
   methods: {
     select(value) {
       this.$emit("input", value);
+
+      if (this.closeOnSelect) {
+        this.hidePopper();
+      }
     },
 
     showPopper() {

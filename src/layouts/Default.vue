@@ -1,7 +1,7 @@
 <template>
   <div class="layout" :class="{'layout--with-mobile-nav': hasMobileNavigation }">
-    <Header class="inner-width" />
-    <section class="content inner-width">
+    <Header :has-reading-progress="hasReadingProgress" />
+    <section class="content">
       <slot />
     </section>
     <SubFooter v-if="$slots['sub-footer-left'] || $slots['sub-footer-right']">
@@ -34,6 +34,10 @@ export default {
     SubFooter,
     Footer,
     MobileNavigation
+  },
+
+  props: {
+    hasReadingProgress: Boolean
   },
 
   mounted () {
@@ -73,6 +77,10 @@ export default {
 .header {
   margin-bottom: 30px;
   width: 100%;
+  position: sticky;
+  top: 0;
+  background-color: color(white);
+  z-index: 100;
 }
 
 .content {

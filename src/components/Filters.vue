@@ -1,7 +1,7 @@
 <template>
 	<div class="filters">
 		<div class="f__header m--b-5">
-			<div class="display-flex align-center justify-between fluid-width p--r-2">
+			<div class="display-flex align-center">
 				<h2 class="m--b-0 m--r-2">
 					Filtres 
 					<b v-if="filtersCount">({{ filtersCount }})</b>
@@ -10,8 +10,9 @@
 					<Link
 						v-if="!$store.state.isSmallWindow"
 						icon="reset"
-						label="Réinitialiser les filtres"
+						label="Réinitialiser"
 						color="black"
+						is-underline
 						@click="$emit('reset')" />
 				</template>
 			</div>
@@ -198,7 +199,7 @@ $themeColor: color(primary);
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	min-height: 40px;
+	min-height: 45px;
 
 	h2 {
 		display: flex;
