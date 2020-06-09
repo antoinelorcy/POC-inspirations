@@ -25,7 +25,7 @@ export default {
 
 		scroll () {
 			const $page = document.documentElement;
-			const scrollHeight = $page.scrollHeight - $page.clientHeight;
+			const scrollHeight = $page.scrollHeight - $page.clientHeight - document.querySelector('.sub-footer').offsetHeight - document.querySelector('.footer').offsetHeight;
 			const scrollPosition = $page.scrollTop;
 			this.progressValue = scrollPosition / scrollHeight;
 		}
