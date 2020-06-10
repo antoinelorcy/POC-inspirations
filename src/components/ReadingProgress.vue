@@ -18,6 +18,10 @@ export default {
 		document.addEventListener('scroll', this.throttleScroll);
 	},
 
+	beforeDestroy () {
+		document.removeEventListener('scroll', this.throttleScroll);
+	},
+
 	methods: {
 		throttleScroll: throttle(function () {
 				this.scroll();

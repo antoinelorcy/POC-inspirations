@@ -81,6 +81,11 @@ export default {
   top: 0;
   background-color: color(white);
   z-index: 100;
+
+  @include breakpoint(medium) {
+    position: relative;
+    margin-bottom: 0;
+  }
 }
 
 .content {
@@ -98,11 +103,5 @@ export default {
   bottom: 0;
   left: 0;
   right: 0;
-}
-
-@include breakpoint(medium) {
-  .header {
-    margin-bottom: 10px;
-  }
 }
 </style>

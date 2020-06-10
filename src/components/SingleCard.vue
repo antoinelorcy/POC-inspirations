@@ -1,25 +1,28 @@
 <template>
-	<div class="page-card">
-		<div v-if="activity" class="pc__activity m--b-2">
-			<ActivityIcon :name="activity.key" :type="activity.activityType.key" />
+	<div class="single-card">
+		<div v-if="activity" class="sc__activity m--b-2">
+			<BorderedIcon><ActivityIcon :name="activity.key" :type="activity.activityType.key" /></BorderedIcon>
 			Activité {{ activity.title }}
 		</div>
 
-		<div class="pc__info m--b-2">
-			<Tag icon="stopwatch" :label="lengthName" />
-			<Tag icon="people" :label="groupName" />
-			<Tag icon="education" :label="levelName" />
+		<div class="sc__info m--b-6">
+			<div>
+				<Tag icon="stopwatch" :label="lengthName" />
+				<Tag icon="people" :label="groupName" />
+				<Tag icon="education" :label="levelName" />
+				<Tag icon="timing" :label="timing" />
+			</div>
 		</div>
 
-		<div class="pc__goal-label m--b-2">
-			{{ goalLabel }}
+		<div class="sc__goal-label m--b-6">
+			<BorderedIcon><Icon name="rocket" :size="25" /></BorderedIcon>{{ goalLabel }}
 		</div>
 
-		<div class="pc__added-value m--b-2">
-			{{ addedValue }}
+		<div class="sc__added-value m--b-6">
+			<BorderedIcon><Icon name="trophy" :size="25" /></BorderedIcon>{{ addedValue }}
 		</div>
 
-		<div class="pc__button text-align--center m--t-5">
+		<div class="sc__button text-align--center m--t-5">
 			<Button label="Utiliser ce modèle" color="primary" />
 		</div>
 	</div>
@@ -73,6 +76,7 @@ query {
 
 <script>
 import ActivityIcon from './ActivityIcon';
+import BorderedIcon from './BorderedIcon';
 import Tag from './Tag';
 
 export default {
@@ -82,12 +86,14 @@ export default {
 		level: Object,
 		groupSize: Array,
 		length: Array,
+		timing: String,
 		goalLabel: String,
 		addedValue: String
 	},
 
 	components: {
 		ActivityIcon,
+		BorderedIcon,
 		Tag
 	},
 
@@ -143,25 +149,47 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.page-card {
+.single-card {
 	background: color(white);
 	box-shadow: 10px 10px 24px rgba(126, 127, 144, 0.2);
 	padding: 2rem;
 }
 
-.pc__activity {
-	display: flex;
-	align-items: center;
-	font-weight: fw(medium);
+.sc__info {
+		position: relative;
+		margin-left: 2rem;
+		padding-left: 2rem;
 
-	> .activity-icon {
+	&:before {
+		content: '';
+		position: absolute;
+		left: 0;
+		border-radius: 5px;
+		background-color: color(grey-lighter);
+		width: 4px;
+		height: 100%;
+		display: block;
+	}
+
+	.tag {
+		display: flex;
+	}
+}
+
+.sc__goal-label,
+.sc__added-value,
+.sc__activity {
+	display: flex;
+	align-items: flex-start;
+
+	> .bordered-icon {
+		flex: 0 0 45px;
 		margin-right: 1rem;
 	}
 }
 
-.pc__info {
-	> .tag {
-		display: flex;
-	}
+.sc__activity {
+	font-weight: fw(medium);
+	align-items: center;
 }
 </style>

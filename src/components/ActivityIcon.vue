@@ -36,22 +36,8 @@ export default {
 
 <style lang="scss" scoped>
 .activity-icon {
-	width: 40px;
-	height: 40px;
-	border-radius: 20px;
-	display: flex;
+	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	border: 4px solid scale-color(color(grey), $lightness: 50%);
-
-	@each $key, $value in $colors-activity-types {
-		&--#{$key} {
-			border-color: scale-color($value, $lightness: 50%);
-		}
-	}
-
-	> img {
-		width: 20px;
-	}
 }
 </style>

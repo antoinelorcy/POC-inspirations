@@ -1,6 +1,6 @@
 <template>
 	<div class="tag">
-		<Icon v-if="icon" :name="icon" /> {{ label }}
+		<Icon v-if="icon" :name="icon" :size="20" /> {{ label }}
 	</div>
 </template>
 
