@@ -9,10 +9,10 @@ export default {
 		 * "plain" | "raw"
 		 */
 		fill: {
-		type: String,
-		default: "plain",
-		validator: prop =>
-			["plain", "raw", "hollow"].includes(prop)
+			type: String,
+			default: "plain",
+			validator: prop =>
+				["plain", "raw", "hollow"].includes(prop)
 		},
 		color: {
 			type: String,

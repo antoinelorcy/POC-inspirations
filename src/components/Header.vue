@@ -56,6 +56,10 @@ export default {
 	align-items: center;
 	height: 100px;
 	position: relative;
+
+	@include breakpoint(medium) {
+		height: 80px;
+	}
 }
 
 .h__nav {

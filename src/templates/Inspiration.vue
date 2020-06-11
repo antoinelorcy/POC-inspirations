@@ -5,9 +5,15 @@
     </div>
 
     <div ref="coverMobile" class="single__cover-mobile" :class="{'single__cover-mobile--collapsed': isCoverMobileCollapse}">
-      <div class="single__cover" :style="{backgroundImage: `url(${$page.inspiration.thumbnail.file.url})`}"></div>
-      <h1 class="single__title">{{ $page.inspiration.title }}</h1>
+      <div class="single__cover" :style="{backgroundImage: `url(${$page.inspiration.thumbnail.file.url})`}">
+         <h1 class="single__title">{{ $page.inspiration.title }}</h1>
       <span class="single__goal">> {{ $page.inspiration.goal.title }}</span>
+        <div class="single__cm__footer">
+          <Button icon="burger" color="white" />
+          <Button label="Utiliser ce modèle" color="primary" />
+        </div>
+      </div>
+     
     </div>
 
     <div class="single__cover-wrapper hide-sm">
@@ -217,12 +223,14 @@ export default {
 
 <style lang="scss" scoped>
 .single {
-  background: linear-gradient(180deg, rgba(235, 232, 242, 0.3) 0%, rgba(196, 196, 196, 0) 100%);
-
   @each $key, $value in $colors-activity-types {
     &[data-activity-type="#{$key}"] {
       .ss__number span {
         border-color: $value;
+      }
+
+      .single__settings:before {
+        background-color: $value;
       }
     }
   }
@@ -276,7 +284,6 @@ export default {
   top: 0;
   z-index: 100;
   height: 300px;
-  padding: 2rem;
   display: none;
 
   @include breakpoint(medium) {
@@ -287,6 +294,7 @@ export default {
     top: 0;
     z-index: 0;
     height: 300px;
+    padding: 2rem;
     transition: all 0.3s ease;
   }
 
@@ -310,6 +318,16 @@ export default {
       opacity: 0;
     }
   }
+}
+
+.single__cm__footer {
+  position: absolute;
+  bottom: -2rem;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
 }
 
 .single__title {
@@ -363,9 +381,27 @@ export default {
 }
 
 .single__settings {
+    position: relative;
     background: white;
     border: 1px dashed color(grey-light);
     padding: 2rem;
+
+    &:before {
+      content: '•';
+      width: 25px;
+      height: 30px;
+      background-color: color(grey);
+      border-radius: 5px 0 0 5px;
+      position: absolute;
+      top: -1px;
+      left: -25px;
+      color: color(grey-lighter);
+      font-size: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+    }
 
     > h4 {
       color: color(grey);

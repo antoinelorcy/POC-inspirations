@@ -2,7 +2,7 @@
   <Layout>
     <section class="home__section hero inner-width">
       <h1>Des inspirations pour toutes vos réunions</h1>
-      <p class="text-align--left">Essayez nos modèles prêts à l’emploi pour démarrez rapidement ou renouveller vos activités de réunion dans Beekast. Suivez le guide et animez des réunions collaboratives et efficaces.</p>
+      <p class="text-align--left">Essayez nos modèles prêts à l’emploi pour démarrer rapidement ou renouveller vos activités de réunion dans Beekast. Suivez le guide et animez des réunions collaboratives et efficaces.</p>
       <HomeFilters />
       <p>Ou <Link label="Voir toutes les inspirations" to="/inspirations" /></p>
     </section>
@@ -24,6 +24,10 @@
           :level="page.level"
           :group-size="page.groupSize"
           :length="page.length"
+          :goal-label="page.goalLabel"
+          :added-value="page.addedValue"
+          :activity-icon="page.activity.key"
+          :activity-type="page.activity.activityType.key"
         />
         </div>
 
@@ -43,7 +47,7 @@
           Beekast est une plateforme de réunion intéractive qui vous accompagne au quotidien dans la création, l’animation et le suivi de tout type de réunion : du daily à l’atelier, du séminaire à l’entretien individuel.
         </p>
 
-        <div class="grid">
+        <div class="about__cols grid">
           <div class="about__col col-md-4">
             <h5>Préparez</h5>
             <div class="about__img">
@@ -80,6 +84,8 @@ query {
         id
         path
         title
+        goalLabel
+        addedValue
         thumbnail {
           file {
             url
@@ -96,6 +102,12 @@ query {
         }
         level {
           id
+        }
+        activity {
+          key
+          activityType {
+            key
+          }
         }
       }
     }
@@ -154,7 +166,7 @@ export default {
   }
 
   @include breakpoint(medium) {
-    padding: 0;
+    padding: 0 1rem;
     margin-bottom: 50px;
   }
 }
@@ -186,6 +198,10 @@ export default {
 
 .about__description {
   margin-bottom: space(6);
+}
+
+.about__cols {
+  margin-top: 5rem;
 }
 
 .about__col {

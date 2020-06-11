@@ -68,6 +68,7 @@ export default {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  background: linear-gradient(180deg, rgba(235, 232, 242, 0.3) 0%, rgba(196, 196, 196, 0) 100%);
 
   &--with-mobile-nav {
     padding-bottom: $mobile-nav-height;

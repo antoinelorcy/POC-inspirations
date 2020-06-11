@@ -29,7 +29,9 @@
               Trier par <Select :value="order" @input="order = $event" :options="orders" value-key="label" close-on-select />
             </div>
           </div>
-          <div v-if="!orderedPages.length">:(</div>
+          <div v-if="!orderedPages.length">
+            <NoResult />
+          </div>
           <transition-group v-else name="flip-list" tag="ul">
             <li v-for="page in orderedPages" :key="page.id" class="inspi__card-wrapper">
               <Card
@@ -42,8 +44,8 @@
                 :length="page.length"
                 :goal-label="page.goalLabel"
                 :added-value="page.addedValue"
-                :activity-icon="(page.activity && page.activity.key) || ''"
-                :activity-type="(page.activity && page.activity.activityType && page.activity.activityType.key) || ''"
+                :activity-icon="page.activity.key"
+                :activity-type="page.activity.activityType.key"
               />
             </li>
           </transition-group>
@@ -158,6 +160,7 @@ import Card from '~/components/Card';
 import Filters from '~/components/Filters';
 import SubFooterVideo from '~/components/SubFooterVideo';
 import SubFooterSignup from '~/components/SubFooterSignup';
+import NoResult from '~/components/NoResult';
 
 export default {
   metaInfo: {
@@ -171,7 +174,8 @@ export default {
     Card,
     Filters,
     SubFooterVideo,
-    SubFooterSignup
+    SubFooterSignup,
+    NoResult
   },
 
   data () {
@@ -368,6 +372,10 @@ export default {
 .inspirations {
   display: flex;
   background: url('../assets/images/list-bg.svg') top center no-repeat;
+
+  @include breakpoint(medium) {
+    padding: 1rem;
+  }
 }
 
 .inspi__filters {
