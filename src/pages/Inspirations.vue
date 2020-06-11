@@ -389,6 +389,10 @@ export default {
 .inspi__card-wrapper {
   padding: space(3);
   width: 50%;
+
+  > .card {
+    height: 100%;
+  }
 }
 
 .flip-list-move {

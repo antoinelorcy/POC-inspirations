@@ -1,6 +1,6 @@
 <template>
 	<div class="reading-progress">
-		<span :style="{width: (progressValue * 100) + '%'}"></span>
+		<span :style="{width: progressPercent + '%'}"></span>
 	</div>
 </template>
 
@@ -20,6 +20,12 @@ export default {
 
 	beforeDestroy () {
 		document.removeEventListener('scroll', this.throttleScroll);
+	},
+
+	computed: {
+		progressPercent () {
+			return ((this.progressValue * 100) > 100) ? 100 : this.progressValue * 100;
+		}
 	},
 
 	methods: {

@@ -58,7 +58,8 @@ export default {
 <style lang="scss" scoped>
 .icon {
   & > svg {
-    display: block;
+    display: inline-block;
+    vertical-align: middle;
   }
 }
 </style>

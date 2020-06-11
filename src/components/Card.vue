@@ -4,14 +4,20 @@
 		<div class="card__goal">{{ goalName }}</div>
 		<div class="card__cover">
 			<g-image :src="thumbnail" width="250" />
-			<ActivityIcon v-if="activityIcon" :name="activityIcon" :type="activityType" />
+			<BorderedIcon><ActivityIcon v-if="activityIcon" :name="activityIcon" :type="activityType" /></BorderedIcon>
 		</div>
-		<div v-if="goalLabel" class="card__goal-label">{{ goalLabel }}</div>
-		<div v-if="addedValue" class="card__added-value">{{ addedValue }}</div>
-		<div class="tags">
-			<Tag icon="stopwatch" :label="lengthName" />
-			<Tag icon="people" :label="groupName" />
-			<Tag icon="education" :label="levelName" />
+		<div v-if="goalLabel" class="card__goal-label">
+			<BorderedIcon><Icon name="rocket" :size="20" /></BorderedIcon> {{ goalLabel }}
+		</div>
+		<div v-if="addedValue" class="card__added-value">
+			<BorderedIcon><Icon name="trophy" :size="20" /></BorderedIcon> {{ addedValue }}
+		</div>
+		<div class="card__tags">
+			<div class="card__tags-inner">
+				<Tag icon="stopwatch" :label="lengthName" />
+				<Tag icon="people" :label="groupName" />
+				<Tag icon="education" :label="levelName" />
+			</div>
 		</div>
 	</g-link>
 </template>
@@ -65,11 +71,13 @@ query {
 <script>
 import Tag from './Tag';
 import ActivityIcon from './ActivityIcon';
+import BorderedIcon from './BorderedIcon';
 
 export default {
 	components: {
 		Tag,
-		ActivityIcon
+		ActivityIcon,
+		BorderedIcon
 	},
 
 	props: {
@@ -184,10 +192,9 @@ export default {
 		height: 200px;
 		overflow: hidden;
 		object-fit: cover;
-		border-radius: 5px;
 	}
 
-	> .activity-icon {
+	> .bordered-icon {
 		position: absolute;
 		bottom: -10px;
 		right: 4px;
@@ -197,31 +204,48 @@ export default {
 }
 
 .card__goal-label {
-	display: block;
-	padding: 10px;
+	display: flex;
+	align-items: center;
+	padding: 1rem 0;
 	font-weight: fw(medium);
 	color: $body-font-color;
+
+	> .bordered-icon {
+		flex-shrink: 0;
+		margin-right: 1rem;
+	}
 }
 
 .card__added-value {
-	position: relative;
-	margin: 10px 0;
-	background-color: color(grey-lighter);
-	padding: 20px;
-	border-radius: 10px;
+	padding: 1rem 0;
 	color: $body-font-color;
 	font-style: italic;
+	display: flex;
+	align-items: center;
+
+	> .bordered-icon {
+		flex-shrink: 0;
+		margin-right: 1rem;
+	}
+}
+
+.card__tags {
+	margin-top: auto;
 
 	&:before {
 		content: '';
-		background: url('../assets/images/tick.svg') top left no-repeat;
-		background-size: contain;
-		width: 30px;
-		height: 30px;
-		position: absolute;
-		top: -10px;
-		left: -10px;
+		width: 80%;
+		height: 3px;
+		background-color: color(grey-lighter);
+		display: block;
+		margin: 1rem auto;
 	}
+}
+
+.card__tags-inner {
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
 }
 
 @include breakpoint(medium) {

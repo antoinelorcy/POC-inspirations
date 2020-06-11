@@ -7,6 +7,7 @@ const path = require("path");
 
 module.exports = {
   siteName: 'Inspirations',
+  siteUrl: 'https://inspirations.beekast.com',
   plugins: [
     {
       use: '@gridsome/source-contentful',
@@ -18,27 +19,20 @@ module.exports = {
         typeName: 'Contentful'
       }
     },
-    // {
-    //   use: "gridsome-plugin-i18n",
-    //   options: {
-    //     locales: [ // locales list
-    //       'fr-fr',
-    //       'en-us'
-    //     ],
-    //     pathAliases: { // path segment alias for each locales
-    //       'fr-fr': 'fr',
-    //       'en-us': 'en'
-    //     },
-    //     fallbackLocale: 'fr-fr', // fallback language
-    //     defaultLocale: 'fr-fr', // default language
-    //     enablePathRewrite: false, // rewrite path with locale prefix, default: true
-    //     rewriteDefaultLanguage: true, // rewrite default locale, default: true
-    //     messages: {
-    //       'fr-fr': require('./src/locales/fr-fr.json'),
-    //       'en-gb': require('./src/locales/en-us.json'),
-    //     }
-    //   }
-    // }
+    {
+      use: 'gridsome-plugin-robots-txt',
+      options: {
+        policy: [
+          {
+            userAgent: "*",
+            disallow: "/"
+          }
+        ]
+      }
+    },
+    {
+      use: '@gridsome/plugin-sitemap'
+    }
   ],
   templates: {
     ContentfulPage: [

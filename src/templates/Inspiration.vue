@@ -1,7 +1,7 @@
 <template>
-  <Layout class="single" has-reading-progress>
+  <Layout class="single" has-reading-progress :data-activity-type="$page.inspiration.activity.activityType.key">
     <div class="single__breadcrumb inner-width hide-sm">
-     *TODO Breadcrumb*
+      <g-link to="/">Accueil</g-link> > <g-link to="/inspirations">Tous les templates</g-link> > {{ $page.inspiration.title }}
     </div>
 
     <div ref="coverMobile" class="single__cover-mobile" :class="{'single__cover-mobile--collapsed': isCoverMobileCollapse}">
@@ -26,15 +26,15 @@
         </div>
 
         <div class="single__settings m--b-6">
-          <h4 v-if="$page.activity">
+          <h4 v-if="$page.inspiration.activity">
             <BorderedIcon><Icon name="cog" :size="20" /></BorderedIcon> 
             Paramétrage de l'activité {{ $page.inspiration.activity.title }} 
-            <ActivityIcon :name="$page.inspiration.activity.key" :type="$page.inspiration.activity.activityType.key" /></h4>
+            <ActivityIcon :name="$page.inspiration.activity.key" :type="$page.inspiration.activity.activityType.key" />
           </h4>
 
           <ul>
             <li v-for="setting in $page.inspiration.settings" :key="setting.id">
-              {{ setting.label }}
+              <Icon name="checkbox" />{{ setting.label }}
             </li>
           </ul>
         </div>
@@ -51,10 +51,13 @@
           </div>
         </div>
 
-        <div class="single__ressources m--b-6">
+        <div class="single__suggestions m--b-6">
           <h2>Suggestions et variantes</h2>
 
-          <div v-for="suggestion in $page.inspiration.suggestions" :key="suggestion.id" v-html="suggestion.content"></div>
+          <div v-for="suggestion in $page.inspiration.suggestions" :key="suggestion.id" class="ssu__item">
+            <Icon name="idea" />
+            <div v-html="suggestion.content"></div>
+          </div>
         </div>
 
         <div class="single__ressources">
@@ -62,7 +65,7 @@
 
           <ul>
             <li v-for="ressource in $page.inspiration.ressources" :key="ressource.id">
-              <a :href="ressource.url" target="_blank">{{ ressource.label }}</a>
+              <a :href="ressource.url" target="_blank"><Icon name="external-link" /> {{ ressource.label }}</a>
             </li>
           </ul>
         </div>
@@ -215,6 +218,18 @@ export default {
 <style lang="scss" scoped>
 .single {
   background: linear-gradient(180deg, rgba(235, 232, 242, 0.3) 0%, rgba(196, 196, 196, 0) 100%);
+
+  @each $key, $value in $colors-activity-types {
+    &[data-activity-type="#{$key}"] {
+      .ss__number span {
+        border-color: $value;
+      }
+    }
+  }
+
+  /deep/ .content {
+    background: url('../assets/images/single-bg.svg') center right no-repeat;
+  }
 }
 
 .single__wrapper {
@@ -351,6 +366,33 @@ export default {
     background: white;
     border: 1px dashed color(grey-light);
     padding: 2rem;
+
+    > h4 {
+      color: color(grey);
+      display: flex;
+      align-items: center;
+
+      > .bordered-icon {
+        margin-right: 1rem;
+      }
+
+      > .activity-icon {
+        margin-left: 1rem;
+      }
+    }
+
+    ul {
+      list-style: none;
+
+      > li {
+        display: flex;
+        align-items: center;
+
+        > .icon {
+          margin-right: 1rem;
+        }
+      }
+    }
 }
 
 .single__step {
@@ -386,13 +428,40 @@ export default {
       align-items: center;
       justify-content: center;
       border: 2px solid color(grey);
-      font-size: fs(large);
       font-weight: fw(medium);
     }
   }
 
   .ss__content {
     padding-left: 1rem;
+  }
+}
+
+.single__ressources {
+  ul {
+    list-style: none;
+    padding: 0;
+
+    a {
+      display: flex;
+      align-items: center;
+      color: $body-font-color;
+
+      > .icon {
+        margin-right: 1rem;
+      }
+    }
+  }
+}
+
+.single__suggestions {
+  .ssu__item {
+    display: flex;
+    align-items: flex-start;
+
+    > .icon {
+      margin-right: 1rem;
+    }
   }
 }
 </style>

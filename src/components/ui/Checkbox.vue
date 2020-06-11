@@ -31,6 +31,7 @@ $checkbox-size: 15px;
   align-items: center;
   vertical-align: middle;
   height: 30px;
+  line-height: 1em;
 
   input[type="checkbox"] {
     display: block;
