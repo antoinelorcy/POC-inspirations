@@ -192,13 +192,14 @@ export default {
 
   mounted () {
     this.$nextTick(() => {
-      const $header = document.querySelector('.header');
-      const $breadcrumb = document.querySelector('.single__breadcrumb');
-        this.cardTopPosition = $header.offsetHeight + $breadcrumb.offsetHeight;
       
       
       if (this.$store.state.isSmallWindow) {
         document.addEventListener('scroll', this.throttleScroll);
+      } else {
+        const $header = document.querySelector('.header');
+        const $breadcrumb = document.querySelector('.single__breadcrumb');
+        this.cardTopPosition = $header.offsetHeight + $breadcrumb.offsetHeight;
       }
     });
 
@@ -245,7 +246,17 @@ export default {
   display: flex;
   
   @include breakpoint(medium) {
-    display: block;
+    z-index: 0;
+    display: flex;
+    flex-direction: column;
+
+    > .single__sidebar {
+      order: 0;
+    }
+
+    > .single__content {
+      order: 1;
+    }
   }
 }
 
@@ -260,6 +271,11 @@ export default {
 .single__sidebar {
   padding: 0 2rem;
   flex: 0 0 400px;
+
+  @include breakpoint(medium) {
+    padding: 2rem 0;
+    flex: 0 0 auto;
+  }
 }
 
 .single__cover-wrapper {
@@ -351,6 +367,11 @@ export default {
   z-index: 90;
   top: 0;
   right: 0;
+
+  @include breakpoint(medium) {
+    position: relative;
+    z-index: 0;
+  }
 }
 
 .single__summary {
@@ -361,6 +382,8 @@ export default {
 
   @include breakpoint(medium) {
     margin: 0;
+    padding: 0;
+    background: transparent;
   }
 
   &:before {

@@ -22,7 +22,7 @@
 			<BorderedIcon><Icon name="trophy" :size="25" /></BorderedIcon>{{ addedValue }}
 		</div>
 
-		<div class="sc__button text-align--center m--t-5">
+		<div class="sc__button text-align--center m--t-5 hide-sm">
 			<Button label="Utiliser ce modèle" color="primary" />
 		</div>
 	</div>

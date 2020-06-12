@@ -1,16 +1,22 @@
 <template>
 	<div class="mobile-navigation">
 		<g-link class="h__nav__link" to="/">
-			<Icon name="home" :size="25" />
-			Accueil
+			<span>
+				<Icon name="home" :size="25" />
+				Accueil
+			</span>
 		</g-link>
 		<g-link class="h__nav__link" to="/inspirations/">
-			<Icon name="activities" :size="25" />
-			Modèles
+			<span>
+				<Icon name="activities" :size="25" />
+				Modèles
+			</span>
 		</g-link>
 		<g-link class="h__nav__link" to="https://www.beekast.com">
-			<Icon name="bee" :size="25" />
-			Beekast
+			<span>
+				<Icon name="bee" :size="25" />
+				Beekast
+			</span>
 		</g-link>
 	</div>
 </template>
@@ -32,17 +38,22 @@
 		text-decoration: none;
 		display: flex;
 		flex-direction: column;
-		justify-content: center;
 		align-items: center;
 		font-size: fs(small);
+
+		> span {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			flex: 1;
+		}
 		
 		&:after {
 			content: '';
 			width: 100%;
 			height: 1px;
 			background-color: color(primary);
-			position: absolute;
-			bottom: 0;
 			opacity: 0;
 		}
 
