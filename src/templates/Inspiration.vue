@@ -215,7 +215,7 @@ export default {
 		}, 30),
 
 		scroll () {
-      this.isCoverMobileCollapse = document.documentElement.scrollTop > this.$refs.coverMobile.getBoundingClientRect().top + this.$refs.coverMobile.offsetHeight * .5;
+      this.isCoverMobileCollapse = document.documentElement.scrollTop > this.$refs.coverMobile.getBoundingClientRect().top + this.$refs.coverMobile.offsetHeight * .4;
 		}
 	}
 }

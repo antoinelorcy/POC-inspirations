@@ -113,7 +113,7 @@ export default {
 				background-color: scale-color($value, $lightness: -40%);
 			}
 
-			@if ($key == 'grey-light') {
+			@if ($key == grey-light or $key == white) {
 				color: color(grey);
 
 				&:hover,
