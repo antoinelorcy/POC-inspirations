@@ -2,6 +2,7 @@
 stages:
   - artifact
   - container
+  - deploy
 
 artifact:
   stage: artifact
@@ -19,6 +20,13 @@ artifact:
     name: 'inspiration'
     paths:
       - dist
+  only:
+    refs:
+      - /^master$/
+    changes:
+      - app/**/*
+      - helm/**/*
+      - gitlab-ci/**/*
 
 container:
   stage: container
@@ -44,3 +52,29 @@ container:
     - docker build -t beekast-inspirations -f beekast-inspirations.Dockerfile .
     - docker tag beekast-inspirations:latest 809772074319.dkr.ecr.eu-west-1.amazonaws.com/beekast-inspirations:latest
     - docker push 809772074319.dkr.ecr.eu-west-1.amazonaws.com/beekast-inspirations:latest 
+  only:
+    refs:
+      - /^master$/
+    changes:
+      - app/**/*
+      - helm/**/*
+      - gitlab-ci/**/*
+
+deploy:
+  stage: deploy
+  image: dtzar/helm-kubectl:2.16.1
+  environment:
+    name: $CI_COMMIT_REF_SLUG
+    url: https://$CI_COMMIT_REF_SLUG.compute.beekast.com
+  before_script:
+    - helm init -c
+    - echo $CI_COMMIT_REF_SLUG
+  script:
+    - helm upgrade inspirations ./helm/inspirations --recreate-pods --wait --timeout 600
+  only:
+    refs:
+      - /^master$/
+    changes:
+      - app/**/*
+      - helm/**/*
+      - gitlab-ci/**/*
