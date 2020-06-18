@@ -23,10 +23,6 @@ artifact:
   only:
     refs:
       - /^master$/
-    changes:
-      - app/**/*
-      - helm/**/*
-      - gitlab-ci/**/*
 
 container:
   stage: container
@@ -55,10 +51,6 @@ container:
   only:
     refs:
       - /^master$/
-    changes:
-      - app/**/*
-      - helm/**/*
-      - gitlab-ci/**/*
 
 deploy:
   stage: deploy
@@ -74,7 +66,3 @@ deploy:
   only:
     refs:
       - /^master$/
-    changes:
-      - app/**/*
-      - helm/**/*
-      - gitlab-ci/**/*
