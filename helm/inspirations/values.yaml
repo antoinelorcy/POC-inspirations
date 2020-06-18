@@ -1,8 +1,24 @@
-kind: Ingress
-apiVersion: extensions/v1beta1
-metadata:
-  name: beekast-ingress
-  namespace: inspirations
+# Default values for inspirations.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: nginx
+  tag: stable
+  pullPolicy: IfNotPresent
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: true
   annotations:
     alb.ingress.kubernetes.io/actions.ssl-redirect: >-
       {"Type": "redirect", "RedirectConfig": { "Protocol": "HTTPS", "Port":
@@ -19,12 +35,29 @@ metadata:
     alb.ingress.kubernetes.io/target-type: ip
     alb.ingress.kubernetes.io/unhealthy-threshold-count: '2'
     kubernetes.io/ingress.class: alb
-spec:
-  rules:
-    - host: abaa007a-inspirations-beek-d4ea-740283947.eu-west-1.elb.amazonaws.com
-      http:
-        paths:
-          - path: /*
-            backend:
-              serviceName: inspirations
-              servicePort: 80
+  hosts:
+    - host: inspirations.compute.beekast.com
+      paths: ["/*"]
+
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
