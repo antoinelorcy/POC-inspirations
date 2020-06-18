@@ -1,10 +1,10 @@
 <template>
-	<g-link class="card" :to="path">
+	<g-link class="card" :to="url">
 		<h4 class="card__title">{{ title }}</h4>
 		<div class="card__goal">{{ goalName }}</div>
 		<div class="card__cover">
 			<g-image :src="thumbnail" width="250" />
-			<BorderedIcon><ActivityIcon v-if="activityIcon" :name="activityIcon" :type="activityType" /></BorderedIcon>
+			<BorderedIcon><ActivityIcon v-if="activityIcon" :name="activityIcon" /></BorderedIcon>
 		</div>
 		<div v-if="goalLabel" class="card__goal-label">
 			<BorderedIcon><Icon name="rocket" :size="20" /></BorderedIcon> {{ goalLabel }}
@@ -24,47 +24,55 @@
 
 <static-query>
 query {
-  goals: allContentfulGoal (sortBy: "order", order: ASC) {
-    edges {
-      node {
-        id
-        title
-      }
-    }
-  }
+	goals: allGoal (sortBy: "order", order: ASC) {
+		edges {
+			node {
+				id
+				locale
+				sysId
+				title
+			}
+		}
+	}
 
-  lengths: allContentfulLength (sortBy: "order", order: ASC ) {
-    edges {
-      node {
-        id
-		title
-		order
-		minValue
-		maxValue
-      }
-    }
-  }
+	lengths: allLength (sortBy: "order", order: ASC ) {
+		edges {
+			node {
+				id
+				locale
+				sysId
+				value
+				order
+				minValue
+				maxValue
+			}
+		}
+	}
 
-  groupSizes: allContentfulGroupSize (sortBy: "order", order: ASC ) {
-    edges {
-      node {
-        id
-        title
-		order
-		minValue
-		maxValue
-      }
-    }
-  }
+	groupSizes: allGroupSize (sortBy: "order", order: ASC ) {
+		edges {
+			node {
+				id
+				locale
+				sysId
+				size
+				order
+				minValue
+				maxValue
+			}
+		}
+	}
 
-  levels: allContentfulLevel (sortBy: "order", order: ASC) {
-    edges {
-      node {
-        id
-        title
-      }
-    }
-  }
+	levels: allLevel (sortBy: "order", order: ASC) {
+		edges {
+			node {
+				id
+				locale
+				sysId
+				level
+			}
+		}
+	}
 }
 </static-query>
 
@@ -81,56 +89,64 @@ export default {
 	},
 
 	props: {
+		locale: String,
 		title: String,
 		thumbnail: String,
-		path: String,
-		goal: Object,
-		level: Object,
-		groupSize: Array,
-		length: Array,
+		url: String,
+		goalId: String,
+		levelId: String,
+		groupSizeIds: Array,
+		lengthIds: Array,
 		goalLabel: String,
 		addedValue: String,
-		activityIcon: String,
-		activityType: String
+		activityIcon: String
 	},
 
 	computed: {
 		goalName () {
-			const q = this.$static.goals.edges.find((g) => g.node.id === this.goal.id);
+			const q = this.$static.goals.edges
+				.filter((g) => g.node.locale === this.locale)
+				.find((g) => g.node.sysId === this.goalId);
 			return q.node.title;
 		},
 
 		levelName () {
-			const q = this.$static.levels.edges.find((g) => g.node.id === this.level.id);
-			return q.node.title;
+			const q = this.$static.levels.edges
+				.filter((g) => g.node.locale === this.locale)
+				.find((g) => g.node.sysId === this.levelId);
+			return q.node.level;
 		},
 
 		groupName () {
-			if (this.groupSize.length === this.$static.groupSizes.edges.length) {
+			const groupSizesLocale = this.$static.groupSizes.edges.filter((g) => g.node.locale === this.locale);
+			if (this.groupSizeIds.length === groupSizesLocale.length) {
 				return 'Tout groupe';
-			} else if (this.groupSize.length > 1) {
-				const q = this.$static.groupSizes.edges.filter((gz) => this.groupSize.map((g) => g.id).includes(gz.node.id)).map((r) => r.node);
+			} else if (this.groupSizeIds.length > 1) {
+				const q = groupSizesLocale
+					.filter((gz) => this.groupSizeIds.includes(gz.node.sysId))
+					.map((r) => r.node);
 				const rangeGroupOrder = this.findMinMaxGroupSize(q);
 				const minGroup = q.find((g) => g.order === rangeGroupOrder[0]);
 				const maxGroup = q.find((g) => g.order === rangeGroupOrder[1]);
 				return minGroup.minValue + ' à ' + maxGroup.maxValue;
 			}
 
-			const q = this.$static.groupSizes.edges.find((g) => g.node.id === this.groupSize[0].id);
-			return q.node.title;
+			const q = groupSizesLocale.find((g) => g.node.sysId === this.groupSizeIds[0]);
+			return q.node.size;
 		},
 
 		lengthName () {
-			if (this.length.length > 1) {
-				const q = this.$static.lengths.edges.filter((gz) => this.length.map((g) => g.id).includes(gz.node.id)).map((r) => r.node);
+			const lengthsLocale = this.$static.lengths.edges.filter((g) => g.node.locale === this.locale);
+			if (this.lengthIds.length > 1) {
+				const q = lengthsLocale.filter((gz) => this.lengthIds.includes(gz.node.sysId)).map((r) => r.node);
 				const rangeGroupOrder = this.findMinMaxGroupSize(q);
 				const minGroup = q.find((g) => g.order === rangeGroupOrder[0]);
 				const maxGroup = q.find((g) => g.order === rangeGroupOrder[1]);
 				return minGroup.minValue + ' à ' + (maxGroup.maxValue > 60 ? '60 min et plus' : maxGroup.maxValue + 'min');
 			}
 
-			const q = this.$static.lengths.edges.find((g) => g.node.id === this.length[0].id);
-			return q.node.title;
+			const q = lengthsLocale.find((g) => g.node.sysId === this.lengthIds[0]);
+			return q.node.value;
 		}
 	},
 

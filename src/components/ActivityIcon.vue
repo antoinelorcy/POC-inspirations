@@ -1,5 +1,5 @@
 <template>
-	<div :class="['activity-icon', typeClassname]">	
+	<div class="activity-icon">	
 		<g-image :src="iconSrc" width="25" />
 	</div>
 </template>
@@ -8,10 +8,6 @@
 export default {
 	props: {
 		name: {
-			type: String,
-			required: true
-		},
-		type: {
 			type: String,
 			required: true
 		}
@@ -25,10 +21,6 @@ export default {
 			}
 
 			return require('~/assets/images/activities/icon-25-25-'+ iconName +'.svg');
-		},
-
-		typeClassname () {
-			return 'activity-icon--' + this.type || 'no';
 		}
 	}
 }

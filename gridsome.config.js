@@ -9,16 +9,16 @@ module.exports = {
   siteName: 'Inspirations',
   siteUrl: 'https://inspirations.beekast.com',
   plugins: [
-    {
-      use: '@gridsome/source-contentful',
-      options: {
-        space: 'eyn4ihh29nqh', // required
-        accessToken: 'j-IWQuVywYvw9yz1mKvkoX1qNChKpbBBIZjNP_d0FCY', // required
-        host: 'cdn.contentful.com',
-        environment: 'master',
-        typeName: 'Contentful'
-      }
-    },
+    // {
+    //   use: '@gridsome/source-contentful',
+    //   options: {
+    //     space: 'eyn4ihh29nqh', // required
+    //     accessToken: 'j-IWQuVywYvw9yz1mKvkoX1qNChKpbBBIZjNP_d0FCY', // required
+    //     host: 'cdn.contentful.com',
+    //     environment: 'master',
+    //     typeName: 'Contentful'
+    //   }
+    // },
     {
       use: 'gridsome-plugin-robots-txt',
       options: {
@@ -34,16 +34,16 @@ module.exports = {
       use: '@gridsome/plugin-sitemap'
     }
   ],
-  templates: {
-    ContentfulPage: [
-      { 
-        path: (node) => {
-          return `/inspiration/${slugify(node.title)}`
-        },
-        component: './src/templates/Inspiration.vue'
-      }
-    ]
-  },
+  // templates: {
+  //   ContentfulPage: [
+  //     { 
+  //       path: (node) => {
+  //         return `/inspiration/${slugify(node.title)}`
+  //       },
+  //       component: './src/templates/Inspiration.vue'
+  //     }
+  //   ]
+  // },
   chainWebpack (config) {
     // Load variables for all vue-files
     const types = ['vue-modules', 'vue', 'normal-modules', 'normal']

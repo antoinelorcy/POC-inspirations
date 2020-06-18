@@ -21,7 +21,11 @@ export default {
       required: true
     },
     placeholder: String,
-    closeOnSelect: Boolean
+    closeOnSelect: Boolean,
+    hasMinWidth: {
+      type: Boolean,
+      default: true
+    }
   },
 
   data() {
@@ -100,7 +104,8 @@ export default {
     v-on-clickaway="hidePopper"
     class="select"
     :class="{
-      'select--has-value': selectValue != placeholder
+      'select--has-value': selectValue != placeholder,
+      'select--has-min-width': hasMinWidth
     }"
   >
     <div class="select__trigger" @click="togglePopper">
@@ -143,7 +148,10 @@ $trigger-height: 40px;
   display: inline-flex;
   vertical-align: middle;
   position: relative;
-  min-width: 170px;
+
+  &--has-min-width {
+    min-width: $dropdown-min-width;
+  }
 }
 
 .select__trigger {

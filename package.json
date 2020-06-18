@@ -9,9 +9,11 @@
     "explore": "gridsome explore"
   },
   "dependencies": {
+    "@contentful/rich-text-html-renderer": "^13.4.0",
     "@gridsome/plugin-sitemap": "^0.3.0",
     "@gridsome/source-contentful": "^0.5.2",
     "@popperjs/core": "^2.4.0",
+    "contentful": "^7.14.4",
     "gridsome": "^0.7.0",
     "gridsome-plugin-robots-txt": "^1.0.2",
     "lodash-es": "^4.17.15",

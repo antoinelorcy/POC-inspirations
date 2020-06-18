@@ -1,162 +1,173 @@
 <template>
-  <Layout class="single" has-reading-progress :data-activity-type="$page.inspiration.activity.activityType.key">
-    <div class="single__breadcrumb inner-width hide-sm">
-      <g-link to="/">Accueil</g-link> > <g-link to="/inspirations">Tous les templates</g-link> > {{ $page.inspiration.title }}
-    </div>
+	<Layout class="single" has-reading-progress :data-activity-type="activityType">
+		<div class="single__breadcrumb inner-width hide-sm">
+			<g-link to="/">Accueil</g-link> > <g-link to="/inspirations">Tous les templates</g-link> > {{ title }}
+		</div>
 
-    <div ref="coverMobile" class="single__cover-mobile" :class="{'single__cover-mobile--collapsed': isCoverMobileCollapse}">
-      <div class="single__cover" :style="{backgroundImage: `url(${$page.inspiration.thumbnail.file.url})`}">
-         <h1 class="single__title">{{ $page.inspiration.title }}</h1>
-      <span class="single__goal">> {{ $page.inspiration.goal.title }}</span>
-        <div class="single__cm__footer">
-          <Button icon="burger" color="white" />
-          <Button label="Utiliser ce modèle" color="primary" />
-        </div>
-      </div>
-     
-    </div>
+		<div ref="coverMobile" class="single__cover-mobile" :class="{'single__cover-mobile--collapsed': isCoverMobileCollapse}">
+			<div class="single__cover" :style="{backgroundImage: `url(${thumbnail})`}">
+				 <h1 class="single__title">{{ title }}</h1>
+			<span class="single__goal">> {{ goalLabel }}</span>
+				<div class="single__cm__footer">
+					<Button icon="burger" color="white" />
+					<Button label="Utiliser ce modèle" color="primary" />
+				</div>
+			</div>
+		 
+		</div>
 
-    <div class="single__cover-wrapper hide-sm">
-      <div class="single__cover" :style="{backgroundImage: `url(${$page.inspiration.thumbnail.file.url})`}"></div>
-    </div>
-  
-    <div class="single__wrapper inner-width">
-      <section class="single__content">
-        <h1 class="single__title hide-sm">{{ $page.inspiration.title }}</h1>
-        <span class="single__goal hide-sm">> {{ $page.inspiration.goal.title }}</span>
-        <div class="single__summary" v-html="$page.inspiration.summary"></div>
+		<div class="single__cover-wrapper hide-sm">
+			<div class="single__cover" :style="{backgroundImage: `url(${thumbnail})`}"></div>
+		</div>
+	
+		<div class="single__wrapper inner-width">
+			<section class="single__content">
+				<h1 class="single__title hide-sm">{{ title }}</h1>
+				<span class="single__goal hide-sm">> {{ goalLabel }}</span>
+				<div class="single__summary" v-html="$page.inspiration.fields.summary"></div>
 
-        <div class="single__prequisite m--b-6">
-          <h2>Pré-requis</h2>
-          <div v-html="$page.inspiration.prerequisite"></div>
-        </div>
+				<div class="single__prequisite m--b-6">
+					<h2>Pré-requis</h2>
+					<div v-html="$page.inspiration.fields.prerequisite"></div>
+				</div>
 
-        <div class="single__settings m--b-6">
-          <h4 v-if="$page.inspiration.activity">
-            <BorderedIcon><Icon name="cog" :size="20" /></BorderedIcon> 
-            Paramétrage de l'activité {{ $page.inspiration.activity.title }} 
-            <ActivityIcon :name="$page.inspiration.activity.key" :type="$page.inspiration.activity.activityType.key" />
-          </h4>
+				<div class="single__settings m--b-6">
+					<h4 v-if="activityDefinition">
+						<BorderedIcon><Icon name="cog" :size="20" /></BorderedIcon> 
+						Paramétrage de l'activité {{ activityDefinition.title }} 
+						<ActivityIcon :name="activityDefinition.key" :type="activityType" />
+					</h4>
 
-          <ul>
-            <li v-for="setting in $page.inspiration.settings" :key="setting.id">
-              <Icon name="checkbox" />{{ setting.label }}
-            </li>
-          </ul>
-        </div>
+					<ul>
+						<li v-for="(setting, index) in $page.inspiration.fields.settings" :key="index">
+							<Icon name="checkbox" />{{ setting.fields.label }}
+						</li>
+					</ul>
+				</div>
 
-        <div class="single__steps m--b-6">
-          <h2>Déroulé de l'activité</h2>
+				<div class="single__steps m--b-6">
+					<h2>Déroulé de l'activité</h2>
 
-          <div class="single__step" v-for="(step, index) in $page.inspiration.steps" :key="step.id">
-            <div class="ss__number"><span>{{ index + 1 }}</span></div>
-            <div class="ss__content p--b-6">
-              <h3>{{ step.label }}</h3>
-              <div v-html="step.content"></div>
-            </div>
-          </div>
-        </div>
+					<div class="single__step" v-for="(step, index) in $page.inspiration.fields.steps" :key="index">
+						<div class="ss__number"><span>{{ index + 1 }}</span></div>
+						<div class="ss__content p--b-6">
+							<h3>{{ step.fields.label }}</h3>
+							<div v-html="step.fields.content"></div>
+						</div>
+					</div>
+				</div>
 
-        <div class="single__suggestions m--b-6">
-          <h2>Suggestions et variantes</h2>
+				<div class="single__suggestions m--b-6">
+					<h2>Suggestions et variantes</h2>
 
-          <div v-for="suggestion in $page.inspiration.suggestions" :key="suggestion.id" class="ssu__item">
-            <Icon name="idea" />
-            <div v-html="suggestion.content"></div>
-          </div>
-        </div>
+					<div v-for="(suggestion, index) in $page.inspiration.fields.suggestions" :key="index" class="ssu__item">
+						<Icon name="idea" />
+						<div v-html="suggestion.fields.content"></div>
+					</div>
+				</div>
 
-        <div class="single__ressources">
-          <h2>Ressources</h2>
+				<div class="single__ressources">
+					<h2>Ressources</h2>
 
-          <ul>
-            <li v-for="ressource in $page.inspiration.ressources" :key="ressource.id">
-              <a :href="ressource.url" target="_blank"><Icon name="external-link" /> {{ ressource.label }}</a>
-            </li>
-          </ul>
-        </div>
-      </section>
-      <section class="single__sidebar">
-        <SingleCard
-            ref="card"
-            class="single__card"
-            :activity="$page.inspiration.activity"
-            :goal="$page.inspiration.goal"
-            :level="$page.inspiration.level"
-            :group-size="$page.inspiration.groupSize"
-            :length="$page.inspiration.length"
-            :timing="$page.inspiration.timing.title"
-            :goal-label="$page.inspiration.goalLabel"
-            :added-value="$page.inspiration.addedValue"
-            :style="{top: cardTopPosition + 'px'}"
-          />
-      </section>
-    </div>
+					<ul>
+						<li v-for="(ressource, index) in $page.inspiration.fields.ressources" :key="index">
+							<a :href="ressource.fields.url" target="_blank"><Icon name="external-link" /> {{ ressource.fields.label }}</a>
+						</li>
+					</ul>
+				</div>
+			</section>
+			<section class="single__sidebar">
+				<SingleCard
+					ref="card"
+					class="single__card"
+					v-bind="sidebarProps"
+					:style="{top: cardTopPosition + 'px'}"
+				/>
+			</section>
+		</div>
 
-    <SubFooterVideo slot="sub-footer-left" />
-    <SubFooterSignup slot="sub-footer-right" />
-  </Layout>
+		<SubFooterVideo slot="sub-footer-left" />
+		<SubFooterSignup slot="sub-footer-right" />
+	</Layout>
 </template>
 
 <page-query>
-query page($id: ID!) {
-  inspiration: contentfulPage(id: $id) {
-    title
-    goalLabel
-    addedValue
-    summary(html: true)
-    prerequisite(html: true)
-    settings {
-      id
-      label
-    }
-    steps {
-      id
-      label
-      content (html: true)
-    }
-    thumbnail {
-      file {
-        url
-      }
-    }
-    goal {
-      id
-      title
-    }
-    level {
-      id
-    }
-    length {
-      id
-      minValue
-      maxValue
-    }
-    groupSize {
-      id
-    }
-    timing {
-      id
-      title
-    }
-    activity {
-      key
-      title
-      activityType {
-        key
-        title
-      }
-    }
-    ressources {
-      id
-      label
-      url
-    }
-    suggestions {
-      id
-      content (html: true)
-    }
-  }
+query page($id: ID!, $locale: String!) {
+	inspiration: inspiration(id: $id) {
+		id
+		title
+		url
+		fields {
+			thumbnail
+			keywords
+			goal {
+				sys{id}
+				fields {title}
+			}
+			level{sys{id}}
+			timing{sys{id}}
+			groupSize{sys{id}}
+			length{
+				sys {id}
+				fields {
+					minValue
+					maxValue
+					value
+				}
+			}
+			goalLabel
+			addedValue
+			activity {
+				sys { id }
+				fields {
+					key
+					title
+				}
+			}
+			summary
+			prerequisite
+			settings {
+				fields {
+				label
+				}
+			}
+			steps {
+				fields {
+					label
+					content
+				}
+			}
+			suggestions {
+				fields {
+				content
+				}
+			}
+			ressources {
+				fields{
+				url
+				label
+				}
+			}
+		}
+	}
+
+	activities: allActivity (filter: {locale: { eq: $locale}}) {
+		edges {
+			node {
+				id
+				sysId
+				locale
+				title
+				key
+				activityType {
+					fields {
+						title
+						key
+					}
+				}
+			}
+		}
+	}
 }
 </page-query>
 
@@ -169,54 +180,97 @@ import ActivityIcon from '~/components/ActivityIcon';
 import BorderedIcon from '~/components/BorderedIcon';
 
 export default {
-  metaInfo() {
-    return {
-      title: this.$page.inspiration.title
-    }
-  },
+	metaInfo() {
+		return {
+			title: this.title
+		}
+	},
 
-  components: {
-    SubFooterVideo,
-    SubFooterSignup,
-    SingleCard,
-    ActivityIcon,
-    BorderedIcon
-  },
+	components: {
+		SubFooterVideo,
+		SubFooterSignup,
+		SingleCard,
+		ActivityIcon,
+		BorderedIcon
+	},
 
-  data () {
-    return {
-      cardTopPosition: 0,
-      isCoverMobileCollapse: false
-    };
-  },
+	data () {
+		return {
+			cardTopPosition: 0,
+			isCoverMobileCollapse: false
+		};
+	},
 
-  mounted () {
-    this.$nextTick(() => {
-      
-      
-      if (this.$store.state.isSmallWindow) {
-        document.addEventListener('scroll', this.throttleScroll);
-      } else {
-        const $header = document.querySelector('.header');
-        const $breadcrumb = document.querySelector('.single__breadcrumb');
-        this.cardTopPosition = $header.offsetHeight + $breadcrumb.offsetHeight;
-      }
-    });
+	computed: {
+		title () {
+			return this.$page.inspiration.title;
+		},
 
-    
-  },
+		thumbnail () {
+			return this.$page.inspiration.fields.thumbnail;
+		},
 
-  beforeDestroy () {
-    document.removeEventListener('scroll', this.throttleScroll);
-  },
+		goalLabel () {
+			return this.$page.inspiration.fields.goal.fields.title;
+		},
 
-  methods: {
+		activityDefinition () {
+			const activityId = this.$page.inspiration.fields.activity.sys.id;
+			const activityDefinition = this.$page.activities.edges.map((e) => e.node).find((n) => n.sysId === activityId);
+			return activityDefinition;
+		},
+		
+		activityType () {
+			return this.activityDefinition.activityType.fields.key;
+		},
+
+		sidebarProps () {
+			const page = this.$page.inspiration;
+			return {
+				locale: this.$context.locale,
+				goalId: page.fields.goal.sys.id,
+				levelId: page.fields.level.sys.id,
+				timingId: page.fields.timing.sys.id,
+				groupSizeIds: page.fields.groupSize.map((n) => n.sys.id),
+				lengthIds: page.fields.length.map((n) => n.sys.id),
+				activity: this.activityDefinition,
+				goalLabel: page.fields.goalLabel,
+				addedValue: page.fields.addedValue
+			};
+		}
+	},
+
+	created () {
+		this.$i18n.set(this.$context.locale);
+	},
+
+	mounted () {
+		this.$nextTick(() => {
+			
+			
+			if (this.$store.state.isSmallWindow) {
+				document.addEventListener('scroll', this.throttleScroll);
+			} else {
+				const $header = document.querySelector('.header');
+				const $breadcrumb = document.querySelector('.single__breadcrumb');
+				this.cardTopPosition = $header.offsetHeight + $breadcrumb.offsetHeight;
+			}
+		});
+
+		
+	},
+
+	beforeDestroy () {
+		document.removeEventListener('scroll', this.throttleScroll);
+	},
+
+	methods: {
 		throttleScroll: throttle(function () {
 				this.scroll();
 		}, 30),
 
 		scroll () {
-      this.isCoverMobileCollapse = document.documentElement.scrollTop > this.$refs.coverMobile.getBoundingClientRect().top + this.$refs.coverMobile.offsetHeight * .4;
+			this.isCoverMobileCollapse = document.documentElement.scrollTop > this.$refs.coverMobile.getBoundingClientRect().top + this.$refs.coverMobile.offsetHeight * .4;
 		}
 	}
 }
@@ -224,303 +278,303 @@ export default {
 
 <style lang="scss" scoped>
 .single {
-  @each $key, $value in $colors-activity-types {
-    &[data-activity-type="#{$key}"] {
-      .ss__number span {
-        border-color: $value;
-      }
+	@each $key, $value in $colors-activity-types {
+		&[data-activity-type="#{$key}"] {
+			.ss__number span {
+				border-color: $value;
+			}
 
-      .single__settings:before {
-        background-color: $value;
-      }
-    }
-  }
+			.single__settings:before {
+				background-color: $value;
+			}
+		}
+	}
 
-  /deep/ .content {
-    background: url('../assets/images/single-bg.svg') center right no-repeat;
-  }
+	/deep/ .content {
+		background: url('../assets/images/single-bg.svg') center right no-repeat;
+	}
 }
 
 .single__wrapper {
-  position: relative;
-  display: flex;
-  
-  @include breakpoint(medium) {
-    z-index: 0;
-    display: flex;
-    flex-direction: column;
+	position: relative;
+	display: flex;
+	
+	@include breakpoint(medium) {
+		z-index: 0;
+		display: flex;
+		flex-direction: column;
 
-    > .single__sidebar {
-      order: 0;
-    }
+		> .single__sidebar {
+			order: 0;
+		}
 
-    > .single__content {
-      order: 1;
-    }
-  }
+		> .single__content {
+			order: 1;
+		}
+	}
 }
 
 .single__content {
-  padding-top: 15rem;
+	padding-top: 15rem;
 
-  @include breakpoint(medium) {
-    padding-top: 2rem;
-  }
+	@include breakpoint(medium) {
+		padding-top: 2rem;
+	}
 }
 
 .single__sidebar {
-  padding: 0 2rem;
-  flex: 0 0 400px;
+	padding: 0 2rem;
+	flex: 0 0 400px;
 
-  @include breakpoint(medium) {
-    padding: 2rem 0;
-    flex: 0 0 auto;
-  }
+	@include breakpoint(medium) {
+		padding: 2rem 0;
+		flex: 0 0 auto;
+	}
 }
 
 .single__cover-wrapper {
-  position: relative;
-  width: 100%;
-  z-index: 0;
+	position: relative;
+	width: 100%;
+	z-index: 0;
 }
 
 .single__cover {
-  background-size: cover;
-  background-position: center center;
-  background-repeat: no-repeat;
-  position: absolute;
-  top: 4rem;
-  left: 0;
-  right: 0;
-  height: 300px;
+	background-size: cover;
+	background-position: center center;
+	background-repeat: no-repeat;
+	position: absolute;
+	top: 4rem;
+	left: 0;
+	right: 0;
+	height: 300px;
 }
 
 .single__cover-mobile {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  height: 300px;
-  display: none;
+	position: sticky;
+	top: 0;
+	z-index: 100;
+	height: 300px;
+	display: none;
 
-  @include breakpoint(medium) {
-    display: block;
-  }
+	@include breakpoint(medium) {
+		display: block;
+	}
 
-  .single__cover {
-    top: 0;
-    z-index: 0;
-    height: 300px;
-    padding: 2rem;
-    transition: all 0.3s ease;
-  }
+	.single__cover {
+		top: 0;
+		z-index: 0;
+		height: 300px;
+		padding: 2rem;
+		transition: all 0.3s ease;
+	}
 
-  .single__title,
-  .single__goal {
-    position: relative;
-    z-index: 1;
-  }
+	.single__title,
+	.single__goal {
+		position: relative;
+		z-index: 1;
+	}
 
-  .single__goal {
-    transition: opacity 0.3s ease;
-  }
+	.single__goal {
+		transition: opacity 0.3s ease;
+	}
 
-  &--collapsed {
-    .single__cover {
-      height: 150px;
-      box-shadow: 0 0px 30px rgba(0, 0, 0, 0.5);
-    }
+	&--collapsed {
+		.single__cover {
+			height: 150px;
+			box-shadow: 0 0px 30px rgba(0, 0, 0, 0.5);
+		}
 
-    .single__goal {
-      opacity: 0;
-    }
-  }
+		.single__goal {
+			opacity: 0;
+		}
+	}
 }
 
 .single__cm__footer {
-  position: absolute;
-  bottom: -2rem;
-  left: 0;
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  padding: 1rem;
+	position: absolute;
+	bottom: -2rem;
+	left: 0;
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	padding: 1rem;
 }
 
 .single__title {
-  color: color(white);
-  margin: 0;
-  font-size: 46px;
-  text-shadow: 0 0 10px rgba(0, 0, 0, .5);
+	color: color(white);
+	margin: 0;
+	font-size: 46px;
+	text-shadow: 0 0 10px rgba(0, 0, 0, .5);
 }
 
 .single__goal {
-  color: color(white);
-  font-size: 20px;
-  margin-bottom: 2rem;
-  display: block;
-  text-shadow: 0 0 10px rgba(0, 0, 0, .5);
+	color: color(white);
+	font-size: 20px;
+	margin-bottom: 2rem;
+	display: block;
+	text-shadow: 0 0 10px rgba(0, 0, 0, .5);
 }
 
 .single__card {  
-  position: -webkit-sticky;
-  position: sticky;
-  z-index: 90;
-  top: 0;
-  right: 0;
+	position: -webkit-sticky;
+	position: sticky;
+	z-index: 90;
+	top: 0;
+	right: 0;
 
-  @include breakpoint(medium) {
-    position: relative;
-    z-index: 0;
-  }
+	@include breakpoint(medium) {
+		position: relative;
+		z-index: 0;
+	}
 }
 
 .single__summary {
-  position: relative;
-  background: linear-gradient(180deg, #FFFFFF 55.21%, rgba(255, 255, 255, 0) 100%);
-  padding: 3rem;
-  margin: 0 0 0 -3rem;
+	position: relative;
+	background: linear-gradient(180deg, #FFFFFF 55.21%, rgba(255, 255, 255, 0) 100%);
+	padding: 3rem;
+	margin: 0 0 0 -3rem;
 
-  @include breakpoint(medium) {
-    margin: 0;
-    padding: 0;
-    background: transparent;
-  }
+	@include breakpoint(medium) {
+		margin: 0;
+		padding: 0;
+		background: transparent;
+	}
 
-  &:before {
-    content: '';
-    position: absolute;
-    z-index: -1;
-    top: 0;
-    left: 0;
-    height: 50px;
-    right: 0;
-    width: 100%;
-    box-shadow: 0px -7px 14px rgba(0, 0, 0, 0.25);
+	&:before {
+		content: '';
+		position: absolute;
+		z-index: -1;
+		top: 0;
+		left: 0;
+		height: 50px;
+		right: 0;
+		width: 100%;
+		box-shadow: 0px -7px 14px rgba(0, 0, 0, 0.25);
 
-    @include breakpoint(medium) {
-      content: none;
-    }
-  }
+		@include breakpoint(medium) {
+			content: none;
+		}
+	}
 }
 
 .single__settings {
-    position: relative;
-    background: white;
-    border: 1px dashed color(grey-light);
-    padding: 2rem;
+		position: relative;
+		background: white;
+		border: 1px dashed color(grey-light);
+		padding: 2rem;
 
-    &:before {
-      content: '•';
-      width: 25px;
-      height: 30px;
-      background-color: color(grey);
-      border-radius: 5px 0 0 5px;
-      position: absolute;
-      top: -1px;
-      left: -25px;
-      color: color(grey-lighter);
-      font-size: 30px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      line-height: 1;
-    }
+		&:before {
+			content: '•';
+			width: 25px;
+			height: 30px;
+			background-color: color(grey);
+			border-radius: 5px 0 0 5px;
+			position: absolute;
+			top: -1px;
+			left: -25px;
+			color: color(grey-lighter);
+			font-size: 30px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			line-height: 1;
+		}
 
-    > h4 {
-      color: color(grey);
-      display: flex;
-      align-items: center;
+		> h4 {
+			color: color(grey);
+			display: flex;
+			align-items: center;
 
-      > .bordered-icon {
-        margin-right: 1rem;
-      }
+			> .bordered-icon {
+				margin-right: 1rem;
+			}
 
-      > .activity-icon {
-        margin-left: 1rem;
-      }
-    }
+			> .activity-icon {
+				margin-left: 1rem;
+			}
+		}
 
-    ul {
-      list-style: none;
+		ul {
+			list-style: none;
 
-      > li {
-        display: flex;
-        align-items: center;
+			> li {
+				display: flex;
+				align-items: center;
 
-        > .icon {
-          margin-right: 1rem;
-        }
-      }
-    }
+				> .icon {
+					margin-right: 1rem;
+				}
+			}
+		}
 }
 
 .single__step {
-  display: flex;
+	display: flex;
 
-  &:last-child {
-    .ss__number:after {
-      display: none;
-    }
-  }
+	&:last-child {
+		.ss__number:after {
+			display: none;
+		}
+	}
 
-  $ss-number-size: 25px;
-  .ss__number {
-    flex: 0 0 $ss-number-size;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+	$ss-number-size: 25px;
+	.ss__number {
+		flex: 0 0 $ss-number-size;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
 
-    &:after {
-      content: '';
-      flex: 1;
-      width: 1px;
-      border-left: 1px dashed color(grey-light);
-    }
+		&:after {
+			content: '';
+			flex: 1;
+			width: 1px;
+			border-left: 1px dashed color(grey-light);
+		}
 
-    > span {
-      position: relative;
-      z-index: 1;
-      width: $ss-number-size;
-      height: $ss-number-size;
-      border-radius: $ss-number-size/2;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border: 2px solid color(grey);
-      font-weight: fw(medium);
-    }
-  }
+		> span {
+			position: relative;
+			z-index: 1;
+			width: $ss-number-size;
+			height: $ss-number-size;
+			border-radius: $ss-number-size/2;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			border: 2px solid color(grey);
+			font-weight: fw(medium);
+		}
+	}
 
-  .ss__content {
-    padding-left: 1rem;
-  }
+	.ss__content {
+		padding-left: 1rem;
+	}
 }
 
 .single__ressources {
-  ul {
-    list-style: none;
-    padding: 0;
+	ul {
+		list-style: none;
+		padding: 0;
 
-    a {
-      display: flex;
-      align-items: center;
-      color: $body-font-color;
+		a {
+			display: flex;
+			align-items: center;
+			color: $body-font-color;
 
-      > .icon {
-        margin-right: 1rem;
-      }
-    }
-  }
+			> .icon {
+				margin-right: 1rem;
+			}
+		}
+	}
 }
 
 .single__suggestions {
-  .ssu__item {
-    display: flex;
-    align-items: flex-start;
+	.ssu__item {
+		display: flex;
+		align-items: flex-start;
 
-    > .icon {
-      margin-right: 1rem;
-    }
-  }
+		> .icon {
+			margin-right: 1rem;
+		}
+	}
 }
 </style>

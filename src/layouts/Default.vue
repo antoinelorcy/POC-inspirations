@@ -1,6 +1,6 @@
 <template>
   <div class="layout" :class="{'layout--with-mobile-nav': hasMobileNavigation }">
-    <Header :has-reading-progress="hasReadingProgress" />
+    <Header :has-reading-progress="hasReadingProgress" :locale="locale" />
     <section class="content">
       <slot />
     </section>
@@ -37,7 +37,8 @@ export default {
   },
 
   props: {
-    hasReadingProgress: Boolean
+    hasReadingProgress: Boolean,
+    locale: String
   },
 
   mounted () {

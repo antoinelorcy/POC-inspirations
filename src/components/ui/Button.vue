@@ -3,6 +3,7 @@ import Spinner from './Spinner';
 
 export default {
 	props: {
+		to: String,
 		label: String,
 		icon: String,
 		/**
@@ -28,7 +29,7 @@ export default {
 </script>
 
 <template>
-	<button
+	<component :is="to ? 'g-link' : 'button'"
 		class="btn"
 		:class="[{
 			'btn--is-icon': !label
@@ -36,6 +37,7 @@ export default {
 			'btn--fill-' + fill,
 			'btn--color-' + color
 		]"
+		:to="to"
 		@click="$emit('click', $event)"
 	>
 		<Spinner v-if="isLoading" />
@@ -43,7 +45,7 @@ export default {
 			<Icon v-if="icon" :name="icon" />
 			{{ label }}
 		</template>
-	</button>
+	</component>
 </template>
 
 <style lang="scss" scoped>
@@ -72,6 +74,8 @@ export default {
 	border-radius: 5px;
 	padding: space(2) space(3);
 	font-weight: fw(medium);
+	height: 40px;
+	text-decoration: none;
 
 	&:hover {
 		box-shadow: 2px 2px 0 color(grey-light);
