@@ -70,7 +70,7 @@ deploy:
     - helm init -c
     - echo $CI_COMMIT_REF_SLUG
   script:
-    - helm upgrade inspirations ./helm/inspirations --recreate-pods --wait --timeout 600
+    - helm upgrade inspirations ./helm/inspirations --recreate-pods --wait --timeout 600 --namespace inspirations
   only:
     refs:
       - /^master$/
