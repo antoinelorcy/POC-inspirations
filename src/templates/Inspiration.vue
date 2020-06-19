@@ -182,7 +182,11 @@ import BorderedIcon from '~/components/BorderedIcon';
 export default {
 	metaInfo() {
 		return {
-			title: this.title
+			title: this.title,
+			meta: [
+				{ name: 'author', content: 'Beekast' },
+				{ name: 'description', content: this.title }
+			]
 		}
 	},
 
@@ -246,8 +250,6 @@ export default {
 
 	mounted () {
 		this.$nextTick(() => {
-			
-			
 			if (this.$store.state.isSmallWindow) {
 				document.addEventListener('scroll', this.throttleScroll);
 			} else {
@@ -255,6 +257,12 @@ export default {
 				const $breadcrumb = document.querySelector('.single__breadcrumb');
 				this.cardTopPosition = $header.offsetHeight + $breadcrumb.offsetHeight;
 			}
+
+			const $steps = document.querySelector('.single__steps');
+			const $gifs = $steps.querySelectorAll('figure.gif');
+			$gifs.forEach(($gif) => {
+				this.setGif($gif);
+			});
 		});
 
 		
@@ -271,6 +279,31 @@ export default {
 
 		scroll () {
 			this.isCoverMobileCollapse = document.documentElement.scrollTop > this.$refs.coverMobile.getBoundingClientRect().top + this.$refs.coverMobile.offsetHeight * .4;
+		},
+
+		setGif ($gif) {
+			const img = $gif.querySelector('img');
+			const gif = img.dataset.gif;
+
+			// Preload
+			const gifImage = new Image();
+			gifImage.src = gif;
+
+			// onClick
+			$gif.addEventListener('click', (e) => {
+				console.log('click');
+				const $e = e.target.querySelector('img');
+				const imgSrc = $e.src;
+				const imgGif = $e.dataset.gif;
+				$e.src = imgGif;
+				$e.dataset.gif = imgSrc;
+				
+				if ($e.src.indexOf('.gif') > -1) {
+					e.target.classList.add('gif--playing');
+				} else {
+					e.target.classList.remove('gif--playing');
+				}
+			});
 		}
 	}
 }
@@ -576,5 +609,13 @@ export default {
 			margin-right: 1rem;
 		}
 	}
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 50px;
 }
 </style>

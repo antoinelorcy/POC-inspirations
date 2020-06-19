@@ -6,6 +6,7 @@
 // To restart press CTRL + C in terminal and run `gridsome develop`
 const contentful = require("contentful");
 const { documentToHtmlString }  = require('@contentful/rich-text-html-renderer');
+const { BLOCKS, INLINES } = require ('@contentful/rich-text-types');
 
 let locales = [];
 const client = contentful.createClient({
@@ -32,16 +33,32 @@ async function getEntries (store, locales) {
 				});
 			})
 
-		// Inspirations
 		await client.getEntries({
 			locale,
-			content_type: 'page'
+			content_type: 'pageGifs'
 		})
-			.then((entry) => {  
-				for (const page of getPageFormat(entry)) {
+		.then(async (entry) => {
+			const gifs = entry.items.map((e) => {
+				return {
+					sysId: e.sys.id,
+					locale: locale,
+					title: e.fields.title,
+					preview: e.fields.preview.fields.file.url,
+					gif: e.fields.gif.fields.file.url
+				}
+			})
+
+			// Inspirations
+			await client.getEntries({
+				locale,
+				content_type: 'page'
+			})
+			.then((entry) => {
+				for (const page of getPageFormat(entry, gifs)) {
 					cInspi.addNode(page)
 				}
 			})
+		})
 
 		
 		const filters = ['goal', 'groupSize', 'length', 'level', 'timing', 'activity', 'tag'];
@@ -68,7 +85,7 @@ function getLocaleUrl (locale) {
   return locale === 'en' ? '/' : '/fr/';
 }
 
-function getPageFormat (entry) {
+function getPageFormat (entry, gifs) {
   return entry.items.map((item) => {
 	const locale = item.sys.locale;
 	const sysId = item.sys.id;
@@ -88,7 +105,15 @@ function getPageFormat (entry) {
 				// Transform rich content subfield as html
 				const f = value.map((v) => {
 					if (v.fields && v.fields.content) {
-						v.fields.content = documentToHtmlString(v.fields.content);
+						const options = {
+							renderNode: {
+								[INLINES.EMBEDDED_ENTRY]: (node) => {
+									return getGif(node.data.target.sys.id, locale, gifs);
+								},
+								[BLOCKS.EMBEDDED_ASSET]: (node) => `<img src="${node.data.target.fields.file.url}" alt="${node.data.target.fields.title}" />`
+							}
+						}
+						v.fields.content = documentToHtmlString(v.fields.content, options);
 					} else if (v.fields && v.sys.type === 'Asset') {
 						v = v.fields.file.url;
 					}
@@ -96,6 +121,7 @@ function getPageFormat (entry) {
 				});
 
 				fields[key] = f;
+				fields[key] = value;
 			} else {
 				fields[key] = value;
 			}
@@ -126,6 +152,11 @@ function getFilterFormat (entry) {
 
 		return node;
 	})
+}
+
+function getGif (sysId, locale, gifs) {
+	const gif = gifs.find((g) => g.sysId === sysId && g.locale === locale);
+	return `<figure class="gif"><img src="${gif.preview}" data-alt="${gif.title}" data-gif="${gif.gif}" class="gif__img" /></figure>`;
 }
 
 function isRichText (value) {
