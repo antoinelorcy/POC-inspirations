@@ -156,7 +156,13 @@ function getFilterFormat (entry) {
 
 function getGif (sysId, locale, gifs) {
 	const gif = gifs.find((g) => g.sysId === sysId && g.locale === locale);
-	return `<figure class="gif"><img src="${gif.preview}" data-alt="${gif.title}" data-gif="${gif.gif}" class="gif__img" /></figure>`;
+	return `<figure class="gif">
+		<span>
+			<svg width="39" height="44" viewBox="0 0 39 44" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+				<path d="M38.2261 21.9691L0.746034 43.6082L0.746036 0.330002L38.2261 21.9691Z" fill="currentColor"/>
+			</svg>
+		</span>
+		<img src="${gif.preview}" data-alt="${gif.title}" data-gif="${gif.gif}" class="gif__img" /></figure>`;
 }
 
 function isRichText (value) {
