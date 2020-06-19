@@ -9,6 +9,7 @@
 		  :levels="levels"
 		  :length="length"
 		  :timings="timings"
+		  :tags="tags"
 		  :filters-count="filtersCount"
 		  :results-count="resultsCount"
 		  @change-length="onLengthChange"
@@ -80,6 +81,7 @@ query ($locale: String!) {
 							value
 						}
 					}
+					tag{sys{id}}
 					goalLabel
 					addedValue
 					activity {
@@ -149,6 +151,17 @@ query ($locale: String!) {
 			}
 		}
 	}
+
+	tags: allTag (sortBy: "order", order: ASC, filter: {locale: { eq: $locale}}) {
+		edges {
+			node {
+				id
+				sysId
+				locale
+				title
+			}
+		}
+	}
 }
 </page-query>
 
@@ -182,6 +195,7 @@ export default {
 		groupSizes: [],
 		levels: [],
 		timings: [],
+		tags: [],
 		length: [5, 100],
 		search: '',
 		order: {},
@@ -201,7 +215,6 @@ export default {
 		this.order = this.orders[0];
 
 		this.goals = this.$page.goals.edges
-			.filter((g) => g.node.locale === this.$context.locale)
 			.map((g) => {
 				return {
 					id: g.node.id,
@@ -212,7 +225,6 @@ export default {
 			})
 
 		this.groupSizes = this.$page.groupSizes.edges
-			.filter((g) => g.node.locale === this.$context.locale)
 			.map((g) => {
 				return {
 					id: g.node.id,
@@ -223,7 +235,6 @@ export default {
 			})
 
 		this.levels = this.$page.levels.edges
-			.filter((g) => g.node.locale === this.$context.locale)
 			.map((g) => {
 				return {
 					id: g.node.id,
@@ -234,12 +245,21 @@ export default {
 			})
 
 		this.timings = this.$page.timings.edges
-			.filter((g) => g.node.locale === this.$context.locale)
 			.map((g) => {
 				return {
 					id: g.node.id,
 					sysId: g.node.sysId,
 					label: g.node.timing,
+					checked: false
+				}
+			})
+
+		this.tags = this.$page.tags.edges
+			.map((g) => {
+				return {
+					id: g.node.id,
+					sysId: g.node.sysId,
+					label: g.node.title,
 					checked: false
 				}
 			})
@@ -266,6 +286,7 @@ export default {
 				timingId: edge.node.fields.timing.sys.id,
 				groupSizeIds: edge.node.fields.groupSize.map((n) => n.sys.id),
 				lengthIds: edge.node.fields.length.map((n) => n.sys.id),
+				tagIds: edge.node.fields.tag.map((n) => n.sys.id),
 				activityIcon : edge.node.fields.activity.fields.key
 			}
 		});
@@ -291,6 +312,11 @@ export default {
 		if (this.checkedTimings.length && r) {
 		  if (!p.timingId) return;
 		  r = this.checkedTimings.includes(p.timingId);
+		}
+
+		if (this.checkedTags.length && r) {
+		  if (!p.tagIds.length) return;
+		  r = (p.tagIds.filter(tagId => this.checkedTags.includes(tagId))).length;
 		}
 
 		if (this.length.length && r) {
@@ -335,6 +361,10 @@ export default {
 	
 	checkedTimings () {
 	  return this.timings.filter((t) => t.checked).map((t) => t.sysId);
+	},
+
+	checkedTags () {
+		return this.tags.filter((t) => t.checked).map((t) => t.sysId);
 	},
 
 	filtersCount () {

@@ -11,15 +11,16 @@ import '~/assets/scss/main.scss'
 import DefaultLayout from '~/layouts/Default.vue'
 
 import Button from '~/components/ui/Button.vue'
+import Checkbox from '~/components/ui/Checkbox.vue'
+import CheckboxButton from '~/components/ui/CheckboxButton.vue'
+import Collapse from '~/components/ui/Collapse.vue'
 import Icon from '~/components/ui/Icon.vue'
+import Input from '~/components/ui/Input.vue'
 import Link from '~/components/ui/Link.vue'
 import Notification from '~/components/ui/Notification.vue'
-import Checkbox from '~/components/ui/Checkbox.vue'
-import Collapse from '~/components/ui/Collapse.vue'
 import Radio from '~/components/ui/Radio.vue'
-import Input from '~/components/ui/Input.vue'
-import Textarea from '~/components/ui/Textarea.vue'
 import Select from '~/components/ui/Select.vue'
+import Textarea from '~/components/ui/Textarea.vue'
 
 export default function (Vue, { router, head, isClient, appOptions }) {
   // Layouts
@@ -27,15 +28,16 @@ export default function (Vue, { router, head, isClient, appOptions }) {
 
   // Components
   Vue.component('Button', Button)
+  Vue.component('Checkbox', Checkbox)
+  Vue.component('CheckboxButton', CheckboxButton)
+  Vue.component('Collapse', Collapse)
   Vue.component('Icon', Icon)
+  Vue.component('Input', Input)
   Vue.component('Link', Link)
   Vue.component('Notification', Notification)
-  Vue.component('Checkbox', Checkbox)
-  Vue.component('Collapse', Collapse)
   Vue.component('Radio', Radio)
-  Vue.component('Input', Input)
-  Vue.component('Textarea', Textarea)
   Vue.component('Select', Select)
+  Vue.component('Textarea', Textarea)
 
   // Vuex store
   Vue.use(Vuex);

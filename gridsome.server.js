@@ -44,7 +44,7 @@ async function getEntries (store, locales) {
 			})
 
 		
-		const filters = ['goal', 'groupSize', 'length', 'level', 'timing', 'activity'];
+		const filters = ['goal', 'groupSize', 'length', 'level', 'timing', 'activity', 'tag'];
 
 		for (filter of filters) {
 			await client.getEntries({

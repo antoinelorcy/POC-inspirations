@@ -85,6 +85,23 @@
 
 			<Collapse v-model="timingsExpanded" :is-enable="$store.state.isSmallWindow">
 				<template #header>
+					<h3>Tags <Notification v-if="$store.state.isSmallWindow && tagsChecked.length" :count="tagsChecked.length" /></h3>
+				</template>
+				<template #content>
+					<div class="display-flex flex-wrap">
+						<CheckboxButton
+							v-for="tag in tags"
+							:key="tag.id"
+							:label="tag.label"
+							v-model="tag.checked"
+							class="m--1"
+						/>
+					</div>
+				</template>
+			</Collapse>
+
+			<Collapse v-model="timingsExpanded" :is-enable="$store.state.isSmallWindow">
+				<template #header>
 					<h3>Phase du déroulé <Notification v-if="$store.state.isSmallWindow && timingsChecked.length" :count="timingsChecked.length" /></h3>
 				</template>
 				<template #content>
@@ -124,6 +141,7 @@ export default {
 		levels: Array,
 		length: Array,
 		timings: Array,
+		tags: Array,
 		filtersCount: Number,
 		resultsCount: Number
 	},
@@ -160,6 +178,10 @@ export default {
 
 		timingsChecked () {
 			return this.timings.filter((g) => g.checked);
+		},
+
+		tagsChecked () {
+			return this.tags.filter((g) => g.checked);
 		}
 	}
 }
