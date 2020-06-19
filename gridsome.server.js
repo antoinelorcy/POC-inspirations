@@ -72,6 +72,7 @@ function getPageFormat (entry) {
   return entry.items.map((item) => {
 	const locale = item.sys.locale;
 	const sysId = item.sys.id;
+	const createdAt = item.sys.createdAt;
 	const title = item.fields.title;
 	const slug = slugify(title);
 	const url = `${getLocaleUrl(locale)}inspiration/${slug}`;
@@ -104,6 +105,7 @@ function getPageFormat (entry) {
 	return {
 		locale,
 		sysId,
+		createdAt,
 		title,
 		url,
 		slug,

@@ -65,6 +65,7 @@ query ($locale: String!) {
 			node {
 				id
 				title
+				createdAt
 				url
 				fields {
 					thumbnail
@@ -200,8 +201,9 @@ export default {
 		search: '',
 		order: {},
 		orders: [
-			{ id: 'date', value: 'date', label: 'Par date' },
-			{ id: 'name', value: 'name', label: 'Par nom' }
+			{ id: 'date', value: 'date', label: 'Date d\'ajout' },
+			{ id: 'name', value: 'name', label: 'Nom de l\'activité' },
+			{ id: 'goal', value: 'goal', label: 'Objectif principal' }
 		],
 		filtersVisible: false
 		}
@@ -337,11 +339,14 @@ export default {
   
 	  switch (this.order.value) {
 		case 'date':
-		  return filteredPages.sort((a, b) => b.updatedAt - a.updatedAt);
+		  return filteredPages.sort((a, b) => b.createdAt - a.createdAt);
 		  break;
 		case 'name':
 		  return filteredPages.sort((a, b) => a.title.localeCompare(b.title));
 		  break;
+		case 'goal':
+			return filteredPages.sort((a, b) => a.goalId.localeCompare(b.goalId));
+			break;
 		default:
 		  return filteredPages;
 	  }
