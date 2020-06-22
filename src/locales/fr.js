@@ -9,8 +9,13 @@ export default {
 	},
 	HEADER: {
 		HOME: 'Accueil',
-		TEMPLATES: 'Tous les templates',
+		TEMPLATES: 'Tous les modèles',
 		DISCOVER: 'Découvrir Beekast'
+	},
+	MOBILE_NAV: {
+		HOME: 'Accueil',
+		TEMPLATES: 'Modèles',
+		DISCOVER: 'Beekast'
 	},
 	ACCOUNT: {
 		SIGNIN: 'Se connecter'

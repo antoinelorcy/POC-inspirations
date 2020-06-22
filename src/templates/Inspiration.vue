@@ -6,14 +6,31 @@
 
 		<div ref="coverMobile" class="single__cover-mobile" :class="{'single__cover-mobile--collapsed': isCoverMobileCollapse}">
 			<div class="single__cover" :style="{backgroundImage: `url(${thumbnail})`}">
-				 <h1 class="single__title">{{ title }}</h1>
-			<span class="single__goal">> {{ goalLabel }}</span>
+				<h1 class="single__title">{{ title }}</h1>
+				<span class="single__goal">> {{ goalLabel }}</span>
+				
+				<div v-if="isMobileNavigationVisible" class="single__mobile-navigation">
+					<ul>
+						<li><a href="#summary" @click.prevent="scrollTo('#summary')">Résumé</a></li>
+						<li><a href="#prerequisite" @click.prevent="scrollTo('#prerequisite')">Pré-requis</a></li>
+						<li>
+							<a href="#steps" @click.prevent="scrollTo('#steps')">Déroulé</a>
+							<ul>
+								<li v-for="(step, index) in $page.inspiration.fields.steps" :key="index">
+									<a :href="`#step-${index}`" @click.prevent="scrollTo(`#step-${index}`)">Etape {{ index + 1 }}</a>
+								</li>
+							</ul>
+						</li>
+						<li><a href="#suggestions" @click.prevent="scrollTo('#suggestions')">Suggestions et variantes</a></li>
+						<li><a href="#ressources" @click.prevent="scrollTo('#ressources')">Ressources</a></li>
+					</ul>
+				</div>
+
 				<div class="single__cm__footer">
-					<Button icon="burger" color="white" />
+					<Button :icon="isMobileNavigationVisible? 'close' : 'burger'" color="white" @click="toggleMobileNavigation" />
 					<Button label="Utiliser ce modèle" color="primary" />
 				</div>
 			</div>
-		 
 		</div>
 
 		<div class="single__cover-wrapper hide-sm">
@@ -24,9 +41,9 @@
 			<section class="single__content">
 				<h1 class="single__title hide-sm">{{ title }}</h1>
 				<span class="single__goal hide-sm">> {{ goalLabel }}</span>
-				<div class="single__summary" v-html="$page.inspiration.fields.summary"></div>
+				<div id="summary" class="single__summary" v-html="$page.inspiration.fields.summary"></div>
 
-				<div class="single__prequisite m--b-6">
+				<div id="prerequisite" class="single__prequisite m--b-6">
 					<h2>Pré-requis</h2>
 					<div v-html="$page.inspiration.fields.prerequisite"></div>
 				</div>
@@ -45,10 +62,10 @@
 					</ul>
 				</div>
 
-				<div class="single__steps m--b-6">
+				<div id="steps" class="single__steps m--b-6">
 					<h2>Déroulé de l'activité</h2>
 
-					<div class="single__step" v-for="(step, index) in $page.inspiration.fields.steps" :key="index">
+					<div :id="`step-${index}`" class="single__step" v-for="(step, index) in $page.inspiration.fields.steps" :key="index">
 						<div class="ss__number"><span>{{ index + 1 }}</span></div>
 						<div class="ss__content p--b-6">
 							<h3>{{ step.fields.label }}</h3>
@@ -57,7 +74,7 @@
 					</div>
 				</div>
 
-				<div class="single__suggestions m--b-6">
+				<div id="suggestions" class="single__suggestions m--b-6">
 					<h2>Suggestions et variantes</h2>
 
 					<div v-for="(suggestion, index) in $page.inspiration.fields.suggestions" :key="index" class="ssu__item">
@@ -66,7 +83,7 @@
 					</div>
 				</div>
 
-				<div class="single__ressources">
+				<div id="ressources" class="single__ressources">
 					<h2>Ressources</h2>
 
 					<ul>
@@ -85,6 +102,14 @@
 				/>
 			</section>
 		</div>
+
+		<Button
+			v-if="isCoverMobileCollapse"
+			icon="arrow-up"
+			color="white"
+			class="single__scroll-top-btn"
+			@click="scrollTop"
+		/>
 
 		<SubFooterVideo slot="sub-footer-left" />
 		<SubFooterSignup slot="sub-footer-right" />
@@ -201,7 +226,8 @@ export default {
 	data () {
 		return {
 			cardTopPosition: 0,
-			isCoverMobileCollapse: false
+			isCoverMobileCollapse: false,
+			isMobileNavigationVisible: false
 		};
 	},
 
@@ -281,6 +307,22 @@ export default {
 			this.isCoverMobileCollapse = document.documentElement.scrollTop > this.$refs.coverMobile.getBoundingClientRect().top + this.$refs.coverMobile.offsetHeight * .4;
 		},
 
+		scrollTo (selector) {
+			const target = document.querySelector(selector);
+			console.log(target.offsetTop + this.$refs.coverMobile.offsetHeight);
+			document.documentElement.scrollTop = target.offsetTop + this.$refs.coverMobile.offsetHeight - 70;
+			this.isMobileNavigationVisible = false;
+		},
+
+		scrollTop () {
+			document.documentElement.scrollTop = 0;
+		},
+
+		toggleMobileNavigation () {
+			// document.documentElement.scrollTop = this.$refs.coverMobile.getBoundingClientRect().top + this.$refs.coverMobile.offsetHeight * .4;
+			this.isMobileNavigationVisible = !this.isMobileNavigationVisible;
+		},
+
 		setGif ($gif) {
 			const img = $gif.querySelector('img');
 			const gif = img.dataset.gif;
@@ -291,7 +333,6 @@ export default {
 
 			// onClick
 			$gif.addEventListener('click', (e) => {
-				console.log('click');
 				const $e = e.target.querySelector('img');
 				const imgSrc = $e.src;
 				const imgGif = $e.dataset.gif;
@@ -411,9 +452,54 @@ export default {
 		transition: opacity 0.3s ease;
 	}
 
+	.single__mobile-navigation {
+		position: absolute;
+		top: 100%;
+		left: 0;
+		background: white;
+		width: 100%;
+		padding: 3rem 4rem;
+		box-shadow: 0 0px 10px rgba(0, 0, 0, 0.2);
+		animation: mobile-nav 0.3s ease;
+
+		@keyframes mobile-nav {
+			0% {
+				opacity: 0;
+			}
+
+			100% {
+				opacity: 1;
+			}
+		}
+
+		ul {
+			list-style: none;
+			margin: 0;
+
+			li {
+				margin: 0.5rem 0;
+			}
+		}
+
+		> ul {
+			padding: 0;
+
+			> li {
+				margin-bottom: 1.5rem;
+			}
+		}
+
+		a {
+			font-size: fs(large);
+			font-weight: fw(medium);
+			text-decoration: none;
+			color: color(grey);
+		}
+	}
+
 	&--collapsed {
 		.single__cover {
-			height: 150px;
+			height: 130px;
 			box-shadow: 0 0px 30px rgba(0, 0, 0, 0.5);
 		}
 
@@ -438,6 +524,10 @@ export default {
 	margin: 0;
 	font-size: 46px;
 	text-shadow: 0 0 10px rgba(0, 0, 0, .5);
+
+	@include breakpoint(medium) {
+		font-size: 28px;
+	}
 }
 
 .single__goal {
@@ -446,6 +536,10 @@ export default {
 	margin-bottom: 2rem;
 	display: block;
 	text-shadow: 0 0 10px rgba(0, 0, 0, .5);
+
+	@include breakpoint(medium) {
+		font-size: 16px;
+	}
 }
 
 .single__card {  
@@ -608,6 +702,27 @@ export default {
 		> .icon {
 			margin-right: 1rem;
 		}
+	}
+}
+
+.single__scroll-top-btn {
+	position: fixed;
+	bottom: 6rem;
+	right: 1rem;
+	z-index: 100;
+	box-shadow: 0 0px 10px rgba(0, 0, 0, 0.2);
+	animation: from-bottom 0.3s ease;
+}
+
+@keyframes from-bottom {
+	0% {
+		opacity: 0;
+		transform: translateY(10px);
+	}
+
+	100% {
+		opacity: 1;
+		transform: translateY(0);
 	}
 }
 

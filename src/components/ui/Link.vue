@@ -42,7 +42,6 @@ export default {
 	position: relative;
 	min-width: 8rem;
 	text-decoration: none;
-	background-color: color(white);
 	color: color(primary);
 	padding: space(2);
 	border-radius: 5px;

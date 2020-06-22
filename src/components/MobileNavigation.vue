@@ -1,21 +1,21 @@
 <template>
 	<div class="mobile-navigation">
-		<g-link class="h__nav__link" to="/">
+		<g-link class="h__nav__link" :to="$t('URL.HOME')">
 			<span>
 				<Icon name="home" :size="25" />
-				Accueil
+				{{ $t('MOBILE_NAV.HOME') }}
 			</span>
 		</g-link>
-		<g-link class="h__nav__link" to="/inspirations/">
+		<g-link class="h__nav__link" :to="$t('URL.TEMPLATES')">
 			<span>
 				<Icon name="activities" :size="25" />
-				Modèles
+				{{ $t('MOBILE_NAV.TEMPLATES') }}
 			</span>
 		</g-link>
-		<g-link class="h__nav__link" to="https://www.beekast.com">
+		<g-link class="h__nav__link" :to="$t('URL.EXTERNAL_CORPORATE')">
 			<span>
 				<Icon name="bee" :size="25" />
-				Beekast
+				{{ $t('MOBILE_NAV.DISCOVER') }}
 			</span>
 		</g-link>
 	</div>

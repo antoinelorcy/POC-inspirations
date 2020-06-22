@@ -12,6 +12,11 @@ export default {
 		TEMPLATES: 'All templates',
 		DISCOVER: 'Discover Beekast',
 	},
+	MOBILE_NAV: {
+		HOME: 'Home',
+		TEMPLATES: 'Templates',
+		DISCOVER: 'Beekast'
+	},
 	ACCOUNT: {
 		SIGNIN: 'Sign-in'
 	}
