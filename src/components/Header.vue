@@ -14,8 +14,8 @@
 			</nav>
 			<div class="h__account-and-lang">
 				<LangSelector v-if="!$store.state.isSmallWindow" class="m--r-2" />
-				<div v-if="isSignedUp">
-					<p>{{ $t('hello', {name: 'Michel'}) }}</p>
+				<div v-if="Object.entries($store.state.user).length">
+					<p>{{ $t('hello', {name: $store.state.user.displayName}) }}</p>
 				</div>
 				<Button :to="$t('URL.EXTERNAL_APP')" v-else :label="$t('ACCOUNT.SIGNIN')" />
 			</div>

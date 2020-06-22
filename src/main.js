@@ -22,6 +22,8 @@ import Radio from '~/components/ui/Radio.vue'
 import Select from '~/components/ui/Select.vue'
 import Textarea from '~/components/ui/Textarea.vue'
 
+import axios from 'axios';
+
 export default function (Vue, { router, head, isClient, appOptions }) {
   // Layouts
   Vue.component('Layout', DefaultLayout)
@@ -44,10 +46,15 @@ export default function (Vue, { router, head, isClient, appOptions }) {
   appOptions.store = new Vuex.Store({
     state:{
       isSmallWindow: false,
+      user: {}
     },
     mutations: {
       detectSmallWindow (state, bool) {
         state.isSmallWindow = bool;
+      },
+
+      setUser (state, obj) {
+        state.user = obj;
       }
     }
   });
@@ -57,6 +64,20 @@ export default function (Vue, { router, head, isClient, appOptions }) {
   Vue.i18n.add('en', localeEN);
   Vue.i18n.add('fr', localeFR);
   Vue.i18n.set('fr');
+
+  // Auth
+  axios.get('https://api.beekast.com/auth/me')
+    .then((data) => {
+      console.log('ok', data);
+      const user = {
+        email: data.email,
+        displayName: data.displayName
+      };
+      this.$store.commit('setUser', user);
+    })
+    .catch((error) => {
+      console.log('error', error);
+    })
 }
 
 
