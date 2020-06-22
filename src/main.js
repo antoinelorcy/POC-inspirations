@@ -65,6 +65,8 @@ export default function (Vue, { router, head, isClient, appOptions }) {
   Vue.i18n.add('fr', localeFR);
   Vue.i18n.set('fr');
 
+  
+
   // Auth
   axios.get('https://api.beekast.com/auth/me')
     .then(({ data }) => {
@@ -73,7 +75,7 @@ export default function (Vue, { router, head, isClient, appOptions }) {
         email: data.email,
         displayName: data.displayName
       };
-      this.$store.commit('setUser', user);
+      appOptions.store.commit('setUser', user);
     })
     .catch((error) => {
       console.log('error', error);
