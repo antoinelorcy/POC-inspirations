@@ -67,7 +67,7 @@ export default function (Vue, { router, head, isClient, appOptions }) {
 
   // Auth
   axios.get('https://api.beekast.com/auth/me')
-    .then((data) => {
+    .then(({ data }) => {
       console.log('ok', data);
       const user = {
         email: data.email,
