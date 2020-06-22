@@ -21,7 +21,13 @@
 		  <div class="list__search-and-ordering">
 			<Input placeholder="Rechercher par mots-clés" icon="search" v-model="search" />
 			<div>
-			  <Button v-if="$store.state.isSmallWindow" :label="`Filtres (${filtersCount})`" @click="filtersVisible = true" />
+			  <Button
+					v-if="$store.state.isSmallWindow"
+					icon="filter"
+					color="white"
+					:label="`Filtres (${filtersCount})`"
+					@click="filtersVisible = true"
+				/>
 			</div>
 		  </div>
 		  <div class="list__count-and-ordering">
@@ -507,7 +513,7 @@ export default {
 @include breakpoint(medium) {
   .inspi__filters {
 	position: fixed;
-	z-index: 100;
+	z-index: 400;
 	top: 0;
 	left: 0;
 	right: 0;
