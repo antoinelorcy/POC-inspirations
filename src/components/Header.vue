@@ -59,6 +59,7 @@ export default {
 	align-items: center;
 	height: 100px;
 	position: relative;
+	overflow: visible;
 
 	@include breakpoint(medium) {
 		height: 80px;

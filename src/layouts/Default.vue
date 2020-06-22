@@ -82,7 +82,7 @@ export default {
   position: sticky;
   top: 0;
   background-color: color(white);
-  z-index: 100;
+  z-index: 200;
 
   @include breakpoint(medium) {
     position: relative;

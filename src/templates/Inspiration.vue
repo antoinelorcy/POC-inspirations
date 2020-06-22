@@ -1,7 +1,7 @@
 <template>
 	<Layout class="single" has-reading-progress :data-activity-type="activityType">
 		<div class="single__breadcrumb inner-width hide-sm">
-			<g-link to="/">Accueil</g-link> > <g-link to="/inspirations">Tous les templates</g-link> > {{ title }}
+			<g-link :to="$t('URL.HOME')">Accueil</g-link> > <g-link :to="$t('URL.TEMPLATES')">Tous les templates</g-link> > {{ title }}
 		</div>
 
 		<div ref="coverMobile" class="single__cover-mobile" :class="{'single__cover-mobile--collapsed': isCoverMobileCollapse}">

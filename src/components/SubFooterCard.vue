@@ -16,5 +16,9 @@
 		font-size: fs(large);
 		margin-bottom: 35px;
 	}
+
+	@include breakpoint(medium) {
+		padding: 3rem;
+	}
 }
 </style>

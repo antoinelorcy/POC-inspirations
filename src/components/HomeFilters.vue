@@ -28,6 +28,7 @@ query {
 	edges {
 	  node {
 		id
+		sysId
 		title
 		locale
 	  }
@@ -38,6 +39,7 @@ query {
 	edges {
 	  node {
 		id
+		sysId
 		locale
 		size
 		order
@@ -72,7 +74,7 @@ export default {
 						id: g.node.id,
 						locale: g.node.locale,
 						label: g.node.title,
-						value: g.node.id
+						value: g.node.sysId
 					}
 				})
 		},
@@ -84,7 +86,7 @@ export default {
 					return {
 						id: g.node.id,
 						label: g.node.size,
-						value: g.node.id
+						value: g.node.sysId
 					}
 				})
 		}

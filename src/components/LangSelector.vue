@@ -33,10 +33,12 @@ export default {
 
 	methods: {
 		setLocale (locale) {
-			const translatedPage = this.$context.translations.find((t) => t.locale === locale.value);
-			if (translatedPage) {
-				this.$i18n.set(locale.value);
-				this.$router.push(translatedPage.url);
+			if (locale.value !== this.currentLocale.value) {
+				const translatedPage = this.$context.translations.find((t) => t.locale === locale.value);
+				if (translatedPage) {
+					this.$i18n.set(locale.value);
+					this.$router.push(translatedPage.url);
+				}
 			}
 		}
 	}

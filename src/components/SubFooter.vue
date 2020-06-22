@@ -15,6 +15,10 @@
 .sub-footer {
 	background-color: #FBFAFC;
 	padding: 60px 0;
+
+	@include breakpoint(medium) {
+		padding: 30px 0;
+	}
 }
 
 .sub-footer__inner {

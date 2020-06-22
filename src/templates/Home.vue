@@ -11,11 +11,11 @@
 	  <div class="section_title">
 		<h2>Nos inspirations du moment</h2>
 	  </div>
-	  <div class="grid">
+	  <div class="grid home__cards">
 		<div
 		  v-for="page in lastInspirations"
 		  :key="page.url"
-		  class="col-lg-6 p--4"
+		  class="col-lg-6 home__card-container"
 		>
 		<Card
 			:locale="$context.locale"
@@ -29,6 +29,7 @@
 			:goal-label="page.fields.goalLabel"
 			:added-value="page.fields.addedValue"
 		 	:activity-icon="page.activityIcon"
+			 class="home__card"
 		/>
 		</div>
 
@@ -151,6 +152,15 @@ export default {
   margin-bottom: space(6);
 }
 
+.home__card-container {
+	padding: space(4);
+
+	@include breakpoint(medium) {
+		padding: 0;
+		margin-bottom: space(4);
+	}
+}
+
 .hero  {
   background: url('../assets/images/home-filters-bg.svg') bottom center no-repeat;
   text-align: center;
@@ -162,7 +172,11 @@ export default {
   > h1 {
     margin-bottom: space(5);
     font-size: 44px;
-    color: color(grey);
+	color: color(grey);
+	
+	@include breakpoint(medium) {
+		font-size: 30px;
+	}
   }
 
   > .home-filters {

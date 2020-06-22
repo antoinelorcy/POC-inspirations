@@ -222,7 +222,7 @@ export default {
 					id: g.node.id,
 					sysId: g.node.sysId,
 					label: g.node.title,
-					checked: this.$route.query.goal && this.$route.query.goal === g.node.id
+					checked: this.$route.query.goal && this.$route.query.goal === g.node.sysId
 				}
 			})
 
@@ -232,7 +232,7 @@ export default {
 					id: g.node.id,
 					sysId: g.node.sysId,
 					label: g.node.size,
-					checked: this.$route.query.groupSize && this.$route.query.groupSize === g.node.id
+					checked: this.$route.query.groupSize && this.$route.query.groupSize === g.node.sysId
 				}
 			})
 
@@ -266,7 +266,9 @@ export default {
 				}
 			})
 
-		// this.$router.replace({ query: {}});
+		if (this.$route.query.goal || this.$route.query.groupSize) {
+			this.$router.replace({ query: {}});
+		}
 
 		this.$watch('filtersVisible', (bool) => {
 			const bodySrollLockedClassname = 'body--is-scroll-locked';
@@ -373,7 +375,7 @@ export default {
 	},
 
 	filtersCount () {
-	  return this.checkedGoals.length + this.checkedGroupSizes.length + this.checkedLevels.length + this.checkedTimings.length;
+	  return this.checkedGoals.length + this.checkedGroupSizes.length + this.checkedLevels.length + this.checkedTimings.length + this.checkedTags.length;
 	},
 
 	resultsCount () {
@@ -415,6 +417,13 @@ export default {
 	  })
 
 	  this.timings = this.timings.map((t) => {
+		return {
+		  ...t,
+		  checked: false
+		}
+	  })
+
+	  this.tags = this.tags.map((t) => {
 		return {
 		  ...t,
 		  checked: false
