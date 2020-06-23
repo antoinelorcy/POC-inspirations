@@ -236,7 +236,7 @@ export default {
 		},
 
 		share (url) {
-			window.open(url,'targetWindow','toolbar=no,location=0,status=no,menubar=no,scrollbars=yes,resizable=yes,width=500,height=350');
+			window.open(url,'targetWindow','toolbar=no,location=0,status=no,menubar=no,scrollbars=yes,resizable=yes,width=600,height=400');
 		}
 	}
 }

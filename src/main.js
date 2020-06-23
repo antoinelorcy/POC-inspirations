@@ -66,7 +66,12 @@ export default function (Vue, { router, head, isClient, appOptions }) {
 	Vue.i18n.set('fr');
 
 	// Auth
-	axios.get('https://api.beekast.com/auth/me')
+	const authUrl = 'https://api.beekast.com/auth/me'; // 'https://dev-api.compute.beekast.com/auth/me';
+	axios({
+		method: 'get',
+		url: authUrl,
+		withCredentials: true
+	})
 		.then((data) => {
 			console.log('ok data', data);
 			const user = {
@@ -79,6 +84,7 @@ export default function (Vue, { router, head, isClient, appOptions }) {
 		.catch((error) => {
 			console.log('error', error);
 		})
+		
 }
 
 
