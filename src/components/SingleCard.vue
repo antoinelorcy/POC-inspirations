@@ -27,13 +27,31 @@
 		</div>
 
 		<div class="sc__social">
-			<a :href="shareLinkedinUrl" target="_blank" rel="noopener" :aria-label="$t('SHARE.LINKEDIN')">
+			<a
+				:href="shareLinkedinUrl"
+				target="_blank"
+				rel="noopener"
+				:aria-label="$t('SHARE.LINKEDIN')"
+				@click.prevent="share(shareLinkedinUrl)"
+			>
 				<g-image src="~/assets/images/social-grey-linkedin.svg" width="30" />
 			</a>
-			<a :href="shareFacebookUrl" target="_blank" rel="noopener" :aria-label="$t('SHARE.FACEBOOK')">
+			<a
+				:href="shareFacebookUrl"
+				target="_blank"
+				rel="noopener"
+				:aria-label="$t('SHARE.FACEBOOK')"
+				@click.prevent="share(shareFacebookUrl)"
+			>
 				<g-image src="~/assets/images/social-grey-facebook.svg" width="30" />
 			</a>
-			<a :href="shareTwitterUrl" target="_blank" rel="noopener" :aria-label="$t('SHARE.TWITTER')">
+			<a
+				:href="shareTwitterUrl"
+				target="_blank"
+				rel="noopener"
+				:aria-label="$t('SHARE.TWITTER')"
+				@click.prevent="share(shareTwitterUrl)"
+			>
 				<g-image src="~/assets/images/social-grey-twitter.svg" width="30" />
 			</a>
 		</div>
@@ -185,7 +203,7 @@ export default {
 
 		shareUrl () {
 			if (!process.isClient) {
-				return 'https://beekast.com';
+				return 'https://www.beekast.com';
 			}
 
 			return encodeURI(window.location.href);
@@ -215,6 +233,10 @@ export default {
 			}
 
 			return [min, max];
+		},
+
+		share (url) {
+			window.open(url,'targetWindow','toolbar=no,location=0,status=no,menubar=no,scrollbars=yes,resizable=yes,width=500,height=350');
 		}
 	}
 }
