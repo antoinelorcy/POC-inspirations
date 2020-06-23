@@ -184,11 +184,15 @@ export default {
 		},
 
 		shareUrl () {
+			if (!process.isClient) {
+				return 'https://beekast.com';
+			}
+
 			return encodeURI(window.location.href);
 		},
 
 		shareFacebookUrl () {
-			return `https://facebook.com/sharer/sharer.php?u=${encodeURI(window.location.href)}`;
+			return `https://facebook.com/sharer/sharer.php?u=${this.shareUrl}`;
 		},
 
 		shareLinkedinUrl () {

@@ -236,6 +236,11 @@ export default {
 					content: this.title
 				},
 				{
+					key: 'twitter:creator',
+					name: 'twitter:creator',
+					content: '@beekast'
+				},
+				{
 					key: 'twitter:title',
 					name: 'twitter:title',
 					content: this.title
