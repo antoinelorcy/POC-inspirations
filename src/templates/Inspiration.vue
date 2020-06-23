@@ -45,24 +45,24 @@
 
 				<div id="prerequisite" class="single__prequisite m--b-6">
 					<h2>Pré-requis</h2>
-					<div v-html="$page.inspiration.fields.prerequisite"></div>
+					<div v-if="$page.inspiration.fields.activitySettings" class="single__settings m--b-3">
+						<h4 v-if="activityDefinition">
+							<BorderedIcon><Icon name="cog" :size="20" /></BorderedIcon> 
+							Paramétrage de l'activité {{ activityDefinition.title }} 
+							<ActivityIcon :name="activityDefinition.key" :type="activityType" />
+						</h4>
+
+						<ul>
+							<li v-for="(setting, index) in $page.inspiration.fields.activitySettings" :key="index">
+								<Icon name="checkbox" />{{ setting }}
+							</li>
+						</ul>
+					</div>
+					
+					<div v-html="$page.inspiration.fields.prerequisite" class="p--2"></div>
 				</div>
 
-				<div class="single__settings m--b-6">
-					<h4 v-if="activityDefinition">
-						<BorderedIcon><Icon name="cog" :size="20" /></BorderedIcon> 
-						Paramétrage de l'activité {{ activityDefinition.title }} 
-						<ActivityIcon :name="activityDefinition.key" :type="activityType" />
-					</h4>
-
-					<ul>
-						<li v-for="(setting, index) in $page.inspiration.fields.settings" :key="index">
-							<Icon name="checkbox" />{{ setting.fields.label }}
-						</li>
-					</ul>
-				</div>
-
-				<div id="steps" class="single__steps m--b-6">
+				<div v-if="$page.inspiration.fields.steps.length" id="steps" class="single__steps m--b-6">
 					<h2>Déroulé de l'activité</h2>
 
 					<div :id="`step-${index}`" class="single__step" v-for="(step, index) in $page.inspiration.fields.steps" :key="index">
@@ -74,7 +74,7 @@
 					</div>
 				</div>
 
-				<div id="suggestions" class="single__suggestions m--b-6">
+				<div v-if="$page.inspiration.fields.suggestions.length" id="suggestions" class="single__suggestions m--b-6">
 					<h2>Suggestions et variantes</h2>
 
 					<div v-for="(suggestion, index) in $page.inspiration.fields.suggestions" :key="index" class="ssu__item">
@@ -83,7 +83,7 @@
 					</div>
 				</div>
 
-				<div id="ressources" class="single__ressources">
+				<div v-if="$page.inspiration.fields.ressources.length" id="ressources" class="single__ressources">
 					<h2>Ressources</h2>
 
 					<ul>
@@ -111,7 +111,7 @@
 			@click="scrollTop"
 		/>
 
-		<SubFooterVideo slot="sub-footer-left" />
+		<SubFooterDiscover slot="sub-footer-left" />
 		<SubFooterSignup slot="sub-footer-right" />
 	</Layout>
 </template>
@@ -157,6 +157,7 @@ query page($id: ID!, $locale: String!) {
 				label
 				}
 			}
+			activitySettings
 			steps {
 				fields {
 					label
@@ -199,7 +200,7 @@ query page($id: ID!, $locale: String!) {
 
 <script>
 import { throttle } from 'lodash-es';
-import SubFooterVideo from '~/components/SubFooterVideo';
+import SubFooterDiscover from '~/components/SubFooterDiscover';
 import SubFooterSignup from '~/components/SubFooterSignup';
 import SingleCard from '~/components/SingleCard';
 import ActivityIcon from '~/components/ActivityIcon';
@@ -265,7 +266,7 @@ export default {
 	},
 
 	components: {
-		SubFooterVideo,
+		SubFooterDiscover,
 		SubFooterSignup,
 		SingleCard,
 		ActivityIcon,
@@ -333,11 +334,12 @@ export default {
 				this.cardTopPosition = $header.offsetHeight + $breadcrumb.offsetHeight;
 			}
 
-			const $steps = document.querySelector('.single__steps');
-			const $gifs = $steps.querySelectorAll('figure.gif');
-			$gifs.forEach(($gif) => {
-				this.setGif($gif);
-			});
+			const $gifs = document.querySelectorAll('figure.gif');
+			if ($gifs.length) {
+				$gifs.forEach(($gif) => {
+					this.setGif($gif);
+				});
+			}
 		});
 
 		
@@ -675,7 +677,7 @@ export default {
 
 			> li {
 				display: flex;
-				align-items: center;
+				align-items: flex-start;
 
 				> .icon {
 					margin-right: 1rem;

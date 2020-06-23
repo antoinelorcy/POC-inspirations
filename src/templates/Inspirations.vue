@@ -347,7 +347,7 @@ export default {
   
 	  switch (this.order.value) {
 		case 'date':
-		  return filteredPages.sort((a, b) => b.createdAt - a.createdAt);
+		  return filteredPages.sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt));
 		  break;
 		case 'name':
 		  return filteredPages.sort((a, b) => a.title.localeCompare(b.title));
