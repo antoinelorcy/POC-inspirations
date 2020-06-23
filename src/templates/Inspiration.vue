@@ -236,6 +236,11 @@ export default {
 					content: this.title
 				},
 				{
+					key: 'og:image',
+					name: 'og:image',
+					content: this.cover
+				},
+				{
 					key: 'twitter:creator',
 					name: 'twitter:creator',
 					content: '@beekast'
@@ -249,6 +254,11 @@ export default {
 					key: 'twitter:description',
 					name: 'twitter:description',
 					content: this.title
+				},
+				{
+					key: 'twitter:image',
+					name: 'twitter:image',
+					content: this.cover
 				}
 			]
 		}
