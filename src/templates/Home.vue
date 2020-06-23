@@ -119,6 +119,34 @@ import SubFooterDiscover from '~/components/SubFooterDiscover';
 import SubFooterSignup from '~/components/SubFooterSignup';
 
 export default {
+	metaInfo() {
+		return {
+			title: this.$t('MOBILE_NAV.HOME'),
+			meta: [
+				{
+					key: 'author',
+					name: 'author',
+					content: 'Beekast'
+				},
+				{
+					key: 'description',
+					name: 'description',
+					content: this.$t('META.DESCRIPTION')
+				},
+				{
+					key: 'og:description',
+					name: 'og:description',
+					content: this.$t('META.DESCRIPTION')
+				},
+				{
+					key: 'twitter:description',
+					name: 'twitter:description',
+					content: this.$t('META.DESCRIPTION')
+				}
+			]
+		}
+	},
+
 	components: {
 		Card,
 		HomeFilters,

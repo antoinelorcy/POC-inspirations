@@ -1,5 +1,14 @@
 export default {
 	hello: 'Bonjour, {name} !',
+	META: {
+		TITLE: 'Beekast - Plateforme interactive de Réunions et Formations',
+		DESCRIPTION: 'Encouragez la prise de parole, générez des idées ou encore évaluez vos participants. Plus de 50 fonctionnalités pour faciliter vos réunions. Gratuit jusqu’à trois personnes. Go !'
+	},
+	SHARE: {
+		FACEBOOK: 'Partager sur Facebook',
+		TWITTER: 'Partager sur Twitter',
+		LINKEDIN: 'Partager sur Linkedin'
+	},
 	URL: {
 		HOME: '/fr/',
 		TEMPLATES: '/fr/inspirations/',

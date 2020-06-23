@@ -22,8 +22,20 @@
 			<BorderedIcon><Icon name="trophy" :size="25" /></BorderedIcon>{{ addedValue }}
 		</div>
 
-		<div class="sc__button text-align--center m--t-5 hide-sm">
+		<div class="sc__button text-align--center m--t-5 m--b-3 hide-sm">
 			<Button label="Utiliser ce modèle" color="primary" />
+		</div>
+
+		<div class="sc__social">
+			<a :href="shareLinkedinUrl" target="_blank" rel="noopener" :aria-label="$t('SHARE.LINKEDIN')">
+				<g-image src="~/assets/images/social-grey-linkedin.svg" width="30" />
+			</a>
+			<a :href="shareFacebookUrl" target="_blank" rel="noopener" :aria-label="$t('SHARE.FACEBOOK')">
+				<g-image src="~/assets/images/social-grey-facebook.svg" width="30" />
+			</a>
+			<a :href="shareTwitterUrl" target="_blank" rel="noopener" :aria-label="$t('SHARE.TWITTER')">
+				<g-image src="~/assets/images/social-grey-twitter.svg" width="30" />
+			</a>
 		</div>
 	</div>
 </template>
@@ -169,6 +181,22 @@ export default {
 
 			const q = lengthsLocale.find((g) => g.node.sysId === this.lengthIds[0]);
 			return q.node.value;
+		},
+
+		shareUrl () {
+			return encodeURI(window.location.href);
+		},
+
+		shareFacebookUrl () {
+			return `https://facebook.com/sharer/sharer.php?u=${encodeURI(window.location.href)}`;
+		},
+
+		shareLinkedinUrl () {
+			return `https://www.linkedin.com/sharing/share-offsite/?url=${this.shareUrl}`;
+		},
+
+		shareTwitterUrl () {
+			return `https://twitter.com/intent/tweet?url=${this.shareUrl}`;
 		}
 	},
 
@@ -231,5 +259,18 @@ export default {
 .sc__activity {
 	font-weight: fw(medium);
 	align-items: center;
+}
+
+.sc__social {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding-top: 2rem;
+	margin-top: 2rem;
+	border-top: 1px dashed color(grey-light);
+
+	> a {
+		margin: 0 1.5rem;
+	}
 }
 </style>

@@ -5,7 +5,7 @@
 		</div>
 
 		<div ref="coverMobile" class="single__cover-mobile" :class="{'single__cover-mobile--collapsed': isCoverMobileCollapse}">
-			<div class="single__cover" :style="{backgroundImage: `url(${thumbnail})`}">
+			<div class="single__cover" :style="{backgroundImage: `url(${cover})`}">
 				<h1 class="single__title">{{ title }}</h1>
 				<span class="single__goal">> {{ goalLabel }}</span>
 				
@@ -34,7 +34,7 @@
 		</div>
 
 		<div class="single__cover-wrapper hide-sm">
-			<div class="single__cover" :style="{backgroundImage: `url(${thumbnail})`}"></div>
+			<div class="single__cover" :style="{backgroundImage: `url(${cover})`}"></div>
 		</div>
 	
 		<div class="single__wrapper inner-width">
@@ -124,6 +124,7 @@ query page($id: ID!, $locale: String!) {
 		url
 		fields {
 			thumbnail
+			cover
 			keywords
 			goal {
 				sys{id}
@@ -209,8 +210,41 @@ export default {
 		return {
 			title: this.title,
 			meta: [
-				{ name: 'author', content: 'Beekast' },
-				{ name: 'description', content: this.title }
+				{
+					key: 'author',
+					name: 'author',
+					content: 'Beekast'
+				},
+				{
+					key: 'title',
+					name: 'title',
+					content: this.title
+				},
+				{
+					key: 'description',
+					name: 'description',
+					content: this.$t('META.DESCRIPTION')
+				},
+				{
+					key: 'og:title',
+					name: 'og:title',
+					content: this.title
+				},
+				{
+					key: 'og:description',
+					name: 'og:description',
+					content: this.title
+				},
+				{
+					key: 'twitter:title',
+					name: 'twitter:title',
+					content: this.title
+				},
+				{
+					key: 'twitter:description',
+					name: 'twitter:description',
+					content: this.title
+				}
 			]
 		}
 	},
@@ -236,8 +270,8 @@ export default {
 			return this.$page.inspiration.title;
 		},
 
-		thumbnail () {
-			return this.$page.inspiration.fields.thumbnail;
+		cover () {
+			return this.$page.inspiration.fields.cover || this.$page.inspiration.fields.thumbnail;
 		},
 
 		goalLabel () {
