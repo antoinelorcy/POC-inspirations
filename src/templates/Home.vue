@@ -85,7 +85,7 @@ query page ($id: ID!, $locale: String!) {
 		locale
 	}
 
-	lastInspirations: allInspiration(limit: 4, sortBy: "date", filter: {locale: { eq: $locale}}) {
+	lastInspirations: allInspiration(limit: 4, sortBy: "createdAt", filter: {locale: { eq: $locale}}) {
 		edges {
 			node {
 				id
