@@ -77,6 +77,7 @@ export default function (Vue, { router, head, isClient, appOptions }) {
 			const user = {
 				email: data.data.email,
 				displayName: data.data.displayName,
+				firstName: data.data.firstName,
 				photo: data.data.photo
 			};
 			console.log('ok user', user);

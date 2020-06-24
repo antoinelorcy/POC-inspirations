@@ -15,10 +15,10 @@
 			<div class="h__account-and-lang">
 				<div v-if="Object.entries($store.state.user).length" class="h__account">
 					<g-image v-if="$store.state.user.photo" :src="$store.state.user.photo" class="m--r-2" width="20"></g-image>
-					{{ $t('hello', {name: $store.state.user.displayName}) }}
+					{{ $t('hello', {name: $store.state.user.firstName}) }}
 				</div>
 				<Button :to="$t('URL.EXTERNAL_APP')" v-else :label="$t('ACCOUNT.SIGNIN')" />
-				<LangSelector v-if="!$store.state.isSmallWindow" class="m--r-2" />
+				<LangSelector v-if="!$store.state.isSmallWindow" class="m--l-5" />
 			</div>
 		</div>
 		<ReadingProgress v-if="hasReadingProgress" />
@@ -92,5 +92,10 @@ export default {
 	display: flex;
 	align-items: center;
 	justify-content: flex-end;
+
+	> img {
+		width: 30px;
+		border-radius: 15px;
+	}
 }
 </style>
