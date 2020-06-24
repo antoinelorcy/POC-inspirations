@@ -46,7 +46,9 @@
 				<div id="prerequisite" class="single__prequisite single__section">
 					<h2>Pré-requis</h2>
 					<div class="single__section-inner">
-						<div v-if="$page.inspiration.fields.activitySettings" class="single__settings m--b-3">
+						<div v-html="$page.inspiration.fields.prerequisite"></div>
+
+						<div v-if="$page.inspiration.fields.activitySettings" class="single__settings m--t-6">
 							<h4 v-if="activityDefinition">
 								<BorderedIcon><Icon name="cog" :size="20" /></BorderedIcon> 
 								Paramétrage de l'activité {{ activityDefinition.title }} 
@@ -59,8 +61,6 @@
 								</li>
 							</ul>
 						</div>
-						
-						<div v-html="$page.inspiration.fields.prerequisite" class="p--2"></div>
 					</div>
 				</div>
 
