@@ -234,7 +234,7 @@ export default {
 				{
 					key: 'og:description',
 					name: 'og:description',
-					content: this.title
+					content: this.$page.inspiration.fields.goalLabel
 				},
 				{
 					key: 'og:image',
@@ -254,7 +254,7 @@ export default {
 				{
 					key: 'twitter:description',
 					name: 'twitter:description',
-					content: this.title
+					content: this.$page.inspiration.fields.goalLabel
 				},
 				{
 					key: 'twitter:image',
