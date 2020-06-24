@@ -43,54 +43,59 @@
 				<span class="single__goal hide-sm">> {{ goalLabel }}</span>
 				<div id="summary" class="single__summary" v-html="$page.inspiration.fields.summary"></div>
 
-				<div id="prerequisite" class="single__prequisite m--b-6">
+				<div id="prerequisite" class="single__prequisite single__section">
 					<h2>Pré-requis</h2>
-					<div v-if="$page.inspiration.fields.activitySettings" class="single__settings m--b-3">
-						<h4 v-if="activityDefinition">
-							<BorderedIcon><Icon name="cog" :size="20" /></BorderedIcon> 
-							Paramétrage de l'activité {{ activityDefinition.title }} 
-							<ActivityIcon :name="activityDefinition.key" :type="activityType" />
-						</h4>
+					<div class="single__section-inner">
+						<div v-if="$page.inspiration.fields.activitySettings" class="single__settings m--b-3">
+							<h4 v-if="activityDefinition">
+								<BorderedIcon><Icon name="cog" :size="20" /></BorderedIcon> 
+								Paramétrage de l'activité {{ activityDefinition.title }} 
+								<ActivityIcon :name="activityDefinition.key" :type="activityType" />
+							</h4>
 
-						<ul>
-							<li v-for="(setting, index) in $page.inspiration.fields.activitySettings" :key="index">
-								<Icon name="checkbox" />{{ setting }}
-							</li>
-						</ul>
+							<ul>
+								<li v-for="(setting, index) in $page.inspiration.fields.activitySettings" :key="index">
+									<Icon name="checkbox" />{{ setting }}
+								</li>
+							</ul>
+						</div>
+						
+						<div v-html="$page.inspiration.fields.prerequisite" class="p--2"></div>
 					</div>
-					
-					<div v-html="$page.inspiration.fields.prerequisite" class="p--2"></div>
 				</div>
 
-				<div v-if="$page.inspiration.fields.steps.length" id="steps" class="single__steps m--b-6">
+				<div v-if="$page.inspiration.fields.steps.length" id="steps" class="single__steps single__section">
 					<h2>Déroulé de l'activité</h2>
-
-					<div :id="`step-${index}`" class="single__step" v-for="(step, index) in $page.inspiration.fields.steps" :key="index">
-						<div class="ss__number"><span>{{ index + 1 }}</span></div>
-						<div class="ss__content p--b-6">
-							<h3>{{ step.fields.label }}</h3>
-							<div v-html="step.fields.content"></div>
+					<div class="single__section-inner">
+						<div :id="`step-${index}`" class="single__step" v-for="(step, index) in $page.inspiration.fields.steps" :key="index">
+							<div class="ss__number"><span>{{ index + 1 }}</span></div>
+							<div class="ss__content p--b-6">
+								<h3>{{ step.fields.label }}</h3>
+								<div v-html="step.fields.content"></div>
+							</div>
 						</div>
 					</div>
 				</div>
 
-				<div v-if="$page.inspiration.fields.suggestions.length" id="suggestions" class="single__suggestions m--b-6">
+				<div v-if="$page.inspiration.fields.suggestions.length" id="suggestions" class="single__suggestions single__section">
 					<h2>Suggestions et variantes</h2>
-
-					<div v-for="(suggestion, index) in $page.inspiration.fields.suggestions" :key="index" class="ssu__item">
-						<Icon name="idea" />
-						<div v-html="suggestion.fields.content"></div>
+					<div class="single__section-inner">
+						<div v-for="(suggestion, index) in $page.inspiration.fields.suggestions" :key="index" class="ssu__item">
+							<Icon name="idea" />
+							<div v-html="suggestion.fields.content"></div>
+						</div>
 					</div>
 				</div>
 
-				<div v-if="$page.inspiration.fields.ressources.length" id="ressources" class="single__ressources">
+				<div v-if="$page.inspiration.fields.ressources.length" id="ressources" class="single__ressources single__section">
 					<h2>Ressources</h2>
-
-					<ul>
-						<li v-for="(ressource, index) in $page.inspiration.fields.ressources" :key="index">
-							<a :href="ressource.fields.url" target="_blank"><Icon name="external-link" /> {{ ressource.fields.label }}</a>
-						</li>
-					</ul>
+					<div class="single__section-inner">
+						<ul>
+							<li v-for="(ressource, index) in $page.inspiration.fields.ressources" :key="index">
+								<a :href="ressource.fields.url" target="_blank"><Icon name="external-link" /> {{ ressource.fields.label }}</a>
+							</li>
+						</ul>
+					</div>
 				</div>
 			</section>
 			<section class="single__sidebar">
@@ -152,11 +157,6 @@ query page($id: ID!, $locale: String!) {
 			}
 			summary
 			prerequisite
-			settings {
-				fields {
-				label
-				}
-			}
 			activitySettings
 			steps {
 				fields {
@@ -334,7 +334,7 @@ export default {
 				this.cardTopPosition = $header.offsetHeight + $breadcrumb.offsetHeight;
 			}
 
-			const $gifs = document.querySelectorAll('figure.gif');
+			const $gifs = document.querySelectorAll('.embed-gif');
 			if ($gifs.length) {
 				$gifs.forEach(($gif) => {
 					this.setGif($gif);
@@ -391,9 +391,9 @@ export default {
 				$e.dataset.gif = imgSrc;
 				
 				if ($e.src.indexOf('.gif') > -1) {
-					e.target.classList.add('gif--playing');
+					e.target.classList.add('embed-gif--playing');
 				} else {
-					e.target.classList.remove('gif--playing');
+					e.target.classList.remove('embed-gif--playing');
 				}
 			});
 		}
@@ -411,6 +411,10 @@ export default {
 
 			.single__settings:before {
 				background-color: $value;
+			}
+
+			.activity-icon {
+				border-color: $value;
 			}
 		}
 	}
@@ -606,6 +610,14 @@ export default {
 	}
 }
 
+.single__section {
+	margin-bottom: 3rem;
+}
+
+.single__section-inner {
+	padding: 1rem 3rem;
+}
+
 .single__summary {
 	position: relative;
 	background: linear-gradient(180deg, #FFFFFF 55.21%, rgba(255, 255, 255, 0) 100%);
@@ -669,15 +681,19 @@ export default {
 
 			> .activity-icon {
 				margin-left: 1rem;
+				border: 2px solid color(grey-light);
+				border-radius: 10px;
 			}
 		}
 
 		ul {
 			list-style: none;
+			padding: 0 3rem;
 
 			> li {
 				display: flex;
 				align-items: flex-start;
+				margin-bottom: 0.5rem;
 
 				> .icon {
 					margin-right: 1rem;
@@ -754,6 +770,11 @@ export default {
 			margin-right: 1rem;
 		}
 	}
+}
+
+.single__img {
+	margin: 3rem 0;
+	text-align: center;
 }
 
 .single__scroll-top-btn {

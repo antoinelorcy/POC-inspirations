@@ -110,7 +110,7 @@ function getPageFormat (entry, gifs) {
 								[INLINES.EMBEDDED_ENTRY]: (node) => {
 									return getGif(node.data.target.sys.id, locale, gifs);
 								},
-								[BLOCKS.EMBEDDED_ASSET]: (node) => `<img src="${node.data.target.fields.file.url}" alt="${node.data.target.fields.title}" />`
+								[BLOCKS.EMBEDDED_ASSET]: (node) => `<div class="embed-img"><img src="${node.data.target.fields.file.url}" alt="${node.data.target.fields.title}" /></div>`
 							}
 						}
 						v.fields.content = documentToHtmlString(v.fields.content, options);
@@ -156,7 +156,7 @@ function getFilterFormat (entry) {
 
 function getGif (sysId, locale, gifs) {
 	const gif = gifs.find((g) => g.sysId === sysId && g.locale === locale);
-	return `<figure class="gif">
+	return `<figure class="embed-gif">
 		<span>
 			<svg width="39" height="44" viewBox="0 0 39 44" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
 				<path d="M38.2261 21.9691L0.746034 43.6082L0.746036 0.330002L38.2261 21.9691Z" fill="currentColor"/>

@@ -76,13 +76,14 @@ export default function (Vue, { router, head, isClient, appOptions }) {
 			console.log('ok data', data);
 			const user = {
 				email: data.data.email,
-				displayName: data.data.displayName
+				displayName: data.data.displayName,
+				photo: data.data.photo
 			};
 			console.log('ok user', user);
 			appOptions.store.commit('setUser', user);
 		})
 		.catch((error) => {
-			console.log('error', error);
+			console.log('Auth error');
 		})
 		
 }

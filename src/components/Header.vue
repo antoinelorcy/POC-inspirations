@@ -13,11 +13,12 @@
 				<g-link class="h__nav__link" :to="$t('URL.EXTERNAL_CORPORATE')">{{ $t('HEADER.DISCOVER') }}</g-link>
 			</nav>
 			<div class="h__account-and-lang">
-				<LangSelector v-if="!$store.state.isSmallWindow" class="m--r-2" />
-				<div v-if="Object.entries($store.state.user).length">
-					<p>{{ $t('hello', {name: $store.state.user.displayName}) }}</p>
+				<div v-if="Object.entries($store.state.user).length" class="h__account">
+					<g-image v-if="$store.state.user.photo" :src="$store.state.user.photo" class="m--r-2" width="20"></g-image>
+					{{ $t('hello', {name: $store.state.user.displayName}) }}
 				</div>
 				<Button :to="$t('URL.EXTERNAL_APP')" v-else :label="$t('ACCOUNT.SIGNIN')" />
+				<LangSelector v-if="!$store.state.isSmallWindow" class="m--r-2" />
 			</div>
 		</div>
 		<ReadingProgress v-if="hasReadingProgress" />
@@ -82,6 +83,12 @@ export default {
 }
 
 .h__account-and-lang {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+}
+
+.h__account {
 	display: flex;
 	align-items: center;
 	justify-content: flex-end;
