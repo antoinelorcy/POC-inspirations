@@ -15,7 +15,7 @@
 			<div class="h__account-and-lang">
 				<div v-if="Object.entries($store.state.user).length" class="h__account">
 					<g-image v-if="$store.state.user.photo" :src="$store.state.user.photo" class="m--r-2" width="20"></g-image>
-					{{ $t('hello', {name: $store.state.user.firstName}) }}
+					<span class="hide-sm">{{ $t('hello', {name: $store.state.user.firstName}) }}</span>
 				</div>
 				<Button :to="$t('URL.EXTERNAL_APP')" v-else :label="$t('ACCOUNT.SIGNIN')" />
 				<LangSelector v-if="!$store.state.isSmallWindow" class="m--l-5" />
